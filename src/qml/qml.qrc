@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="src/qml">
+        <file>main.qml</file>
+        <file>PhotoPreview.qml</file>
+    </qresource>
+</RCC>
