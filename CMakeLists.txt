@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.16)
 set(_TARGET qtsudoku)
 project(${_TARGET} LANGUAGES CXX)
 
-
+set(CMAKE_BUILD_TYPE Debug)
 ### Setup android toolchain and arch
 set(ANDROID_ABI arm64-v8a)
 set(ANDROID_NATIVE_API_LEVEL 23)
@@ -14,9 +14,13 @@ set(CMAKE_TOOLCHAIN_FILE /opt/android-sdk/ndk/22.1.7171670/build/cmake/android.t
 set(CMAKE_PREFIX_PATH /home/dennis/Qt/6.3.0/android_arm64_v8a)
 set(QT_HOST_PATH /home/dennis/Qt/6.3.0/gcc_64)
 
-set(ANDROID_STL c++_shared)
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_C_COMPILER ${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/bin/clang)
+set(CMAKE_CXX_COMPILER ${ANDROID_NDK}/toolchains/llvm/prebuilt/linux-x86_64/bin/clang++)
+
+set(ANDROID_STL c++_static) # or shared
 set(CMAKE_GENERATOR Ninja)
+
+# setting for Qt-Creator
 set(QT_ANDROID_ABIS arm64-v8a)
 set(QT_ANDROID_BUILD_ALL_ABIS FALSE)
 set(QT_CREATOR_SKIP_PACKAGE_MANAGER_SETUP OFF)

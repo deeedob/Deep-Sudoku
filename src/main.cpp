@@ -1,7 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "qcv_algorithm.hpp"
-//#include "qcvimageprocessor.hpp"
+//#include "qcv_algorithm.hpp"
 //#include <private/qandroidextras_p.h>
 
 
