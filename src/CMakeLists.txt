@@ -71,20 +71,21 @@ set(OpenCV_DIR ${CMAKE_CURRENT_BINARY_DIR}/third-party/opencv/sdk/native/jni/abi
 find_package(OpenCV REQUIRED)
 find_package(Qt6 COMPONENTS Quick Qml Multimedia REQUIRED)
 
-qt_add_executable(${_TARGET}
+qt_add_executable(QTSudoku
        main.cpp
         #qcv_algorithm.cpp
         #qcv_algorithm.hpp
         qml/qml.qrc)
 
 message("OpenCV_LIBS linking against : " ${OpenCV_LIBS})
-target_link_libraries(${_TARGET}
+
+target_link_libraries(QTSudoku
         PRIVATE Qt6::Quick Qt6::Qml Qt6::Multimedia ${OpenCV_LIBS})
 
-set_property(TARGET ${_TARGET} APPEND PROPERTY
+set_property(TARGET QTSudoku APPEND PROPERTY
         QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_SOURCE_DIR}/android)
 
-target_compile_definitions(${_TARGET}
+target_compile_definitions(QTSudoku
         PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/")

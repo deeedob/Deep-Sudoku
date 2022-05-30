@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(_TARGET qtsudoku)
-project(${_TARGET} LANGUAGES CXX)
+project(QTSudoku LANGUAGES CXX)
 
 set(CMAKE_BUILD_TYPE Debug)
 ### Setup android toolchain and arch
