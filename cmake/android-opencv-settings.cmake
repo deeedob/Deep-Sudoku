@@ -1,0 +1,21 @@
+set(opencv_CMake_args
+        -DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/opencv
+        -DANDROID_ABI=${ANDROID_ABI}
+        -DANDROID_NATIVE_API_LEVEL=${ANDROID_NATIVE_API_LEVEL}
+        -DANDROID_ARM_NEON=ON
+        -DANDROID_TOOLCHAIN=clang
+        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+        -DANDROID_NDK=${ANDROID_NDK}
+        -DANDROID_SDK=${ANDROID_SDK_ROOT}
+        -DBUILD_SHARED_LIBS=OFF # build static lib
+        -DCMAKE_BUILD_TYPE=Release
+        -DBUILD_ANDROID_PROJECTS=OFF
+        -DWITH_OPENCL=ON
+        -DWITH_TBB=ON
+        -DENABLE_NEON=ON
+        -DBUILD_TESTS=OFF
+        -DBUILD_PERF_TESTS=OFF
+        )
+if(UNIX)
+    set(opencv_CMake_args ${opencv_CMake_args} -DCMAKE_CXX_FLAGS=-fPIC)
+endif()

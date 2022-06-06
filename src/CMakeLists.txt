@@ -1,101 +1,60 @@
-cmake_minimum_required(VERSION 3.16)
+include(../cmake/external-build.cmake)
 
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-####################################################### BUILD BEFORE ###############################################
-function (build_external_project target file_name)
-
-    set(CMAKELIST_CONTENT "
-        cmake_minimum_required(VERSION ${CMAKE_MINIMUM_REQUIRED_VERSION})
-        project(build_external_project)
-        include(ExternalProject)
-        ExternalProject_add(${target}
-            SOURCE_DIR ${CMAKE_SOURCE_DIR}/third-party/opencv
-            CMAKE_GENERATOR ${CMAKE_GENERATOR}
-            CMAKE_ARGS ${ARGN})
-        add_custom_target(build_external_project)
-        add_dependencies(build_external_project ${target})
-    ")
-
-    set(TARGET_DIR "${CMAKE_CURRENT_BINARY_DIR}/ExternalProjects/${target}")
-
-    file(WRITE "${TARGET_DIR}/build/CMakeLists.txt" "${CMAKELIST_CONTENT}")
-
-    file(MAKE_DIRECTORY "${TARGET_DIR}" "${TARGET_DIR}/build")
-
-    execute_process(COMMAND ${CMAKE_COMMAND}
-            -G "${CMAKE_GENERATOR}"
-            -A "${CMAKE_GENERATOR_PLATFORM}"
-            -T "${CMAKE_GENERATOR_TOOLSET}"
-            WORKING_DIRECTORY "${TARGET_DIR}/build")
-
-    execute_process(COMMAND ${CMAKE_COMMAND}
-            --build .
-            --config ${CMAKE_BUILD_TYPE}
-            WORKING_DIRECTORY "${TARGET_DIR}/build")
-
-endfunction()
-
-set(THIRD_PARTY_DIR "${CMAKE_CURRENT_LIST_DIR}/third-party")
-set(THIRD_PARTY_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party")
-
-# Setup Opencv Build for android
-set(opencv_CMake_args
-        -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/third-party/opencv
-        -DANDROID_ABI=${ANDROID_ABI}
-        -DANDROID_NATIVE_API_LEVEL=${ANDROID_NATIVE_API_LEVEL}
-        -DANDROID_ARM_NEON=ON
-        -DANDROID_TOOLCHAIN=clang
-        -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
-        -DANDROID_NDK=${ANDROID_NDK}
-        -DANDROID_SDK=${ANDROID_SDK_ROOT}
-        -DBUILD_SHARED_LIBS=OFF # build static lib
-        -DCMAKE_BUILD_TYPE=Release
-        -DBUILD_ANDROID_PROJECTS=OFF
-        -DWITH_OPENCL=ON
-        -DWITH_TBB=ON
-        -DENABLE_NEON=ON
-        -DBUILD_TESTS=OFF
-        -DBUILD_PERF_TESTS=OFF
+set(sources
+        main.cpp
         )
-if(UNIX)
-    set(opencv_CMake_args ${opencv_CMake_args} -DCMAKE_CXX_FLAGS=-fPIC)
+set(headers
+        )
+
+
+if (ANDROID)
+    message("ANDROID BUILD")
+    add_definitions(-DANDROID_BUILD)
+
+    #setup the opencv build
+    set(THIRD_PARTY_DIR "${CMAKE_SOURCE_DIR}/third-party")
+    set(THIRD_PARTY_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party")
+    include(../cmake/android-opencv-settings.cmake)
+
+    # build opencv on first init
+    build_external_project(OpenCV "${THIRD_PARTY_DIR}/opencv" ${opencv_CMake_args})
+    set(OpenCV_DIR ${THIRD_PARTY_INSTALL_DIR}/opencv/sdk/native/jni/abi-${ANDROID_ABI})
+    find_package(OpenCV REQUIRED)
+
+    set(CMAKE_FIND_ROOT_PATH ${ANDROID_QT_ROOT})
+    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH)
+
+    qt_add_executable(QSudoku
+            ${sources}
+            ${headers}
+            qml/qml.qrc)
+
+    set(QT_ANDROID_EXTRA_LIBS
+            ${OpenCV_LIBS})
+    #qt_android_generate_deployment_settings(QSudoku)
+
+    set_property(TARGET QSudoku APPEND PROPERTY
+            QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_SOURCE_DIR}/android)
+
+else()
+    message("DESKTOP BUILD")
+    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia REQUIRED)
+    find_package(OpenCV REQUIRED)
+
+    list(APPEND sources enhanced_engine.cpp)
+    list(APPEND headers enhanced_engine.hpp)
+    qt_add_executable(QSudoku
+            ${sources}
+            ${headers}
+            qml/qml.qrc)
 endif()
 
-build_external_project(OpenCV "${THIRD_PARTY_DIR}/opencv" ${opencv_CMake_args})
+target_link_libraries(QSudoku PRIVATE Qt6::Qml Qt6::Quick Qt6::Core Qt6::Multimedia ${OpenCV_LIBS})
 
-####################################################################################################
-
-set(OpenCV_DIR ${CMAKE_CURRENT_BINARY_DIR}/third-party/opencv/sdk/native/jni/abi-arm64-v8a)
-find_package(OpenCV REQUIRED)
-find_package(Qt6 COMPONENTS Quick Qml Multimedia REQUIRED)
-
-qt_add_executable(QTSudoku
-       main.cpp
-        #qcv_algorithm.cpp
-        #qcv_algorithm.hpp
-        qml/qml.qrc)
-
-message("OpenCV_LIBS linking against : " ${OpenCV_LIBS})
-
-target_link_libraries(QTSudoku
-        PRIVATE Qt6::Quick Qt6::Qml Qt6::Multimedia ${OpenCV_LIBS})
-
-set_property(TARGET QTSudoku APPEND PROPERTY
-        QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_SOURCE_DIR}/android)
-
-target_compile_definitions(QTSudoku
-        PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
-
-file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/")
-
-# copy binary to solve issues with androiddeployqt
-add_custom_command(
-        TARGET ${PROJECT_NAME}
-        POST_BUILD
-        COMMAND cmake
-        ARGS -E copy "${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}_${ANDROID_ABI}.so" "${CMAKE_CURRENT_BINARY_DIR}/android-build/libs/${ANDROID_ABI}/"
-)
-
-
+# set compile options for the main executable
+target_compile_options( QSudoku PRIVATE ${CXX_FLAGS}
+        "$<$<CONFIG:Debug>:${CXX_FLAGS_DEBUG}>"
+        "$<$<CONFIG:Release>:${CXX_FLAGS_RELEASE}>")

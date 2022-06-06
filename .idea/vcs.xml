@@ -4,6 +4,7 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/3rdparty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ThirdParty/opencv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/qt-android-cmake" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/opencv" vcs="Git" />
   </component>

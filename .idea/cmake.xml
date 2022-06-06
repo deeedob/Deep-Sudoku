@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="ARM" ENABLED="true" CONFIG_NAME="Release" TOOLCHAIN_NAME="aarch64" GENERATION_OPTIONS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=/home/dennis/Android/android-sdk/ndk/22.1.7171670/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_SDK_ROOT=/home/dennis/Android/android-sdk -DANDROID_NDK=/home/dennis/Android/android-sdk/ndk/22.1.7171670 -DANDROID_QT_ROOT=/opt/android-qt6-aarch64 -DQT_HOST_PATH=/home/dennis/Qt/6.3.0/gcc_64" />
+      <configuration PROFILE_NAME="Desktop" ENABLED="true" CONFIG_NAME="Debug" TOOLCHAIN_NAME="clang" />
+    </configurations>
+  </component>
+</project>

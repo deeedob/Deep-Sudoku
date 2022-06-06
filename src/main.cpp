@@ -1,27 +1,29 @@
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
-//#include "qcv_algorithm.hpp"
-//#include <private/qandroidextras_p.h>
-
+#include <filesystem>
+#ifdef ANDROID_BUILD
+    #include <QQmlApplicationEngine>
+#else
+    #include "enhanced_engine.hpp"
+    #include <QQmlContext>
+#endif
+#include <iostream>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
+    auto path = std::filesystem::current_path();
+    std::cout << path.parent_path().c_str() << std::endl;
 
-    //auto result = QtAndroidPrivate::checkPermission(QString("android.permission.CAMERA"));
+
+#ifdef ANDROID_BUILD
     QQmlApplicationEngine engine;
+    engine.load(QUrl("qrc:/MainWindow.qml"));
+#else
+    EnhancedEngine engine;
+    engine.rootContext()->setContextProperty("$QmlEngine", &engine);
+    engine.load(QStringLiteral("qml/main_hot_reload.qml"));
+#endif
 
-    //qmlRegisterType<QCvImageProcessor>("com.dev.prod", 1, 0, "CvImageProcessor");
-
-    //const QUrl url(u"qrc:/qtsudoku/src/qml/main.qml"_qs);
-    const QUrl url(QStringLiteral("qrc:/src/qml/main.qml"));
-    QObject::connect(&engine, &QQmlApplicationEngine::objectCreated, &app,[url](QObject *obj, const QUrl &objUrl) {
-        if(!obj && url == objUrl)
-            QCoreApplication::exit(-1);
-    }, Qt::QueuedConnection);
-
-
-    engine.load(url);
 
     return app.exec();
 }

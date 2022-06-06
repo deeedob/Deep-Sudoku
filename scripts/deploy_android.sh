@@ -1,22 +1,20 @@
 #!/bin/bash
 
-PROJECT_NAME="qtsudoku"
-ANDROIDDEPLOYQT="$HOME/Qt/6.3.0/gcc_64/bin/androiddeployqt"
+PROJECT_NAME="QSudoku"
 
 echo "====================[ DEPLOY| ${PROJECT_NAME} | ARM ]=================================="
-
-# check if QT_ANDROIDDEPLOY_PATH is a valid file
-if [ -f "$ANDROIDDEPLOYQT" ]; then
-echo "androiddeployqt is valid"
-else
-echo "androiddeployqt is not valid"
-exit 1
-fi
 
 # get binary directory
 if [ -z "$1" ]; then
     echo "No argument supplied"
-    echo "Usage: ./deploy_android.sh <BinaryDir>"
+    echo "Usage: ./deploy_android.sh <SettingsDir> <androiddeployqt>"
+    exit 1
+fi
+
+# get binary directory
+if [ -z "$2" ]; then
+    echo "No argument supplied"
+    echo "Usage: ./deploy_android.sh <SettingsDir> <androiddeployqt>"
     exit 1
 fi
 
@@ -34,11 +32,10 @@ fi
 
 
 OUTPUT_DIR="$1/android-build"
-ANDROID_DEVICE="8c63caef"
 
 
 # execute android deployment
 echo ">>>> Starting deployment"
 echo ""
 
-$ANDROIDDEPLOYQT --verbose --output "$OUTPUT_DIR" --no-build --input "$ANDROID_DEPLOYSETTINGS" --gradle --install --device "$ANDROID_DEVICE"
+$2 --verbose --output "$OUTPUT_DIR" --no-build --input "$ANDROID_DEPLOYSETTINGS" --gradle --install

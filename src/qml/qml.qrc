@@ -1,6 +1,7 @@
 <RCC>
-    <qresource prefix="src/qml">
-        <file>main.qml</file>
-        <file>PhotoPreview.qml</file>
+    <qresource prefix="/">
+        <file>MainWindow.qml</file>
+        <file>main_hot_reload.qml</file>
+        <file>reload_window.qml</file>
     </qresource>
 </RCC>
