@@ -9,19 +9,27 @@ Item {
     SwipeView {
         id:view
         anchors.fill: parent
-        currentIndex: 1
+        currentIndex: 0
 
         Item {
             id: cameraUI
+
             Camera {
                 id: camera
             }
 
+            CaptureSession {
+                id: captureSession
+                camera: camera
+                videoOutput: output
+            }
+
             VideoOutput {
-                id: videoOutput
+                id: output
                 anchors.fill: parent
-                visible: true
-                orientation: 270
+            }
+            MediaDevices {
+                id: mediaDevices
             }
         }
 
@@ -73,5 +81,7 @@ Item {
                 }
             }
         }
+        Component.onCompleted: captureSession.camera.start()
+
     }
 }

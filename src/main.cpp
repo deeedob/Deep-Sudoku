@@ -6,7 +6,6 @@
     #include "enhanced_engine.hpp"
     #include <QQmlContext>
 #endif
-#include <iostream>
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +21,6 @@ int main(int argc, char *argv[])
     auto path = std::filesystem::current_path();
     path = path.parent_path().parent_path();
     path.append("src/qml/main_hot_reload.qml");
-    std::cout << path.c_str() << std::endl;
     engine.load(path.c_str());
 #endif
 

@@ -6,13 +6,18 @@ Currently only tested with **arm64-v8a** on archlinux with x86-64
 - Install [Qt >= 6.3.0 for Android](https://doc-snapshots.qt.io/qt6-dev/android-building.html)
 - Install Android [SDK](https://developer.android.com/studio) and [NDK](https://developer.android.com/ndk/downloads) 
 
-
-- on linux create a udev rule for your mobile device
+### Linux
+- create a udev rule for your mobile device
  ```shell
     usb-devices # get idVendor and idProduct
     echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"<yourIDVendor>\", ATTR{idProduct}==\"<yourIDProduct>\", MODE=\"0666\", GROUP=\"plugdev\""  | sudo tee -a /etc/udev/rules.d/51.android.rules
     # add user to plugdev group
     usermod -a -G plugdev <user>
+```
+When building in development mode on Desktop consider that these tools are required for QtMultimedia to work properly : 
+```shell
+# archlinux commands
+  pacman -S gstreamer at-spi2-core gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav
 ```
 
 ## Building
