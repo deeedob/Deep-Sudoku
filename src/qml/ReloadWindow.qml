@@ -27,7 +27,7 @@ Item {
 
             VideoOutput {
                 id: output
-                orientation: 90
+                orientation: Qt.platform.os === "android" ? 0 : 90
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.top: parent.top

@@ -25,7 +25,7 @@ if (ANDROID)
     find_package(OpenCV REQUIRED)
 
     set(CMAKE_FIND_ROOT_PATH ${ANDROID_QT_ROOT})
-    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH)
+    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia Widgets Svg REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH)
 
     qt_add_executable(QSudoku
             ${sources}
@@ -43,7 +43,7 @@ else()
     message("DESKTOP BUILD")
     add_definitions(-DQT_QML_DEBUG)
 
-    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia REQUIRED)
+    find_package(Qt6 COMPONENTS Core Qml Quick Multimedia Widgets Svg REQUIRED)
     find_package(OpenCV REQUIRED)
 
     list(APPEND sources enhanced_engine.cpp)
@@ -54,7 +54,7 @@ else()
             qml/qml.qrc)
 endif()
 
-target_link_libraries(QSudoku PRIVATE Qt6::Qml Qt6::Quick Qt6::Core Qt6::Multimedia ${OpenCV_LIBS})
+target_link_libraries(QSudoku PRIVATE Qt6::Qml Qt6::Quick Qt6::Core Qt6::Multimedia Qt6::Widgets Qt6::Svg ${OpenCV_LIBS})
 
 # set compile options for the main executable
 target_compile_options( QSudoku PRIVATE ${CXX_FLAGS}
