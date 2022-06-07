@@ -41,6 +41,8 @@ if (ANDROID)
 
 else()
     message("DESKTOP BUILD")
+    add_definitions(-DQT_QML_DEBUG)
+
     find_package(Qt6 COMPONENTS Core Qml Quick Multimedia REQUIRED)
     find_package(OpenCV REQUIRED)
 

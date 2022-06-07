@@ -23,7 +23,7 @@ set(CXX_FLAGS_DEBUG)
 set(CXX_FLAGS_RELEASE)
 
 # append global compiler flags to list
-list(APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" "-Werror" "-fdeclspec")
+list(APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" "-Werror")
 
 
 # append compile flags depending on the selected compiler and build type
@@ -34,7 +34,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
 endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
-    list(APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" "-Qunused-arguments" "-fcolor-diagnostics")
+    list(APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" "-Qunused-arguments" "-fcolor-diagnostics" "-fdeclspec")
     list(APPEND CXX_FLAGS_DEBUG "-Wdocumentation")
     list(APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused")
 endif()
