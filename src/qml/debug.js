@@ -5,6 +5,7 @@ function listAll(item)
         console.log(p + ": " + item[p]);
     }
 }
+
 function listProperty(item)
 {
     for (var p in item)

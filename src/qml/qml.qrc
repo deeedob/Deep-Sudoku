@@ -2,6 +2,11 @@
     <qresource prefix="/">
         <file>MainWindow.qml</file>
         <file>main_hot_reload.qml</file>
-        <file>reload_window.qml</file>
+        <file>ReloadWindow.qml</file>
+        <file>Field.qml</file>
+        <file>debug.js</file>
+        <file>icons/images2.svg</file>
+        <file>icons/camera.svg</file>
+        <file>icons/switch-camera.svg</file>
     </qresource>
 </RCC>

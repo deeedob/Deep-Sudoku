@@ -6,7 +6,7 @@ Window {
     width: 1260
     height: 980
     visible: true
-    property string loaded: "reload_window.qml"
+    property string loaded: "ReloadWindow.qml"
     Shortcut{
         sequence: "Ctrl+R";
         onActivated: _loader.reload()
@@ -17,11 +17,11 @@ Window {
                 console.log("--- refresh ---");
                 source = "";
                 $QmlEngine.clearCache();
-                source = "reload_window.qml";
+                source = "ReloadWindow.qml";
             }
 
             anchors.fill: parent
-            source: "reload_window.qml"
+            source: "ReloadWindow.qml"
         }
 
 }
