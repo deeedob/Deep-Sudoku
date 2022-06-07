@@ -14,7 +14,7 @@ Currently only tested with **arm64-v8a** on archlinux with x86-64
     # add user to plugdev group
     usermod -a -G plugdev <user>
 ```
-When building in development mode on Desktop consider that these tools are required for QtMultimedia to work properly : 
+When building in development mode on Desktop consider that these tools are [required](https://doc.qt.io/qt-5/linux-requirements.html) for QtMultimedia to work properly : 
 ```shell
 # archlinux commands
   pacman -S gstreamer at-spi2-core gst-plugins-good gst-plugins-bad gst-plugins-ugly gst-libav
