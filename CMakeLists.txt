@@ -16,7 +16,6 @@ endif()
 option(OUTPUT_COMPILER_INFO
         "Output compiler information when launching the main executable." ON)
 
-
 # variables to store additional compiler flags
 set(CXX_FLAGS)
 set(CXX_FLAGS_DEBUG)
@@ -24,7 +23,6 @@ set(CXX_FLAGS_RELEASE)
 
 # append global compiler flags to list
 list(APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" "-Werror")
-
 
 # append compile flags depending on the selected compiler and build type
 if(CMAKE_CXX_COMPILER_ID MATCHES GNU)
@@ -40,6 +38,7 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
 endif()
 # output compiler flags
 include(CMakePrintHelpers)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} cmake)
 cmake_print_variables(CXX_FLAGS)
 cmake_print_variables(CXX_FLAGS_DEBUG)
 cmake_print_variables(CXX_FLAGS_RELEASE)
