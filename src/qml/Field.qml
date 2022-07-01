@@ -26,6 +26,8 @@ Item {
                 property alias input : input
                 border.width : 2
                 border.color : "#000000"
+                radius: 10
+
 
                 TextInput{
                     id : input

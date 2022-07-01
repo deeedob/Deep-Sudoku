@@ -38,7 +38,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES Clang)
     list(APPEND CXX_FLAGS_DEBUG "-Wdocumentation")
     list(APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused")
 endif()
-
 # output compiler flags
 include(CMakePrintHelpers)
 cmake_print_variables(CXX_FLAGS)

@@ -3,6 +3,7 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtMultimedia
 import "debug.js" as Debug
+import "global"
 
 Item {
     anchors.fill: parent
@@ -53,7 +54,7 @@ Item {
                             sourceSize.width: 50
                             sourceSize.height: 50
                             source: {
-                                "qrc:/icons/images2.svg"
+                                "qrc:/images/images2.svg"
                             }
                         }
                     }
@@ -67,7 +68,7 @@ Item {
                             sourceSize.width: 50
                             sourceSize.height: 50
                             source: {
-                                "qrc:/icons/camera.svg"
+                                "qrc:/images/camera.svg"
                             }
                         }
                     }
@@ -81,7 +82,7 @@ Item {
                             sourceSize.width: 50
                             sourceSize.height: 50
                             source: {
-                                "qrc:/icons/switch-camera.svg"
+                                "qrc:/images/switch-camera.svg"
                             }
                         }
                     }
@@ -89,35 +90,73 @@ Item {
 
             }
         }
-
+        /* Sudoku Page */
         Item {
-            id: secodPage
+            id: secondPage
             objectName: qsTr("Sudoku")
+            Rectangle {
+                anchors.fill: parent
+                color: Globals.color.background
+                Image {
+                    anchors.fill: parent
+                    source: "qrc:/images/game_background.png"
+                    opacity: 0.18
+                }
+                GridLayout {
+                    id: baseGrid
+                    rows: 3
+                    columns: 3
+                    columnSpacing: 10
+                    rowSpacing: 10
 
-            GridLayout {
-                id: baseGrid
-                rows: 3
-                columns: 3
-                columnSpacing: 10
-                rowSpacing: 10
-
-                width: parent.width
-                height: width
-                anchors.left: parent.left
-                anchors.right: parent.right
-                anchors.top: parent.top
-                anchors.topMargin: 25
-                anchors.leftMargin: 25
-                anchors.rightMargin: 25
-                Repeater {
-                    id: repeater
-                    model: 9
-                    Field {
-                        width: 213
-                        height: 213
+                    width: parent.width
+                    height: width
+                    anchors.top: parent.top
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.margins: 25
+                    Repeater {
+                        id: repeater
+                        model: 9
+                        Field {
+                            clip: true
+                        }
                     }
                 }
+                NumberInput {
+                    id: numbersIn
+                }
+
+                /*
+                GridLayout {
+                    id: buttonGrid
+                    rows: 4
+                    columns: 3
+                    columnSpacing: 10
+                    rowSpacing: 10
+                    width: parent.width
+                    height: parent.height / 5
+                    anchors.bottom: parent.bottom
+                    anchors.top: baseGrid.bottom
+                    anchors.margins: 25
+
+                    Repeater {
+                        id: btnRepeater
+                        model: 3*4
+                        Rectangle {
+                            Layout.fillHeight: true
+                            Layout.fillWidth: true
+                            color: "red"
+                            Text {
+                                anchors.centerIn: parent
+                                text: index
+                            }
+                        }
+                    }
+                }
+                    */
             }
+
         }
 
         Item {
@@ -160,6 +199,5 @@ Item {
             }
         }
         Component.onCompleted: captureSession.camera.start()
-
     }
 }

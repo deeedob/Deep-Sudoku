@@ -5,8 +5,8 @@ import QtMultimedia
 
 Window {
     id: root
-    width: 800
-    height: 600
+    width: 450
+    height: 800
     visible: true
 
     ReloadWindow {

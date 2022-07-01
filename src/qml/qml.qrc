@@ -4,9 +4,13 @@
         <file>main_hot_reload.qml</file>
         <file>ReloadWindow.qml</file>
         <file>Field.qml</file>
+        <file>NumberInput.qml</file>
         <file>debug.js</file>
-        <file>icons/images2.svg</file>
-        <file>icons/camera.svg</file>
-        <file>icons/switch-camera.svg</file>
+        <file>global/Globals.qml</file>
+        <file>global/qmldir</file>
+        <file>images/images2.svg</file>
+        <file>images/camera.svg</file>
+        <file>images/switch-camera.svg</file>
+        <file>images/game_background.png</file>
     </qresource>
 </RCC>
