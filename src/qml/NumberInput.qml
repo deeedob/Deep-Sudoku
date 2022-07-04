@@ -2,148 +2,118 @@ import QtQuick
 import QtQuick.Layouts
 
 Rectangle {
+    property int marginVal: 25
+    property int bottomMarginVal: 30
 
     anchors.top: baseGrid.bottom
     anchors.bottom: parent.bottom
     anchors.left: parent.left
     anchors.right: parent.right
-    anchors.margins: 25
-    anchors.bottomMargin: 30
-    color: "blue"
+    anchors.margins: marginVal
+    anchors.bottomMargin: bottomMarginVal
+    color: "#00000000"
+
     GridLayout {
-        id: root
+        id: grid
+        anchors.fill: parent
+        columns: 6
         rows: 4
-        columns: 3
+
         columnSpacing: 10
         rowSpacing: 10
-        //width: parent.width
-        //height: parent.height / 5
-        anchors.fill: parent
-        Layout.alignment: Qt.AlignBottom
+
+        property double colMulti : (grid.width - marginVal) / grid.columns
+        property double rowMulti : (grid.height - bottomMarginVal) / grid.rows
+        function prefWidth(item){
+            return colMulti * item.Layout.columnSpan
+        }
+        function prefHeight(item){
+            var val = rowMulti * item.Layout.rowSpan
+            if( val <= 35)
+                return 35;
+            return val
+        }
 
 
         /* top row */
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "red"
-            Text {
-                text: qsTr("7")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("7")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "green"
-            Text {
-                text: qsTr("8")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("8")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "red"
-            Text {
-                text: qsTr("9")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("9")
         }
 
         /* second row */
-        Rectangle {
-            Layout.fillWidth: true
-            color: "red"
-            Layout.preferredHeight: 40
-            Text {
-                text: qsTr("4")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("4")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "green"
-            Text {
-                text: qsTr("5")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("5")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "red"
-            Text {
-                text: qsTr("6")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("6")
         }
 
         /* third row */
-        Rectangle {
-            Layout.fillWidth: true
-            color: "red"
-            Layout.preferredHeight: 40
-            Text {
-                text: qsTr("1")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("1")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "green"
-            Text {
-                text: qsTr("2")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("2")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "red"
-            Text {
-                text: qsTr("3")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 2
+            Layout.preferredWidth: grid.prefWidth(this)
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("3")
         }
 
         /* fourth row */
-        Rectangle {
-            Layout.fillWidth: true
-            color: "red"
-            Layout.preferredHeight: 40
-            Text {
-                text: qsTr("SOLVE")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 3
+            Layout.preferredWidth: grid.prefWidth(this) + marginVal/4
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("SOLVE")
         }
 
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "green"
-            Text {
-                text: qsTr("0")
-                anchors.centerIn: parent
-            }
-        }
-
-        Rectangle {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 40
-            color: "red"
-            Text {
-                text: qsTr("DELETE")
-                anchors.centerIn: parent
-            }
+        DSButton {
+            Layout.columnSpan: 3
+            Layout.preferredWidth: grid.prefWidth(this) + marginVal/4
+            Layout.preferredHeight: grid.prefHeight(this)
+            text: qsTr("DELETE")
         }
 
     }

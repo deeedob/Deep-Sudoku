@@ -15,7 +15,7 @@ Item {
         columnSpacing: 2
         anchors.fill: parent
         Repeater{
-            id : repeater1
+            id : repeater
             model : 9
 
             Rectangle{
@@ -24,9 +24,9 @@ Item {
                 Layout.fillWidth: true
                 color : mouseArea.containsMouse ? "red" : "white"
                 property alias input : input
-                border.width : 2
-                border.color : "#000000"
-                radius: 10
+                //border.width : 2
+                border.color : "#00000000"
+                //radius: 10
 
 
                 TextInput{

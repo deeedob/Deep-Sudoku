@@ -5,8 +5,14 @@ set(CMAKE_AUTORCC ON)
 
 set(sources
         main.cpp
+        game_control_proxy.cpp
+        board_model.cpp
+        cell_data.cpp
         )
 set(headers
+        game_control_proxy.hpp
+        board_model.hpp
+        cell_data.hpp
         )
 
 #setup the opencv build

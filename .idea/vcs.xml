@@ -5,7 +5,10 @@
     <mapping directory="$PROJECT_DIR$/3rdparty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ThirdParty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/qt-android-cmake" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/FunctionalPlus" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/eigen" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/frugally-deep" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/json" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/opencv" vcs="Git" />
   </component>
