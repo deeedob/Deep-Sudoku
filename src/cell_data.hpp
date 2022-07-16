@@ -1,39 +1,38 @@
 #pragma once
 #include <QObject>
 
+#define EMPTY_CELL -1
+
 class CellData : public QObject
 {
     Q_OBJECT
-    //! Value of cell
-    Q_PROPERTY(int value READ value WRITE setValue NOTIFY valueChanged)
-    //! Status of cell.
-    Q_PROPERTY(QString status READ status NOTIFY statusChanged)
-    //! If value of cell is in conflict with another cell.
-    Q_PROPERTY(bool conflict READ conflict WRITE setConflict NOTIFY conflictChanged)
-    //! If cell is editable
-    Q_PROPERTY(bool editable READ editable WRITE setEditable NOTIFY editableChanged)
-public:
-    CellData(QObject *parent = nullptr);
-    CellData(int value, QObject *parent = nullptr);
+    Q_PROPERTY(int value READ getValue WRITE setValue NOTIFY valueChanged)
+    Q_PROPERTY(bool editable READ getEditable WRITE setEditable NOTIFY editableChanged)
+    Q_PROPERTY(bool conflict READ getConflict WRITE setConflict NOTIFY conflictChanged)
+    Q_PROPERTY(QString status READ getStatus WRITE setStatus NOTIFY statusChanged)
 
-    int value() const;
-    void setValue(int value);
-    QString status() const;
-    void setStatus(const QString &status);
-    bool conflict() const;
-    void setConflict(bool b);
-    bool editable() const;
-    void setEditable(bool b);
+public:
+    CellData(QObject* parent = nullptr);
+    CellData(int value, QObject* parent = nullptr);
+
+    int getValue() const;
+    void setValue( int mValue );
+    bool getEditable() const;
+    void setEditable( bool mEditable );
+    bool getConflict() const;
+    void setConflict( bool mConflict );
+    const QString &getStatus() const;
+    void setStatus( const QString &mStatus );
 
 signals:
     void valueChanged();
-    void statusChanged();
-    void conflictChanged();
     void editableChanged();
+    void conflictChanged();
+    void statusChanged();
 
 private:
     int m_value;
-    bool m_inConflict;
-    bool m_isEditable;
+    bool m_editable;
+    bool m_conflict;
     QString m_status;
 };

@@ -6,9 +6,11 @@
         <file>Field.qml</file>
         <file>NumberInput.qml</file>
         <file>debug.js</file>
+        <file>Board.qml</file>
         <file>global/Globals.qml</file>
         <file>global/qmldir</file>
         <file>DSButton.qml</file>
+
         <file>images/images2.svg</file>
         <file>images/camera.svg</file>
         <file>images/switch-camera.svg</file>

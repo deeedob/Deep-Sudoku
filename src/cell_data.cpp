@@ -1,55 +1,48 @@
 #include "cell_data.hpp"
 
-bool operator ==(const CellData &lhs, const CellData &rhs) {
-    return lhs.value() == rhs.value();
-}
-
-bool operator ==(const CellData &lhs, int value) {
-    return lhs.value() == value;
-}
-
 CellData::CellData( QObject *parent )
-    : CellData(-1, parent)
+    : CellData(EMPTY_CELL, parent)
 { }
 
 CellData::CellData( int value, QObject *parent )
-    : QObject(parent), m_value(value), m_inConflict(false)
-    , m_isEditable(false), m_status("none")
+    : QObject(parent), m_value(value), m_editable(true), m_conflict(false)
 { }
 
-int CellData::value() const {
+int CellData::getValue() const {
     return m_value;
 }
 
-void CellData::setValue( int value ) {
-    if((value < 1 || value > 9) && value != -1)
+void CellData::setValue( int mValue ) {
+    if( mValue < 0 || mValue > 9)
         return;
-    m_value = value;
+    m_value = mValue;
     emit valueChanged();
 }
 
-QString CellData::status() const {
-    return m_status;
+bool CellData::getEditable() const {
+    return m_editable;
 }
 
-void CellData::setStatus( const QString &status ) {
-    m_status = status;
+void CellData::setEditable( bool mEditable ) {
+    m_editable = mEditable;
+    emit editableChanged();
 }
 
-bool CellData::conflict() const {
-    return m_inConflict;
+bool CellData::getConflict() const {
+    return m_conflict;
 }
 
-void CellData::setConflict( bool b ) {
-    m_inConflict = b;
+void CellData::setConflict( bool mConflict ) {
+    m_conflict = mConflict;
     emit conflictChanged();
 }
 
-bool CellData::editable() const {
-    return m_isEditable;
+const QString &CellData::getStatus() const {
+    return m_status;
 }
 
-void CellData::setEditable( bool b ) {
-    m_isEditable = b;
-    emit editableChanged();
+void CellData::setStatus( const QString &mStatus ) {
+    m_status = mStatus;
+    emit statusChanged();
 }
+

@@ -1,74 +1,86 @@
-
 #include "board_model.hpp"
 
-SudokuBoardModel::SudokuBoardModel( QObject *parent )
-        : QAbstractTableModel(parent)
-{ }
 
-int SudokuBoardModel::rowCount( const QModelIndex &parent ) const {
-    Q_UNUSED(parent)
-    return 9;
+BoardModel::BoardModel(u_int16_t width, u_int16_t height, QObject *parent )
+    : QAbstractListModel(parent), m_width(width), m_height(height)
+{
 }
 
-int SudokuBoardModel::columnCount( const QModelIndex &parent ) const {
+int BoardModel::rowCount( const QModelIndex &parent ) const {
     Q_UNUSED(parent)
-    return 9;
+    return m_width*m_height;
 }
 
-QVariant SudokuBoardModel::data( const QModelIndex &index, int role ) const {
-    if( index.row() < 0 || index.row() > 8 || index.column() < 0 || index.row() > 8)
-        return QVariant();
+QVariant BoardModel::data( const QModelIndex &index, int role ) const {
+    if(!index.isValid() || index.model() != this)
+        return {};
 
-    if( role == ValueRole || role == Qt::DisplayRole)
-        return m_dataGrid[index.row()][index.column()].value();
+    auto quad = getQuadraticValue(index.row());
+    if( role == ValueRole )
+        return m_data[quad.first][quad.second].getValue();
     else if( role == StatusRole )
-        return m_dataGrid[index.row()][index.column()].status();
+        return m_data[quad.first][quad.second].getStatus();
     else if( role == ConflictRole )
-        return m_dataGrid[index.row()][index.column()].conflict();
+        return m_data[quad.first][quad.second].getConflict();
     else if( role == EditableRole )
-        return m_dataGrid[index.row()][index.column()].editable();
+        return m_data[quad.first][quad.second].getEditable();
 
-    return QVariant();
+    return {};
 }
 
-bool SudokuBoardModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
-    if( index.row() < 0 || index.row() > 8 || index.column() < 0 || index.row() > 8)
+/* TODO: other roles? */
+bool BoardModel::setData( const QModelIndex &index, const QVariant &value, int role ) {
+
+    if(index.row() < 0 || index.row() > m_width*m_height)
         return false;
 
-    QModelIndex topLeft = index;
-    QModelIndex bottomRight = index;
-    QVector<int> roles;
-    if( role == ValueRole || role == Qt::DisplayRole || role == Qt::EditRole ) {
+    auto quad = getQuadraticValue(index.row());
+    if( role == ValueRole )
+        m_data[quad.first][quad.second].setValue(value.toInt());
+    else if( role == StatusRole ) {
+        const auto status = value.toString();
+        if( status == "selected" ) {
+            setSelectionStatus(index);
+        }
+    }
+    else if( role == ConflictRole )
+        return m_data[quad.first][quad.second].getConflict();
+    else if( role == EditableRole )
+        return m_data[quad.first][quad.second].getEditable();
 
+    emit dataChanged(index, index, QVector<int>() << role );
+    return true;
+}
+
+QHash<int, QByteArray> BoardModel::roleNames() const {
+    static QHash<int, QByteArray> roles;
+    roles[ValueRole] = "value";
+    roles[StatusRole] = "status";
+    roles[ConflictRole] = "conflict";
+    roles[EditableRole] = "editable";
+    return roles;
+}
+
+Qt::ItemFlags BoardModel::flags( const QModelIndex &index ) const {
+    Q_UNUSED(index);
+    return Qt::ItemIsSelectable|Qt::ItemIsEnabled;
+}
+
+std::pair<u_int16_t, u_int16_t> BoardModel::getQuadraticValue( int position ) const {
+    int w = (position % m_width);
+    int h = (position / m_width);
+    return { h, w };
+}
+
+void BoardModel::setSelectionStatus( const QModelIndex &index ) {
+    auto quad = getQuadraticValue(index.row());
+    m_data[quad.first][quad.second].setStatus("selected");
+
+    for( int width = 0; width < m_width; width++ ) {
+        m_data[quad.first][width].setStatus("same_row");
+    }
+    for( int height = 0; height < m_height; height++ ) {
+        m_data[height][quad.second].setStatus("same_column");
     }
 }
 
-Qt::ItemFlags
-SudokuBoardModel::flags( const QModelIndex &index ) const {
-    return QAbstractTableModel::flags(index);
-}
-
-QHash<int, QByteArray> SudokuBoardModel::roleNames() const {
-    return QAbstractItemModel::roleNames();
-}
-
-void SudokuBoardModel::clear() {
-
-}
-
-void SudokuBoardModel::setCellEditable( int row, int col ) {
-
-}
-
-void SudokuBoardModel::makeAllCellsUneditable( int row, int column,
-                                               int value ) {
-
-}
-
-bool SudokuBoardModel::setData( int row, int column, int value ) {
-    return false;
-}
-
-bool SudokuBoardModel::updateConflicts() {
-    return false;
-}

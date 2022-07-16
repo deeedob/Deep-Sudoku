@@ -10,7 +10,7 @@ endfunction()
 build_external_project(
         FunctionalPlus
         ${THIRD_PARTY_DIR}/FunctionalPlus
-        -DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/functionalPlus)
+        -DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus)
 
 build_external_project(
         Eigen
@@ -24,7 +24,7 @@ build_external_project(
 
 find_package(
         FunctionalPlus
-        HINTS ${THIRD_PARTY_INSTALL_DIR}/functionalPlus
+        HINTS ${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus
         NO_DEFAULT_PATH
         REQUIRED
 )

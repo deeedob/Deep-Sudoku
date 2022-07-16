@@ -2,16 +2,16 @@ import QtQuick
 import QtQuick.Layouts
 
 Rectangle {
+    id: root
     property int marginVal: 25
     property int bottomMarginVal: 30
-
-    anchors.top: baseGrid.bottom
-    anchors.bottom: parent.bottom
-    anchors.left: parent.left
-    anchors.right: parent.right
     anchors.margins: marginVal
     anchors.bottomMargin: bottomMarginVal
     color: "#00000000"
+
+    signal buttonClicked(int value)
+    signal clearClicked
+    signal solveClicked
 
     GridLayout {
         id: grid
@@ -41,6 +41,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("7")
+            onClicked: {
+                root.buttonClicked(7)
+            }
         }
 
         DSButton {
@@ -48,6 +51,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("8")
+            onClicked: {
+                root.buttonClicked(8)
+            }
         }
 
         DSButton {
@@ -55,6 +61,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("9")
+            onClicked: {
+                root.buttonClicked(9)
+            }
         }
 
         /* second row */
@@ -63,6 +72,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("4")
+            onClicked: {
+                root.buttonClicked(4)
+            }
         }
 
         DSButton {
@@ -70,6 +82,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("5")
+            onClicked: {
+                root.buttonClicked(5)
+            }
         }
 
         DSButton {
@@ -77,6 +92,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("6")
+            onClicked: {
+                root.buttonClicked(6)
+            }
         }
 
         /* third row */
@@ -85,6 +103,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("1")
+            onClicked: {
+                root.buttonClicked(1)
+            }
         }
 
         DSButton {
@@ -92,6 +113,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("2")
+            onClicked: {
+                root.buttonClicked(2)
+            }
         }
 
         DSButton {
@@ -99,6 +123,9 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this)
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("3")
+            onClicked: {
+                root.buttonClicked(3)
+            }
         }
 
         /* fourth row */
@@ -107,13 +134,19 @@ Rectangle {
             Layout.preferredWidth: grid.prefWidth(this) + marginVal/4
             Layout.preferredHeight: grid.prefHeight(this)
             text: qsTr("SOLVE")
+            onClicked: {
+                root.solveClicked()
+            }
         }
 
         DSButton {
             Layout.columnSpan: 3
             Layout.preferredWidth: grid.prefWidth(this) + marginVal/4
             Layout.preferredHeight: grid.prefHeight(this)
-            text: qsTr("DELETE")
+            text: qsTr("CLEAR")
+            onClicked: {
+                root.clearClicked()
+            }
         }
 
     }

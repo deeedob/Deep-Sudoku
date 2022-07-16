@@ -1,11 +1,10 @@
 #pragma once
-#include <QAbstractTableModel>
+#include <QAbstractListModel>
 #include "cell_data.hpp"
 
-class SudokuBoardModel : public QAbstractTableModel
+class BoardModel : public QAbstractListModel
 {
-    Q_OBJECT
-    using grid = std::array<std::array<CellData, 9>, 9>;
+    using grid = std::array<std::array<CellData,9>,9>;
 public:
     enum CellRoles {
         ValueRole = Qt::UserRole +1,
@@ -14,24 +13,21 @@ public:
         EditableRole
     };
 
-    SudokuBoardModel(QObject *parent = 0);
+    BoardModel(u_int16_t width, u_int16_t height, QObject* parent = nullptr);
 
     int rowCount( const QModelIndex &parent ) const override;
-    int columnCount( const QModelIndex &parent ) const override;
     QVariant data( const QModelIndex &index, int role ) const override;
     bool setData( const QModelIndex &index, const QVariant &value, int role ) override;
-    Qt::ItemFlags flags( const QModelIndex &index ) const override;
     QHash<int, QByteArray> roleNames() const override;
-
-    void clear();
-    void setCellEditable(int row, int col);
-    void makeAllCellsUneditable(int row, int column, int value);
-
-protected:
-    bool setData(int row, int column, int value);
-private:
-    bool updateConflicts();
+    Qt::ItemFlags flags( const QModelIndex &index ) const override;
 
 private:
-    grid m_dataGrid;
+    void setSelectionStatus( const QModelIndex& index );
+    std::pair<u_int16_t, u_int16_t> getQuadraticValue( int position) const;
+
+
+private:
+    u_int16_t m_width;
+    u_int16_t m_height;
+    grid m_data;
 };

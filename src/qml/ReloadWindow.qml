@@ -14,6 +14,7 @@ Item {
         currentIndex: 1
 
         Item {
+
             id: cameraUI
 
             Rectangle {
@@ -58,7 +59,6 @@ Item {
                         anchors.fill: parent
                         layoutDirection: Qt.LeftToRight
                         spacing: 10
-                        /* TODO: put into seperate module */
                         Rectangle {
                                 Layout.fillWidth: true
                                 Layout.fillHeight: true
@@ -114,74 +114,7 @@ Item {
         Item {
             id: secondPage
             objectName: qsTr("Sudoku")
-            Rectangle {
-                anchors.fill: parent
-                color: Globals.color.background
-                Image {
-                    anchors.fill: parent
-                    source: "qrc:/images/game_background.png"
-                    opacity: 0.18
-                }
-                Rectangle {
-                    anchors.fill: baseGrid
-                    color: Globals.color.gridSpace
-                }
-
-                GridLayout {
-                    id: baseGrid
-                    rows: 3
-                    columns: 3
-                    //columnSpacing: 10
-                    //rowSpacing: 10
-
-                    width: parent.width
-                    height: width
-                    anchors.top: parent.top
-                    anchors.left: parent.left
-                    anchors.right: parent.right
-                    anchors.margins: 25
-                    Repeater {
-                        id: repeater
-                        model: 9
-                        Field {
-                            clip: true
-                        }
-                    }
-                }
-                NumberInput {
-                    id: numbersIn
-                }
-
-                /*
-                GridLayout {
-                    id: buttonGrid
-                    rows: 4
-                    columns: 3
-                    columnSpacing: 10
-                    rowSpacing: 10
-                    width: parent.width
-                    height: parent.height / 5
-                    anchors.bottom: parent.bottom
-                    anchors.top: baseGrid.bottom
-                    anchors.margins: 25
-
-                    Repeater {
-                        id: btnRepeater
-                        model: 3*4
-                        Rectangle {
-                            Layout.fillHeight: true
-                            Layout.fillWidth: true
-                            color: "red"
-                            Text {
-                                anchors.centerIn: parent
-                                text: index
-                            }
-                        }
-                    }
-                }
-                    */
-            }
-
+            Board {}
         }
 
         Item {
