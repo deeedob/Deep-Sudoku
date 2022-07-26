@@ -13,7 +13,7 @@ int CellData::getValue() const {
 }
 
 void CellData::setValue( int mValue ) {
-    if( mValue < 0 || mValue > 9)
+    if( mValue < -1 || mValue > 9)
         return;
     m_value = mValue;
     emit valueChanged();

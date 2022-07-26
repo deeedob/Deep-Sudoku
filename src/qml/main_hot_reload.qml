@@ -2,7 +2,7 @@ import QtQuick.Window 2.3
 import QtQuick 2.9
 
 Window {
-    id: root
+    id: main
     width: 1260
     height: 980
     visible: true
@@ -12,16 +12,15 @@ Window {
         onActivated: _loader.reload()
     }
     Loader {
-            id: _loader
-            function reload() {
-                console.log("--- refresh ---");
-                source = "";
-                $QmlEngine.clearCache();
-                source = "ReloadWindow.qml";
-            }
-
-            anchors.fill: parent
-            source: "ReloadWindow.qml"
+        id: _loader
+        function reload() {
+            console.log("--- refresh ---");
+            source = "";
+            $QmlEngine.clearCache();
+            source = "ReloadWindow.qml";
         }
 
+        anchors.fill: parent
+        source: "ReloadWindow.qml"
+    }
 }

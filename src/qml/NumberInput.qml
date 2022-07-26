@@ -10,8 +10,8 @@ Rectangle {
     color: "#00000000"
 
     signal buttonClicked(int value)
-    signal clearClicked
-    signal solveClicked
+    signal clearClicked()
+    signal solveClicked()
 
     GridLayout {
         id: grid

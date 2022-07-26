@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     //std::cout << fdeep::show_tensors(result) << std::endl;
 
     EnhancedEngine engine;
-    path.append("src/qml/MainWindow.qml");
+    path.append("src/qml/main_hot_reload.qml");
     //path.append("src/qml/main_hot_reload.qml");
     QUrl url(path.c_str());
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

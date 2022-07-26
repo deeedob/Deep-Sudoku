@@ -5,7 +5,6 @@ Button {
     id: button
     text: "DS Button"
     font.bold: true
-    signal clicked
 
     property color col_basic: "#F9C74F"
     property color col_hover: "#ECA809"
@@ -26,14 +25,11 @@ Button {
         color: getColor()
         border.color: "#624604"
         border.width: 2
-        radius: 10
+        radius: 7
         MouseArea {
             id: mouseArea
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: {
-                button.clicked
-            }
         }
     }
 }

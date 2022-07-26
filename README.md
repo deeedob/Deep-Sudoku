@@ -1,5 +1,6 @@
 # QT-DeepSudoku
 
+K0572060321
 ## Prerequisite
 Currently only tested with **arm64-v8a** on archlinux with x86-64
 
