@@ -1,9 +1,9 @@
 import QtQuick
 import "global"
+import "custom"
 
 Rectangle {
     id: root
-    anchors.fill: parent
     color: Globals.color.background
     property real btn_width: width/1.5
     property real btn_height: 60

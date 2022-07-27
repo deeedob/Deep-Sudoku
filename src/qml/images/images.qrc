@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>images2.svg</file>
+        <file>prevfile.svg</file>
+        <file>camera.svg</file>
+        <file>switch-camera.svg</file>
+        <file>game_background.png</file>
+        <file>save_game.svg</file>
+    </qresource>
+</RCC>

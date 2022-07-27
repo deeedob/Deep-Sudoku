@@ -71,7 +71,10 @@ else()
     qt_add_executable(QSudoku
             ${sources}
             ${headers}
-            qml/qml.qrc)
+            qml/qml.qrc
+            qml/custom/custom.qrc
+            qml/images/images.qrc
+                      )
 endif()
 
 target_link_libraries(QSudoku

@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import "global"
+import "custom"
 
 Rectangle {
     id: root
@@ -54,6 +55,12 @@ Rectangle {
             return valString;
     }
 
+    function getMaxGridSize() {
+        if(Window.width > Window.height / 1.5)
+            return (Window.height / 1.5) - 50
+        return Window.width - 50
+    }
+
     Rectangle {
         id: timeCont
         anchors.top: parent.top
@@ -84,12 +91,13 @@ Rectangle {
         id: grid
         rows: 9
         columns: 9
-        width: parent.top
+        width: getMaxGridSize()
         height: width
         anchors.top: timeCont.bottom
-        anchors.left: parent.left
-        anchors.right: parent.right
-        anchors.margins: 25
+        anchors.horizontalCenter: parent.horizontalCenter
+        //anchors.left: parent.left
+        //anchors.right: parent.right
+        //anchors.margins: 25
         Repeater {
             model: Logic.model
             Rectangle {
@@ -135,20 +143,34 @@ Rectangle {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.right: parent.right
-        Row {
-            anchors.fill: parent
+
+        Flow {
+            spacing: 20
+            function mar() {
+                var elementsWidth = (children.length * children[0].width + spacing) / 2
+                return (parent.width / 2) - elementsWidth
+            }
+            anchors {
+                fill: parent
+                leftMargin: mar()
+                rightMargin: mar()
+            }
+
+
             IconButton {
-                anchors.centerIn: parent
+                id: btnReturn
+                width: parent.height
+                hoverColor: Globals.color.hoverIcon
                 onClicked: stackView.replace("StartScreen.qml")
             }
 
             IconButton {
-                source: "qrc:/images/save_game.svg"
-                onClicked: stackView.replace("StartScreen.qml")
+                id: btnSave
+                width: parent.height
+                hoverColor: Globals.color.hoverIcon
+                source: "qrc:/save_game.svg"
             }
         }
-
-
 
     }
 

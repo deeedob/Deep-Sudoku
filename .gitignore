@@ -1,5 +1,5 @@
-/cmake-build-debug/
-/cmake-build-arm/
-/cmake-build-desktop/
+/cmake-build-*/
+/build*
 /docs/html/
 /docs/latex/
+/CMakeLists.txt.user

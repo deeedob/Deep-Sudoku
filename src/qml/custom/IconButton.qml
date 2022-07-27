@@ -3,14 +3,14 @@ import QtQuick
 Rectangle {
     id: root
     property alias source: img.source
-    property color hoverColor: "#ff0000ff"
+    property color hoverColor: "red"
     property int hoverRadius: 10
-    signal clicked(var mouse)
+    signal clicked()
 
     width: 50
-    height: 50
+    height: width
     radius: 7
-    color: mouseArea.containsMouse ? hoverCol : "#00000000"
+    color: mouseArea.containsMouse ? hoverColor : "#00000000"
     Image {
         id: img
         anchors.centerIn: parent
@@ -18,12 +18,12 @@ Rectangle {
             width: parent.width - hoverRadius
             height: parent.height - hoverRadius
         }
-        source: "qrc:/images/prevfile.svg"
+        source: "qrc:/prevfile.svg"
     }
     MouseArea {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
-        onClicked: root.clicked(mouse)
+        onClicked: root.clicked()
     }
 }
