@@ -30,7 +30,10 @@ Rectangle {
 
             videoOutput: output
 
+            Component.onCompleted: mediaHelper.session = captureSession
+
         }
+
 
         VideoOutput {
             id: output
@@ -39,6 +42,7 @@ Rectangle {
             anchors.topMargin: 50
             anchors.leftMargin: 50
             anchors.rightMargin: 50
+            focus: visible
         }
 
         Image {
@@ -88,7 +92,9 @@ Rectangle {
                 width: parent.height
                 hoverRadius: 25
                 hoverColor: Globals.color.hoverIcon
-                onClicked: imageCapture.capture()
+                onClicked: {
+                    imageCapture.capture()
+                }
                 source: "qrc:/camera.svg"
             }
 
