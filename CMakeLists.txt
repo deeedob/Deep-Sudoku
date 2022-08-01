@@ -5,9 +5,9 @@ set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 
 if( CMAKE_CXX_COMPILER_LOADED )
-    message( STATUS "Compiler path: ${CMAKE_CXX_COMPILER}" )
-    message( STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}" )
-    message( STATUS "Compiler version:
+	message( STATUS "Compiler path: ${CMAKE_CXX_COMPILER}" )
+	message( STATUS "Compiler ID: ${CMAKE_CXX_COMPILER_ID}" )
+	message( STATUS "Compiler version:
              ${CMAKE_CXX_COMPILER_VERSION}" )
 endif()
 
@@ -21,19 +21,19 @@ set( CXX_FLAGS_DEBUG )
 set( CXX_FLAGS_RELEASE )
 
 # append global compiler flags to list
-list( APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" "-Werror" )
+list( APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" )
 
 # append compile flags depending on the selected compiler and build type
 if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
-    list( APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" )
-    list( APPEND CXX_FLAGS_DEBUG "-Wsuggest-final-types" "-Wsuggest-final-methods" "-Wsuggest-override" )
-    list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
+	list( APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" )
+	list( APPEND CXX_FLAGS_DEBUG "-Wsuggest-final-types" "-Wsuggest-final-methods" "-Wsuggest-override" )
+	list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
 endif()
 
 if( CMAKE_CXX_COMPILER_ID MATCHES Clang )
-    list( APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" "-Qunused-arguments" "-fcolor-diagnostics" "-fdeclspec" )
-    list( APPEND CXX_FLAGS_DEBUG "-Wdocumentation" )
-    list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
+	list( APPEND CXX_FLAGS "-frtti" "-fno-exceptions" "-fcolor-diagnostics" "-fdeclspec" )
+	list( APPEND CXX_FLAGS_DEBUG "-Wdocumentation" "-Wno-unused" )
+	list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
 endif()
 # output compiler flags
 include( CMakePrintHelpers )

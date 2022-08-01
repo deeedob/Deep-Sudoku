@@ -2,7 +2,7 @@
 #include <iostream>
 
 MediaCapture::MediaCapture( QObject* parent )
-	: QObject( parent ) {
+	: QObject( parent ) , m_session( nullptr ) {
 	
 }
 
@@ -10,7 +10,8 @@ void MediaCapture::setSession( QMediaCaptureSession* session ) {
 	if( session == m_session || session == nullptr )
 		return;
 	m_session = session;
-	m_session->imageCapture()->setFileFormat( QImageCapture::PNG );
+	/* will result in Format_RGB32 */
+	m_session->imageCapture()->setFileFormat( QImageCapture::JPEG );
 	connect( m_session->imageCapture() , &QImageCapture::imageCaptured , this , &MediaCapture::handleImageCaptured );
 }
 

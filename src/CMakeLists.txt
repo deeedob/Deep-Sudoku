@@ -17,14 +17,17 @@ set( sources
      board_model.cpp
      cell_data.cpp
      media_capture.cpp
-     #camera_helper.cpp
+     cv_segmentation.cpp
+     cv_img_mat.cpp
+
      )
 set( headers
      app.hpp
      board_model.hpp
      cell_data.hpp
      media_capture.hpp
-     #camera_helper.hpp
+     cv_segmentation.hpp
+     cv_img_mat.hpp
      )
 set( resources
      qml/qml.qrc
