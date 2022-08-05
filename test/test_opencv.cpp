@@ -11,6 +11,7 @@ int main() {
 	img = img.transformed( transform.rotate( 90 ));
 	CVSegmentation seg( img );
 	seg.prepareImage( 41 , true , true );
+	seg.prepareContour();
 	
 	cv::namedWindow( "test_opencv" , cv::WINDOW_KEEPRATIO );
 	cv::Mat resizedImg;
@@ -21,13 +22,15 @@ int main() {
 	auto approx = seg.getContour();
 	cv::Mat drawing;
 	cv::cvtColor( seg.getMat() , drawing , cv::COLOR_GRAY2RGB );
-	cv::Scalar color = cv::Scalar( std::rand() % 255 , std::rand() % 255 , std::rand() % 255 );
-	drawContours( drawing , std::vector< std::vector< cv::Point > >( 1 , approx ) , -1 , color , 5 , cv::LINE_8 );
+	drawContours( drawing , std::vector< std::vector< cv::Point > >( 1 , approx ) , -1 , cv::Scalar( 255 , 0 , 0 ) , 10 , cv::LINE_8 );
 	cv::resize( drawing , resizedImg2 , cv::Size( 700 , 700 ) , 0 , 0 , cv::INTER_CUBIC );
 	cv::namedWindow( "contours" , cv::WINDOW_KEEPRATIO );
 	cv::imshow( "contours" , resizedImg2 );
 	
-	//seg.addPadding( seg.getContour());
+	cv::Mat resizedImg3;
+	cv::resize( seg.warpSelection() , resizedImg3 , cv::Size( 700 , 700 ) , 0 , 0 , cv::INTER_CUBIC );
+	cv::namedWindow( "warped" , cv::WINDOW_KEEPRATIO );
+	cv::imshow( "warped" , resizedImg3 );
 	
 	while( true ) {
 		auto key = cv::waitKey( 0 ) & 0xff;

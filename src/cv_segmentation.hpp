@@ -8,12 +8,14 @@ class CVSegmentation
 public:
 	explicit CVSegmentation( const QImage& img );
 	void prepareImage( int gaussValue = 41 , bool dilating = true , bool eroding = true );
-	std::vector< cv::Point > getContour();
-	cv::Mat addPadding( const cv::Mat& approx );
+	void prepareContour();
+	cv::Mat warpSelection();
 	[[nodiscard]] const cv::Mat& getMat() const;
 	void setMat( const cv::Mat& mat );
-
+	[[nodiscard]] const std::vector< cv::Point >& getContour() const;
+	void setContour( const std::vector< cv::Point >& contour );
 private:
-private:
-	cv::Mat m_mat;
+	cv::Mat m_original;
+	cv::Mat m_orig;
+	std::vector< cv::Point > m_contour;
 };
