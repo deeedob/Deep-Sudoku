@@ -1,4 +1,3 @@
-#include "cv_img_mat.hpp"
 /****************************************************************************
 ** Copyright (c) 2012-2015 Debao Zhang <hello@debao.me>
 ** All right reserved.
@@ -27,6 +26,7 @@
 #include <QSysInfo>
 #include <QDebug>
 #include "opencv2/imgproc/imgproc.hpp"
+#include "cv_img_mat.hpp"
 
 namespace qt_ocv
 {
@@ -337,7 +337,9 @@ namespace qt_ocv
 #endif
 			default: return cv::Mat();
 		}
-		return { img.height() , img.width() , CV_8UC( img.depth() / 8 ) , ( uchar* ) img.bits() , img.bytesPerLine() };
+		return { img.height() , img.width() , CV_8UC( img.depth() / 8 ) , ( uchar* ) img.bits() , static_cast<size_t>(img
+			.bytesPerLine())
+		};
 	}
 
 /* Convert  cv::Mat to QImage without data copy

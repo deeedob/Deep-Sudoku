@@ -14,6 +14,14 @@ endif()
 # option for outputting compiler information at runtime
 option( OUTPUT_COMPILER_INFO
         "Output compiler information when launching the main executable." ON )
+option( BUILD_TEST
+        "Build Unit Tests"
+        ON
+        )
+option( BUILD_APP_TEST
+        "Build Standalone application Tests"
+        ON
+        )
 
 # variables to store additional compiler flags
 set( CXX_FLAGS )
@@ -43,3 +51,8 @@ cmake_print_variables( CXX_FLAGS_DEBUG )
 cmake_print_variables( CXX_FLAGS_RELEASE )
 
 add_subdirectory( src )
+
+if( BUILD_APP_TEST AND NOT ANDROID )
+	message( "BUILDING TESTS" )
+	add_subdirectory( test )
+endif()

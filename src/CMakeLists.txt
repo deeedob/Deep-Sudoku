@@ -98,6 +98,8 @@ else()
 	                   ${headers}
 	                   ${resources}
 	                   )
+	
+	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
 # Linking all libraries
