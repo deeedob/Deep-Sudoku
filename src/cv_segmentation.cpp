@@ -4,6 +4,12 @@ CVSegmentation::CVSegmentation( const QImage& img ) {
 	m_orig = qt_ocv::image2Mat( img , CV_8UC( 4 ) , qt_ocv::MCO_BGRA );
 }
 
+cv::Mat CVSegmentation::cuttedImage() {
+	prepareImage();
+	prepareContour();
+	return warpSelection();
+}
+
 void CVSegmentation::prepareImage( int gaussValue , bool dilating , bool eroding ) {
 	auto ones = []( int width , int height ) {
 		return cv::Mat::ones( cv::Size( width , height ) , CV_8U );
@@ -62,7 +68,7 @@ void CVSegmentation::prepareContour() {
 	 *      1 3             1 2
 	 * */
 	std::swap( approx[ 2 ] , approx[ 3 ] );
-	auto padding = static_cast<int>(( approx[ 1 ].y - approx[ 0 ].y ) * 0.03);
+	auto padding = static_cast<int>(( approx[ 1 ].y - approx[ 0 ].y ) * m_padding);
 	/* add some padding */
 	approx[ 0 ] += { -padding , -padding };
 	approx[ 1 ] += { -padding , padding };
@@ -113,4 +119,71 @@ const std::vector< cv::Point >& CVSegmentation::getContour() const {
 
 void CVSegmentation::setContour( const std::vector< cv::Point >& contour ) {
 	m_contour = contour;
+}
+
+#include <opencv4/opencv2/opencv.hpp>
+
+std::vector< cv::Vec2f > CVSegmentation::houghLines( const cv::Mat& binImg ) {
+	cv::Mat edges;
+	cv::Canny( binImg , edges , 50 , 200 , 3 );
+	//get probabilistic Hough lines
+	cv::Mat linesImg;
+	cv::cvtColor( edges , linesImg , cv::COLOR_GRAY2BGR );
+	
+	//std::vector< cv::Vec4i > lines;
+	//cv::HoughLinesP( edges , lines , 1 , CV_PI / 180 , 70 , 0 , 10 );
+	
+	//for( auto& i : lines ) {
+	//	line( linesImg , cv::Point( i[ 0 ] , i[ 1 ] ) , cv::Point( i[ 2 ] , i[ 3 ] ) , cv::Scalar( 0 , 0 , 255 ) , 3 , 8 );
+	//}
+	
+	std::vector< cv::Vec2f > lines;
+	cv::HoughLines( edges , lines , 5 , CV_PI / 2 , 480 , 0 , 0 ); // runs the actual detection
+	
+	// merge close hough lines
+	std::vector< cv::Vec2f > mergedLines;
+	mergedLines.push_back( lines[ 0 ] );
+	for( size_t i = 0; i < lines.size(); i++ ) {
+		auto line = lines[ i ];
+		auto mergedLine = mergedLines.back();
+		auto mergedLineTheta = mergedLine[ 1 ];
+		auto lineTheta = line[ 1 ];
+		auto mergedLineRho = mergedLine[ 0 ];
+		auto lineRho = line[ 0 ];
+		auto diff = std::abs( lineTheta - mergedLineTheta );
+		if( diff < CV_PI / 2 ) {
+			if( lineRho < mergedLineRho ) {
+				mergedLine = line;
+			}
+		} else {
+			mergedLines.push_back( line );
+		}
+	}
+	std::cout << "merged lines: " << mergedLines.size() << std::endl;
+	for( size_t i = 0; i < mergedLines.size(); i++ ) {
+		float rho = mergedLines[ i ][ 0 ] , theta = mergedLines[ i ][ 1 ];
+		cv::Point pt1 , pt2;
+		double a = cos( theta ) , b = sin( theta );
+		double x0 = a * rho , y0 = b * rho;
+		pt1.x = cvRound( x0 + 3000 * ( -b ));
+		pt1.y = cvRound( y0 + 3000 * ( a ));
+		pt2.x = cvRound( x0 - 3000 * ( -b ));
+		pt2.y = cvRound( y0 - 3000 * ( a ));
+		cv::line( linesImg , pt1 , pt2 , cv::Scalar( 0 , 0 , 255 ) , 3 , cv::LINE_AA );
+	}
+	
+	
+	//resize image to fit window
+	cv::Mat linesImgResized;
+	cv::resize( linesImg , linesImgResized , cv::Size( 700 , 700 ) , 0 , 0 , cv::INTER_AREA );
+	cv::namedWindow( "lines" , cv::WINDOW_KEEPRATIO );
+	cv::imshow( "lines" , linesImgResized );
+	
+	// show canny image resized
+	cv::Mat edgesResized;
+	cv::resize( edges , edgesResized , cv::Size( 700 , 700 ) , 0 , 0 , cv::INTER_AREA );
+	cv::namedWindow( "edges" , cv::WINDOW_KEEPRATIO );
+	cv::imshow( "edges" , edgesResized );
+	
+	return { };
 }
