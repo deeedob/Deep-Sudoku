@@ -145,7 +145,7 @@ std::vector<cv::Vec2f> CVSegmentation::houghLines( const cv::Mat& binImg ) {
 	
 	std::vector<cv::Vec2f> lines;
 	cv::HoughLines( edges, lines, 5, CV_PI / 2, 480, 0, 0 ); // runs the actual detection
-	return mergeHoughLines( lines, toRad( 3 ), 30 );
+	return mergeHoughLines( lines, toRad( 3 ), 50 );
 	
 }
 
@@ -226,6 +226,88 @@ CVSegmentation::getIntersections( const std::vector<cv::Vec2f>& mergedLines ) {
 				intersections.push_back( intersect );
 		}
 	}
+	// sort points on the same line
+	auto sortLRSameRow = []( const cv::Point& p1, const cv::Point& p2 ) {
+		if( p1.y == p2.y )
+			return p1.x < p2.x;
+		return p1.y < p2.y;
+	};
+	std::sort( intersections.begin(), intersections.end(), sortLRSameRow );
 	
 	return intersections;
+}
+
+std::vector<cv::Mat>
+CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, const cv::Mat& binImg ) {
+	std::vector<cv::Mat> squares;
+	int cnt { 0 };
+	for( int i = 0; i < intersections.size() - 11; i++, cnt++ ) {
+		if( cnt > 8 ) {
+			i++;
+			cnt = 0;
+		}
+		cv::Point p1 = intersections[ i ], p2 = intersections[ i + 11 ];
+		cv::Rect roi( p1.x, p1.y, p2.x - p1.x, p2.y - p1.y );
+		cv::Mat croppedRef( binImg, roi );
+		cv::Mat cropped;
+		//croppedRef.copyTo( cropped );
+		squares.push_back( croppedRef );
+	}
+	
+	return squares;
+}
+
+std::vector<cv::Mat>
+CVSegmentation::preparedSquares( const std::vector<cv::Mat>& squares, float numberFillFactor, DetectionSize d ) {
+	assert(( numberFillFactor > 0 && numberFillFactor < 1 ) && "numberFillFactor must be between 0 and 1" );
+	assert((( d.minWidth > 0 && d.minWidth < 1 ) && ( d.maxWidth > 0 && d.maxWidth < 1 ) &&
+	        ( d.minHeight > 0 && d.minHeight < 1 ) && ( d.maxHeight > 0 && d.maxHeight < 1 )) && "DetectionSize must be between 0 and 1" );
+	
+	std::vector<cv::Mat> preparedSquares;
+	float detectMinWidth = 0.18, detectMinHeight = 0.25, detectMaxWidth = 0.75, detectMaxHeight = 0.75;
+	
+	int cnt { 0 };
+	for( int i = 0; i < squares.size(); i++ ) {
+		std::vector<std::vector<cv::Point>> prepared;
+		cv::Mat c = squares[ i ];
+		cv::Mat candidate = cv::Mat::ones( cv::Size( m_nnWidth, m_nnHeight ), CV_8UC1);
+		
+		cv::findContours( c, prepared, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE );
+		
+		for( auto& j : prepared ) {
+			auto r = cv::boundingRect( j );
+			/* if a number matches a rect size of a number ... */
+			if( r.width > c.cols * d.minWidth && r.width < c.cols * d
+				.maxWidth &&
+			    r.height > c.rows * d.minHeight && r.height < c.cols * d
+				.maxHeight ) {
+				
+				cv::Mat croppedRef( c, r );
+				if( croppedRef.cols > candidate.cols || croppedRef
+					                                        .rows > candidate
+					                                        .rows ) {
+					cv::Mat resized;
+					// resize with aspect ratio
+					auto ratio = getAspectRatio( croppedRef );
+					cv::resize( croppedRef, resized, cv::Size( static_cast<int>((float) m_nnWidth * numberFillFactor), static_cast<int>((float) m_nnHeight * numberFillFactor )), ratio, ratio );
+					croppedRef = resized;
+				}
+				
+				int x = ( m_nnWidth - croppedRef.cols ) / 2;
+				int y = ( m_nnHeight - croppedRef.rows ) / 2;
+				//copy the croppedRef to the candidate
+				croppedRef.copyTo( candidate( cv::Rect( x, y, croppedRef
+					.cols, croppedRef.rows )));
+				
+			}
+		}
+		preparedSquares.push_back( candidate );
+		cnt++;
+	}
+	return preparedSquares;
+}
+
+float CVSegmentation::getAspectRatio( const cv::Mat& img ) {
+	return img.cols > img.rows ? static_cast<float>(img.cols) / img
+		.rows : static_cast<float>(img.rows) / img.cols;
 }

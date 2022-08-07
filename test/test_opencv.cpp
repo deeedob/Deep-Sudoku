@@ -3,10 +3,14 @@
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
 
+void
+drawSegmentedRect( const std::vector<cv::Mat>& squares, const std::string& wName, int borderWidth );
+
 int main() {
 	/* get qimage and convert it to mat */
 	std::filesystem::path path( std::filesystem::current_path().parent_path()
 		                            .parent_path() += "/test/res/Training_001.jpg" );
+	
 	QImage img( path.c_str());
 	QTransform transform;
 	img = img.transformed( transform.rotate( 90 ));
@@ -58,10 +62,25 @@ int main() {
 	cv::namedWindow( "intersections", cv::WINDOW_KEEPRATIO );
 	cv::imshow( "intersections", resizedImg4 );
 	// print all intersections
+	int cnt { 0 };
 	for( auto& i : intersections ) {
-		std::cout << i.x << " " << i.y << std::endl;
+		if( cnt == 10 ) {
+			cnt = 0;
+			std::cout << std::endl;
+		}
+		std::cout << '(' << i.x << ", " << i.y << ")  ";
+		cnt++;
 	}
+	std::cout << std::endl;
 	
+	// draw squares
+	auto squares = seg.cutSquares( intersections, cutted );
+	drawSegmentedRect( squares, "squares", 20 );
+	
+	//prepare the image for the NN
+	auto squaresNN = seg
+		.preparedSquares( squares, 0.4, { 0.15, 0.75, 0.5, 0.75 } );
+	drawSegmentedRect( squaresNN, "squaresNN", 5 );
 	
 	/* wait and destroy */
 	while( true ) {
@@ -74,4 +93,42 @@ int main() {
 	}
 	
 	return EXIT_SUCCESS;
+}
+
+//this bad boy reconciles all cutted squares into a new image with a border!
+void
+drawSegmentedRect( const std::vector<cv::Mat>& squares, const std::string& wName, int borderWidth ) {
+	cv::Mat resizedImg5;
+	cv::Mat squaredImg;
+	std::vector<cv::Mat> squaresRows( 9 );
+	int j { 0 }, nextW { 0 };
+	for( int i = 0; i < squaresRows.size(); i++ ) {
+		cv::Mat tmpB1, tmpB2;
+		cv::Mat clrB1, clrB2;
+		cv::cvtColor( squares[ j++ ], clrB1, cv::COLOR_GRAY2BGR );
+		cv::cvtColor( squares[ j++ ], clrB2, cv::COLOR_GRAY2BGR );
+		cv::copyMakeBorder( clrB1, tmpB1, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 0, 0, 255 ));
+		cv::copyMakeBorder( clrB2, tmpB2, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 255, 0, 0 ));
+		cv::hconcat( tmpB1, tmpB2, squaresRows[ i ] );
+		nextW += 9;
+		for( ; j < nextW; ) {
+			cv::cvtColor( squares[ j++ ], clrB1, cv::COLOR_GRAY2BGR );
+			if( j % 2 == 0 ) {
+				cv::copyMakeBorder( clrB1, tmpB1, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 255, 0, 0 ));
+			} else
+				cv::copyMakeBorder( clrB1, tmpB1, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 0, 0, 255 ));
+			
+			cv::hconcat( squaresRows[ i ], tmpB1, squaresRows[ i ] );
+		}
+		if( i == 1 ) {
+			cv::vconcat( squaresRows[ i - 1 ], squaresRows[ i ], squaredImg );
+		}
+		if( i > 1 ) {
+			cv::vconcat( squaredImg, squaresRows[ i ], squaredImg );
+		}
+	}
+	cv::resize( squaredImg, resizedImg5, cv::Size( 700, 700 ), 0, 0, cv::INTER_CUBIC );
+	cv::namedWindow( wName, cv::WINDOW_KEEPRATIO );
+	cv::imshow( wName, resizedImg5 );
+	
 }
