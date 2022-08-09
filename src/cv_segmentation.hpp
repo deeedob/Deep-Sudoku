@@ -20,6 +20,7 @@ public:
 	~CVSegmentation() = default;
 	
 	bool process();
+	const cv::Mat& getOriginal();
 	const cv::Mat& getBinarizedImg();
 	const cv::Mat& getBinarizedCuttedImg();
 	cv::Mat getMergedLinesImg();
@@ -27,17 +28,18 @@ public:
 	cv::Mat getPreparedSquaresImg();
 	
 	static float toRad( float deg );
-	static float getAspectRatio( const cv::Mat& img );
+	static float getAspectRatio( cv::Mat img );
 private:
-	cv::Mat binarizedImg( const cv::Mat& src, int gaussValue = 41, bool dilating = true, bool eroding = true );
-	std::vector<cv::Point> getRectangularContour( const cv::Mat& src );
-	cv::Mat warpSelection( const cv::Mat& src, const std::vector<cv::Point>& contours );
+	cv::Mat binarizedImg( cv::Mat src, int gaussValue = 41, bool dilating = true, bool eroding = true );
+	std::vector<cv::Point> getRectangularContour( cv::Mat src ) const;
+	cv::Mat warpSelection( cv::Mat src, const std::vector<cv::Point>& contours );
 	
-	std::vector<cv::Vec2f> mergedHoughLines( const cv::Mat& binImg );
+	std::vector<cv::Vec2f> mergedHoughLines( cv::Mat binImg );
 	std::vector<cv::Vec2f> mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax );
+	std::vector<cv::Vec2f> customHoughLinesImpl(const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax);
 	std::vector<cv::Point> getIntersections( const std::vector<cv::Vec2f>& mergedLines );
 	
-	std::vector<cv::Mat> cutSquares( const std::vector<cv::Point>& intersections, const cv::Mat& binImg );
+	std::vector<cv::Mat> cutSquares( const std::vector<cv::Point>& intersections, cv::Mat binImg );
 	std::vector<cv::Mat> preparedSquares( const std::vector<cv::Mat>& squares, float numberFillFactor, DetectionSize d );
 	
 	cv::Mat drawSegmentedRectImg( const std::vector<cv::Mat>& squares, int borderWidth );

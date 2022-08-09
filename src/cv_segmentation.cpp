@@ -12,12 +12,16 @@ bool CVSegmentation::process() {
 	m_mergedLines = mergedHoughLines( m_binCutted );
 	if( m_mergedLines.size() < 20 )
 		m_success = false;
-	if( !m_success ) {
+	if( m_success ) {
 		m_intersections = getIntersections( m_mergedLines );
 		m_preparedSquares = preparedSquares( cutSquares( m_intersections, m_binCutted ), m_numbFillFactor, m_detectionSize );
 	}
 	m_processed = true;
 	return m_success;
+}
+
+const cv::Mat& CVSegmentation::getOriginal() {
+	return m_orig;
 }
 
 const cv::Mat& CVSegmentation::getBinarizedImg() {
@@ -51,36 +55,39 @@ cv::Mat CVSegmentation::getIntersectionImg() {
 	cv::Mat intersectionImg;
 	cv::cvtColor( m_binCutted, intersectionImg, cv::COLOR_GRAY2BGR );
 	for( auto& i : m_intersections ) {
-		cv::circle( intersectionImg, i, 15, cv::Scalar( 255, 0, 0 ), -1 );
+		cv::circle( intersectionImg, i, 25, cv::Scalar( 255, 0, 255 ), -1 );
 	}
 	return intersectionImg;
 }
 
 cv::Mat CVSegmentation::getPreparedSquaresImg() {
-	return drawSegmentedRectImg( m_preparedSquares, 3 );
+	if( m_success )
+		return drawSegmentedRectImg( m_preparedSquares, 3 );
+	else
+		return cv::Mat::ones( m_orig.rows, m_orig.cols, CV_8UC1);
 }
 
 cv::Mat
-CVSegmentation::binarizedImg( const cv::Mat& src, int gaussValue, bool dilating, bool eroding ) {
+CVSegmentation::binarizedImg( cv::Mat src, int gaussValue, bool dilating, bool eroding ) {
 	cv::Mat out;
 	auto ones = []( int width, int height ) {
 		return cv::Mat::ones( cv::Size( width, height ), CV_8U );
 	};
 	cv::cvtColor( src, out, cv::COLOR_BGR2GRAY );
 	cv::GaussianBlur( out, out, cv::Size( gaussValue, gaussValue ), 3 );
+	//TODO adaptive Threshold very slow!!
 	cv::adaptiveThreshold( out, out, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY_INV, 199, 25 );
 	if( dilating )
-		cv::dilate( src, out, ones( 3, 3 ), cv::Point( 0, 0 ), 1 );
+		cv::dilate( out, out, ones( 3, 3 ), cv::Point( 0, 0 ), 1 );
 	if( eroding )
-		cv::erode( src, out, ones( 3, 3 ), cv::Point( 0, 0 ), 2 );
+		cv::erode( out, out, ones( 3, 3 ), cv::Point( 0, 0 ), 2 );
 	return out;
 }
 
 std::vector<cv::Point>
-CVSegmentation::getRectangularContour( const cv::Mat& src ) {
+CVSegmentation::getRectangularContour( cv::Mat src ) const {
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
-	cv::cvtColor( src, src, cv::COLOR_BGR2GRAY ); //TODO maybe wrong?
 	cv::findContours( src, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
 	
 	struct
@@ -135,7 +142,7 @@ CVSegmentation::getRectangularContour( const cv::Mat& src ) {
 }
 
 cv::Mat
-CVSegmentation::warpSelection( const cv::Mat& src, const std::vector<cv::Point>& contours ) {
+CVSegmentation::warpSelection( cv::Mat src, const std::vector<cv::Point>& contours ) {
 	//width of the new image
 	auto widthA = std::sqrt(( std::pow( contours[ 0 ].x - contours[ 3 ]
 		.x, 2 ) + std::pow( contours[ 0 ].y - contours[ 3 ]
@@ -179,14 +186,13 @@ CVSegmentation::warpSelection( const cv::Mat& src, const std::vector<cv::Point>&
 }
 
 std::vector<cv::Vec2f>
-CVSegmentation::mergedHoughLines( const cv::Mat& binImg ) {
+CVSegmentation::mergedHoughLines( cv::Mat binImg ) {
 	cv::Mat edges;
 	cv::Canny( binImg, edges, 50, 200, 3 );
 	
 	std::vector<cv::Vec2f> lines;
 	/* rho is the radians that get checked for and theta the amount of degrees a line can have. We basically only check for perpendicular lines */
 	cv::HoughLines( edges, lines, 5, CV_PI / 2, 480, 0, 0 ); // runs the actual detection
-	//TODO id lines < 20 failure
 	return mergedHoughLinesImpl( lines, toRad( 3 ), 50 );
 }
 
@@ -237,6 +243,11 @@ CVSegmentation::mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float
 	return mergedLines;
 }
 
+std::vector<cv::Vec2f>
+CVSegmentation::customHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax ) {
+	return std::vector<cv::Vec2f>();
+}
+
 std::vector<cv::Point>
 CVSegmentation::getIntersections( const std::vector<cv::Vec2f>& mergedLines ) {
 	// find intersections from hough lines
@@ -275,7 +286,7 @@ CVSegmentation::getIntersections( const std::vector<cv::Vec2f>& mergedLines ) {
 }
 
 std::vector<cv::Mat>
-CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, const cv::Mat& binImg ) {
+CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, cv::Mat binImg ) {
 	std::vector<cv::Mat> squares;
 	int cnt { 0 };
 	for( int i = 0; i < intersections.size() - 11; i++, cnt++ ) {
@@ -344,7 +355,7 @@ CVSegmentation::preparedSquares( const std::vector<cv::Mat>& squares, float numb
 	return preparedSquares;
 }
 
-float CVSegmentation::getAspectRatio( const cv::Mat& img ) {
+float CVSegmentation::getAspectRatio( cv::Mat img ) {
 	return img.cols > img.rows ? static_cast<float>(img.cols) / img
 		.rows : static_cast<float>(img.rows) / img.cols;
 }

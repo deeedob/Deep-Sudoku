@@ -6,11 +6,11 @@
 int main() {
 	/* get qimage and convert it to mat */
 	std::filesystem::path path( std::filesystem::current_path().parent_path()
-		                            .parent_path() += "/test/res/Training_001.jpg" );
+		                            .parent_path() += "/test/res/Training_002.jpg" );
 	
 	QImage img( path.c_str());
 	QTransform transform;
-	img = img.transformed( transform.rotate( 90 ));
+	//img = img.transformed( transform.rotate( 90 ));
 	CVSegmentation seg( img );
 	seg.process();
 	
@@ -40,6 +40,10 @@ int main() {
 	cv::resize( preparedImg, resizedImg4, cv::Size( 700, 700 ), 0, 0, cv::INTER_CUBIC );
 	cv::namedWindow( "prepared", cv::WINDOW_KEEPRATIO );
 	cv::imshow( "prepared", resizedImg4 );
+	
+	auto original = seg.getOriginal();
+	cv::namedWindow( "original", cv::WINDOW_AUTOSIZE );
+	cv::imshow( "original", original );
 	
 	/* wait and destroy */
 	while( true ) {
