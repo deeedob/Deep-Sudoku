@@ -3,10 +3,11 @@
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
 
-int main() {
+int main()
+{
 	/* get qimage and convert it to mat */
 	std::filesystem::path path( std::filesystem::current_path().parent_path()
-		                            .parent_path() += "/test/res/Training_002.jpg" );
+	                                                           .parent_path() += "/test/res/Training_002.jpg" );
 	
 	QImage img( path.c_str());
 	QTransform transform;
@@ -42,11 +43,13 @@ int main() {
 	cv::imshow( "prepared", resizedImg4 );
 	
 	auto original = seg.getOriginal();
-	cv::namedWindow( "original", cv::WINDOW_AUTOSIZE );
-	cv::imshow( "original", original );
+	cv::Mat resizedImg5;
+	cv::resize( original, resizedImg5, cv::Size( 700, 700 ), 0, 0, cv::INTER_CUBIC );
+	cv::namedWindow( "original", cv::WINDOW_KEEPRATIO );
+	cv::imshow( "original", resizedImg5 );
 	
 	/* wait and destroy */
-	while( true ) {
+	while ( true ) {
 		auto key = cv::waitKey( 0 ) & 0xff;
 		std::cout << "key pressed : " << key << std::endl;
 		if( key == 27 ) {

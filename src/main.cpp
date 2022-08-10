@@ -12,8 +12,9 @@
 
 #endif
 
-int main( int argc , char* argv[] ) {
-	QGuiApplication app( argc , argv );
+int main( int argc, char* argv[] )
+{
+	QGuiApplication app( argc, argv );
 	MediaCapture mediaHelper;
 #ifdef ANDROID_BUILD
 	QQmlApplicationEngine engine;
@@ -22,7 +23,7 @@ int main( int argc , char* argv[] ) {
 	auto path = std::filesystem::current_path();
 	path = path.parent_path().parent_path();
 	/* TODO: Make this a module! */
-	//const auto model = fdeep::load_model(path.string() + "/ai_model/fdeep_model.json");
+	const auto model = fdeep::load_model( path.string() + "/ai_model/fdeep_model.json" );
 	//const fdeep::tensor_shape ts(28, 28, 1);
 	//const fdeep::tensors tss( {fdeep::tensor(ts, 1) });
 	//const auto result = model.predict(tss);
@@ -32,15 +33,15 @@ int main( int argc , char* argv[] ) {
 	path.append( "src/qml/main_hot_reload.qml" );
 	//path.append("src/qml/main_hot_reload.qml");
 	QUrl url( path.c_str());
-	QObject::connect( &engine , &QQmlApplicationEngine::objectCreated , &app , [url]( QObject* obj , const QUrl& objUrl ) {
+	QObject::connect( &engine, &QQmlApplicationEngine::objectCreated, &app, [ url ]( QObject* obj, const QUrl& objUrl ) {
 		if( !obj && url == objUrl )
 			QCoreApplication::exit( -1 );
-	} , Qt::QueuedConnection );
+	}, Qt::QueuedConnection );
 	//qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
 	//QQmlEngine::setObjectOwnership()
-	engine.rootContext()->setContextProperty( "$QmlEngine" , &engine );
-	engine.rootContext()->setContextProperty( "Logic" , &App::getInstance());
-	engine.rootContext()->setContextProperty( "mediaHelper" , &mediaHelper );
+	engine.rootContext()->setContextProperty( "$QmlEngine", &engine );
+	engine.rootContext()->setContextProperty( "Logic", &App::getInstance());
+	engine.rootContext()->setContextProperty( "mediaHelper", &mediaHelper );
 	
 	engine.load( url );
 #endif

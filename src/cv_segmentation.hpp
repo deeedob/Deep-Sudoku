@@ -27,6 +27,8 @@ public:
 	cv::Mat getIntersectionImg();
 	cv::Mat getPreparedSquaresImg();
 	
+	[[nodiscard]] static std::pair<size_t, size_t> getNNSize();
+	
 	static float toRad( float deg );
 	static float getAspectRatio( cv::Mat img );
 private:
@@ -36,7 +38,10 @@ private:
 	
 	std::vector<cv::Vec2f> mergedHoughLines( cv::Mat binImg );
 	std::vector<cv::Vec2f> mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax );
-	std::vector<cv::Vec2f> customHoughLinesImpl(const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax);
+	#if 0
+	std::pair<cv::Mat, cv::Mat> customGradientImage( cv::Mat binImg );
+	std::vector<cv::Vec2f> customHoughLinesImpl( cv::Mat bin_img );
+	#endif
 	std::vector<cv::Point> getIntersections( const std::vector<cv::Vec2f>& mergedLines );
 	
 	std::vector<cv::Mat> cutSquares( const std::vector<cv::Point>& intersections, cv::Mat binImg );
@@ -55,8 +60,7 @@ private:
 	double m_contourPadding { 0.03 };
 	float m_numbFillFactor { 0.4 };
 	DetectionSize m_detectionSize { 0.15, 0.75, 0.5, 0.75 };
-	const int m_nnWidth { 28 };
-	const int m_nnHeight { 28 };
 	bool m_success;
 	bool m_processed;
+	static inline std::pair<size_t, size_t> m_nnSize { 28, 28 };
 };

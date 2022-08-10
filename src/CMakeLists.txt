@@ -19,7 +19,7 @@ set( sources
      media_capture.cpp
      cv_segmentation.cpp
      cv_img_mat.cpp
-
+     deep_solver.cpp
      )
 set( headers
      app.hpp
@@ -28,6 +28,7 @@ set( headers
      media_capture.hpp
      cv_segmentation.hpp
      cv_img_mat.hpp
+     deep_solver.hpp
      )
 set( resources
      qml/qml.qrc
