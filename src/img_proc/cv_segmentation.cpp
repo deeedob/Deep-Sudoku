@@ -252,13 +252,7 @@ CVSegmentation::customHoughLinesImpl( cv::Mat bin_img )
 {
 	auto gradients = customGradientImage( bin_img );
 	auto get_theta_rho_magnitude = [ & ]( cv::Point coord ) {
-		auto val_1 = gradients.first.at<uchar>( coord );
-		auto val_2 = gradients.second.at<uchar>( coord );
-		auto theta = std::atan( val_1 / val_2 );
-		auto rho = std::abs( coord.y * std::cos( theta ) + coord.x * std::sin( theta ));
-		auto magnitude = std::sqrt( std::pow( val_1, 2 ) + std::pow( val_2, 2 ));
-		
-		return std::make_tuple( theta, rho, magnitude );
+
 	};
 	auto make_accumulator = [ & ]() {
 		auto theta_res = M_PI / 720;

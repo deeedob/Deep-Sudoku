@@ -6,7 +6,7 @@ DeepSolver::DeepSolver( const std::string& path )
 {
 }
 
-std::vector<fdeep::tensors> DeepSolver::predictMulti( const QImage& src )
+std::vector<DeepSolver::ReturnVal> DeepSolver::predictMulti( const QImage& src )
 {
 	CVSegmentation temp( src );
 	temp.process();
@@ -26,8 +26,30 @@ std::vector<fdeep::tensors> DeepSolver::predictMulti( const QImage& src )
 		input.push_back( t );
 	}
 	auto predictions = m_model.predict_multi( input, true );
-	for( const auto& i : predictions ) {
+	
+	std::vector<ReturnVal> ret;
+	ret.reserve( predictions.size());
+	
+	for( int i = 0; i < predictions.size(); i++ ) {
+		auto val = getResult( predictions[ i ] );
+		auto pos = used_squares[ i ];
+		ret.push_back( { pos, val } );
 	}
 	
-	return m_model.predict_multi( input, true );
+	return ret;
+}
+
+int DeepSolver::getResult( const fdeep::tensors& t )
+{
+	auto v = t.at( 0 ).as_vector();
+	auto old_max = v->at( 0 );
+	int value = 1;
+	for( int i = 1; i < v->size(); i++ ) {
+		auto maybe = v->at( i );
+		if( maybe > old_max ) {
+			old_max = maybe;
+			value = i + 1;
+		}
+	}
+	return value;
 }

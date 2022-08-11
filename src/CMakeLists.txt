@@ -17,20 +17,20 @@ set( sources
      board_model.cpp
      cell_data.cpp
      media_capture.cpp
-     cv_segmentation.cpp
-     cv_img_mat.cpp
-     deep_solver.cpp
-     cv_hough_finder.cpp
+     img_proc/cv_segmentation.cpp
+     img_proc/cv_img_mat.cpp
+     img_proc/deep_solver.cpp
+     img_proc/cv_hough_finder.cpp
      )
 set( headers
      app.hpp
      board_model.hpp
      cell_data.hpp
      media_capture.hpp
-     cv_segmentation.hpp
-     cv_img_mat.hpp
-     deep_solver.hpp
-     cv_hough_finder.hpp
+     img_proc/cv_segmentation.hpp
+     img_proc/cv_img_mat.hpp
+     img_proc/deep_solver.hpp
+     img_proc/cv_hough_finder.hpp
      )
 set( resources
      qml/qml.qrc

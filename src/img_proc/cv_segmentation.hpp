@@ -2,7 +2,6 @@
 #include <QImage>
 #include <opencv4/opencv2/imgproc.hpp>
 #include "cv_img_mat.hpp"
-#include "cv_hough_finder.hpp"
 
 class CVSegmentation
 {
@@ -34,7 +33,9 @@ public:
 	
 	static float toRad( float deg );
 	static float getAspectRatio( cv::Mat img );
-private:
+	
+	/* implementations */
+public:
 	cv::Mat binarizedImg( cv::Mat src, int gauss_value = 41, bool dilating = true, bool eroding = true );
 	std::vector<cv::Point> getRectangularContour( cv::Mat src ) const;
 	cv::Mat warpSelection( cv::Mat src, const std::vector<cv::Point>& contours );
@@ -63,7 +64,7 @@ private:
 	
 	double m_contourPadding { 0.03 };
 	float m_numbFillFactor { 0.4 };
-	DetectionSize m_detectionSize { 0.15, 0.75, 0.5, 0.75 };
+	DetectionSize m_detectionSize { 0.15, 0.75, 0.3, 0.75 };
 	bool m_success;
 	bool m_processed;
 	static inline std::pair<size_t, size_t> m_nnSize { 28, 28 };

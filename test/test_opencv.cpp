@@ -1,4 +1,4 @@
-#include "../src/cv_segmentation.hpp"
+#include "../src/img_proc/cv_segmentation.hpp"
 #include <filesystem>
 #include <iostream>
 #include <opencv4/opencv2/opencv.hpp>
@@ -7,11 +7,11 @@ int main()
 {
 	/* get qimage and convert it to mat */
 	std::filesystem::path path( std::filesystem::current_path().parent_path()
-	                                                           .parent_path() += "/test/res/Training_011.jpg" );
+	                                                           .parent_path() += "/test/res/Training_002.jpg" );
 	
 	QImage img( path.c_str());
-	QTransform transform;
-	img = img.transformed( transform.rotate( 90 ));
+	//QTransform transform;
+	//img = img.transformed( transform.rotate( 90 ));
 	CVSegmentation seg( img );
 	seg.process();
 	
