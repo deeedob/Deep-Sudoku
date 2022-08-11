@@ -1,9 +1,9 @@
 #include "cv_segmentation.hpp"
 
-CVSegmentation::CVSegmentation( const QImage& img )
+CVSegmentation::CVSegmentation( const QImage& src )
 	: m_success( true ), m_processed( false )
 {
-	m_orig = qt_ocv::image2Mat( img, CV_8UC( 4 ), qt_ocv::MCO_BGRA );
+	m_orig = qt_ocv::image2Mat( src, CV_8UC( 4 ), qt_ocv::MCO_BGRA );
 }
 
 bool CVSegmentation::process()
@@ -41,30 +41,30 @@ const cv::Mat& CVSegmentation::getBinarizedCuttedImg()
 
 cv::Mat CVSegmentation::getMergedLinesImg()
 {
-	cv::Mat linesImg;
-	cv::cvtColor( m_binCutted, linesImg, cv::COLOR_GRAY2BGR );
-	for( auto& mergedLine : m_mergedLines ) {
-		float rho = mergedLine[ 0 ], theta = mergedLine[ 1 ];
-		cv::Point pt1, pt2;
+	cv::Mat lines_img;
+	cv::cvtColor( m_binCutted, lines_img, cv::COLOR_GRAY2BGR );
+	for( auto& merged_line : m_mergedLines ) {
+		float rho = merged_line[ 0 ], theta = merged_line[ 1 ];
+		cv::Point pt_1, pt_2;
 		double a = cos( theta ), b = sin( theta );
-		double x0 = a * rho, y0 = b * rho;
-		pt1.x = cvRound( x0 + m_orig.cols * ( -b ));
-		pt1.y = cvRound( y0 + m_orig.rows * ( a ));
-		pt2.x = cvRound( x0 - m_orig.cols * ( -b ));
-		pt2.y = cvRound( y0 - m_orig.rows * ( a ));
-		cv::line( linesImg, pt1, pt2, cv::Scalar( 0, 0, 255 ), 12, cv::LINE_AA );
+		double x_0 = a * rho, y_0 = b * rho;
+		pt_1.x = cvRound( x_0 + m_orig.cols * ( -b ));
+		pt_1.y = cvRound( y_0 + m_orig.rows * ( a ));
+		pt_2.x = cvRound( x_0 - m_orig.cols * ( -b ));
+		pt_2.y = cvRound( y_0 - m_orig.rows * ( a ));
+		cv::line( lines_img, pt_1, pt_2, cv::Scalar( 0, 0, 255 ), 12, cv::LINE_AA );
 	}
-	return linesImg;
+	return lines_img;
 }
 
 cv::Mat CVSegmentation::getIntersectionImg()
 {
-	cv::Mat intersectionImg;
-	cv::cvtColor( m_binCutted, intersectionImg, cv::COLOR_GRAY2BGR );
+	cv::Mat intersection_img;
+	cv::cvtColor( m_binCutted, intersection_img, cv::COLOR_GRAY2BGR );
 	for( auto& i : m_intersections ) {
-		cv::circle( intersectionImg, i, 25, cv::Scalar( 255, 0, 255 ), -1 );
+		cv::circle( intersection_img, i, 25, cv::Scalar( 255, 0, 255 ), -1 );
 	}
-	return intersectionImg;
+	return intersection_img;
 }
 
 cv::Mat CVSegmentation::getPreparedSquaresImg()
@@ -75,20 +75,35 @@ cv::Mat CVSegmentation::getPreparedSquaresImg()
 		return cv::Mat::ones( m_orig.rows, m_orig.cols, CV_8UC1);
 }
 
-std::pair<size_t, size_t> CVSegmentation::getNNSize()
+void CVSegmentation::setImage( const QImage& src ) noexcept
+{
+	m_orig = qt_ocv::image2Mat( src, CV_8UC( 4 ), qt_ocv::MCO_BGRA );
+}
+
+const std::vector<cv::Mat>& CVSegmentation::getPreparedSquares() const noexcept
+{
+	return m_preparedSquares;
+}
+
+const std::vector<int>& CVSegmentation::getUsedSquares() const noexcept
+{
+	return m_usedSquares;
+}
+
+std::pair<size_t, size_t> CVSegmentation::getNNSize() noexcept
 {
 	return m_nnSize;
 }
 
 cv::Mat
-CVSegmentation::binarizedImg( cv::Mat src, int gaussValue, bool dilating, bool eroding )
+CVSegmentation::binarizedImg( cv::Mat src, int gauss_value, bool dilating, bool eroding )
 {
 	cv::Mat out;
 	auto ones = []( int width, int height ) {
 		return cv::Mat::ones( cv::Size( width, height ), CV_8U );
 	};
 	cv::cvtColor( src, out, cv::COLOR_BGR2GRAY );
-	cv::GaussianBlur( out, out, cv::Size( gaussValue, gaussValue ), 3 );
+	cv::GaussianBlur( out, out, cv::Size( gauss_value, gauss_value ), 3 );
 	//TODO adaptive Threshold very slow!!
 	cv::adaptiveThreshold( out, out, 255, cv::ADAPTIVE_THRESH_GAUSSIAN_C, cv::THRESH_BINARY_INV, 199, 25 );
 	if( dilating )
@@ -107,15 +122,15 @@ CVSegmentation::getRectangularContour( cv::Mat src ) const
 	
 	struct
 	{
-		bool operator()( const std::vector<cv::Point>& c1, const std::vector<cv::Point>& c2 )
+		bool operator()( const std::vector<cv::Point>& c_1, const std::vector<cv::Point>& c_2 )
 		{
-			auto i = fabs( cv::contourArea( cv::Mat( c1 )));
-			auto j = fabs( cv::contourArea( cv::Mat( c2 )));
+			auto i = fabs( cv::contourArea( cv::Mat( c_1 )));
+			auto j = fabs( cv::contourArea( cv::Mat( c_2 )));
 			return i > j;
 		}
-	} cmpContourArea;
+	} cmp_contour_area;
 	
-	std::sort( contours.begin(), contours.end(), cmpContourArea );
+	std::sort( contours.begin(), contours.end(), cmp_contour_area );
 	
 	std::vector<cv::Point> approx;
 	for( auto& c : contours ) {
@@ -161,25 +176,25 @@ cv::Mat
 CVSegmentation::warpSelection( cv::Mat src, const std::vector<cv::Point>& contours )
 {
 	//width of the new image
-	auto widthA = std::sqrt(( std::pow( contours[ 0 ].x - contours[ 3 ]
+	auto width_a = std::sqrt(( std::pow( contours[ 0 ].x - contours[ 3 ]
 		.x, 2 ) + std::pow( contours[ 0 ].y - contours[ 3 ]
 		.y, 2 )));
-	auto widthB = std::sqrt(( std::pow( contours[ 1 ].x - contours[ 2 ]
+	auto width_b = std::sqrt(( std::pow( contours[ 1 ].x - contours[ 2 ]
 		.x, 2 ) + std::pow( contours[ 1 ].y - contours[ 2 ]
 		.y, 2 )));
-	auto heightA = std::sqrt(( std::pow( contours[ 0 ].x - contours[ 1 ]
+	auto height_a = std::sqrt(( std::pow( contours[ 0 ].x - contours[ 1 ]
 		.x, 2 ) + std::pow( contours[ 0 ].y - contours[ 1 ]
 		.y, 2 )));
-	auto heightB = std::sqrt(( std::pow( contours[ 3 ].x - contours[ 2 ]
+	auto height_b = std::sqrt(( std::pow( contours[ 3 ].x - contours[ 2 ]
 		.x, 2 ) + std::pow( contours[ 3 ].y - contours[ 3 ]
 		.y, 2 )));
-	auto maxWidth = static_cast<float>(std::max( widthA, widthB ));
-	auto maxHeight = static_cast<float>(std::max( heightA, heightB ));
+	auto max_width = static_cast<float>(std::max( width_a, width_b ));
+	auto max_height = static_cast<float>(std::max( height_a, height_b ));
 	// warp image to new size
 	std::vector<cv::Point2f> dst = {{ 0, 0 },
-	                                { 0, maxHeight },
-	                                { maxWidth, maxHeight },
-	                                { maxWidth, 0 }};
+	                                { 0, max_height },
+	                                { max_width, max_height },
+	                                { max_width, 0 }};
 	std::vector<cv::Point2f> rect = {
 		{ static_cast<float>(contours[ 0 ].x),
 		  static_cast<float>(contours[ 0 ].y)
@@ -195,8 +210,8 @@ CVSegmentation::warpSelection( cv::Mat src, const std::vector<cv::Point>& contou
 		}};
 	cv::Mat transform = cv::getPerspectiveTransform( rect, dst );
 	cv::Mat warped;
-	cv::warpPerspective( src, warped, transform, { (int) maxWidth,
-	                                               (int) maxHeight
+	cv::warpPerspective( src, warped, transform, { (int) max_width,
+	                                               (int) max_height
 	} );
 	
 	return warped;
@@ -205,10 +220,10 @@ CVSegmentation::warpSelection( cv::Mat src, const std::vector<cv::Point>& contou
 #include <iostream>
 
 std::vector<cv::Vec2f>
-CVSegmentation::mergedHoughLines( cv::Mat binImg )
+CVSegmentation::mergedHoughLines( cv::Mat bin_img )
 {
 	cv::Mat edges;
-	cv::Canny( binImg, edges, 50, 200, 3 );
+	cv::Canny( bin_img, edges, 50, 200, 3 );
 	std::vector<cv::Vec2f> lines;
 	/* rho is the radians that get checked for and theta the amount of degrees a line can have. We basically only check for perpendicular lines */
 	cv::HoughLines( edges, lines, 5, CV_PI / 2, 480, 0, 0 ); // runs the actual detection
@@ -306,9 +321,6 @@ CVSegmentation::customHoughLinesImpl( cv::Mat bin_img )
 			0, 0, 1, 0, 0,
 			0, 0, 1, 0, 0,
 			0, 0, 1, 0, 0;
-		erod_kern_3 << 0, 1, 0,
-			0, 1, 0,
-			0, 1, 0;
 		// TODO: ?!?!
 		cv::erode( bin_accu, bin_accu, erod_kern_5, { -1, -1 }, 6 );
 		cv::dilate( bin_accu, bin_accu, 5 );
@@ -336,93 +348,93 @@ CVSegmentation::customHoughLinesImpl( cv::Mat bin_img )
 #endif
 
 std::vector<cv::Vec2f>
-CVSegmentation::mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float thetaMax, float rhoMax )
+CVSegmentation::mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float theta_max, float rho_max )
 {
-	std::vector<std::vector<int >> combineIndex( lines.size());
-	std::vector<cv::Vec2f> mergedLines;
+	std::vector<std::vector<int >> combine_index( lines.size());
+	std::vector<cv::Vec2f> merged_lines;
 	for( int i = 0; i < lines.size(); i++ ) {
 		int index = i;
 		for( int j = i; j < lines.size(); j++ ) {
-			float distanceI = lines[ i ][ 0 ], distanceJ = lines[ j ][ 0 ];
-			float slopeI = lines[ i ][ 1 ], slopeJ = lines[ j ][ 1 ];
-			float disDiff = abs( distanceI - distanceJ );
-			float slopeDiff = abs( slopeI - slopeJ );
+			float distance_i = lines[ i ][ 0 ], distance_j = lines[ j ][ 0 ];
+			float slope_i = lines[ i ][ 1 ], slope_j = lines[ j ][ 1 ];
+			float dis_diff = abs( distance_i - distance_j );
+			float slope_diff = abs( slope_i - slope_j );
 			
-			if( slopeDiff < thetaMax && disDiff < rhoMax ) {
-				bool isCombined = false;
+			if( slope_diff < theta_max && dis_diff < rho_max ) {
+				bool is_combined = false;
 				for( int w = 0; w < i; w++ ) {
-					for( int u = 0; u < combineIndex[ w ].size(); u++ ) {
-						if( combineIndex[ w ][ u ] == j ) {
-							isCombined = true;
+					for( int u = 0; u < combine_index[ w ].size(); u++ ) {
+						if( combine_index[ w ][ u ] == j ) {
+							is_combined = true;
 							break;
 						}
-						if( combineIndex[ w ][ u ] == i )
+						if( combine_index[ w ][ u ] == i )
 							index = w;
 					}
-					if( isCombined )
+					if( is_combined )
 						break;
 				}
-				if( !isCombined )
-					combineIndex[ index ].push_back( j );
+				if( !is_combined )
+					combine_index[ index ].push_back( j );
 			}
 		}
 	}
 	
-	for( auto& i : combineIndex ) {
+	for( auto& i : combine_index ) {
 		if( i.empty())
 			continue;
-		cv::Vec2f lineTemp( 0, 0 );
+		cv::Vec2f line_temp( 0, 0 );
 		for( int j : i ) {
-			lineTemp[ 0 ] += lines[ j ][ 0 ];
-			lineTemp[ 1 ] += lines[ j ][ 1 ];
+			line_temp[ 0 ] += lines[ j ][ 0 ];
+			line_temp[ 1 ] += lines[ j ][ 1 ];
 		}
-		lineTemp[ 0 ] /= i.size();
-		lineTemp[ 1 ] /= i.size();
-		mergedLines.push_back( lineTemp );
+		line_temp[ 0 ] /= i.size();
+		line_temp[ 1 ] /= i.size();
+		merged_lines.push_back( line_temp );
 	}
-	return mergedLines;
+	return merged_lines;
 }
 
 std::vector<cv::Point>
-CVSegmentation::getIntersections( const std::vector<cv::Vec2f>& mergedLines )
+CVSegmentation::getIntersections( const std::vector<cv::Vec2f>& merged_lines )
 {
 	// find intersections from hough lines
 	std::vector<cv::Point> intersections;
-	auto getIntersect = []( const cv::Vec2f& l1, const cv::Vec2f& l2 ) {
+	auto get_intersect = []( const cv::Vec2f& l_1, const cv::Vec2f& l_2 ) {
 		// get intersections of perpendicular lines
 		int x, y = { 0 };
-		if( l1[ 1 ] == l2[ 1 ] )
+		if( l_1[ 1 ] == l_2[ 1 ] )
 			return cv::Point( -1, -1 );
-		if( l1[ 1 ] == 0 ) {
-			x = static_cast<int>(l1[ 0 ]);
-			y = static_cast<int>(l2[ 0 ]);
+		if( l_1[ 1 ] == 0 ) {
+			x = static_cast<int>(l_1[ 0 ]);
+			y = static_cast<int>(l_2[ 0 ]);
 		}
-		if( l2[ 1 ] == 0 ) {
-			x = static_cast<int>(l2[ 0 ]);
-			y = static_cast<int>(l1[ 0 ]);
+		if( l_2[ 1 ] == 0 ) {
+			x = static_cast<int>(l_2[ 0 ]);
+			y = static_cast<int>(l_1[ 0 ]);
 		}
 		return cv::Point( x, y );
 	};
-	for( int i = 0; i < mergedLines.size(); i++ ) {
-		for( int j = i + 1; j < mergedLines.size(); j++ ) {
-			auto intersect = getIntersect( mergedLines[ i ], mergedLines[ j ] );
+	for( int i = 0; i < merged_lines.size(); i++ ) {
+		for( int j = i + 1; j < merged_lines.size(); j++ ) {
+			auto intersect = get_intersect( merged_lines[ i ], merged_lines[ j ] );
 			if( intersect.x != -1 && intersect.y != -1 )
 				intersections.push_back( intersect );
 		}
 	}
 	// sort points on the same line
-	auto sortLRSameRow = []( const cv::Point& p1, const cv::Point& p2 ) {
-		if( p1.y == p2.y )
-			return p1.x < p2.x;
-		return p1.y < p2.y;
+	auto sort_lr_same_row = []( const cv::Point& p_1, const cv::Point& p_2 ) {
+		if( p_1.y == p_2.y )
+			return p_1.x < p_2.x;
+		return p_1.y < p_2.y;
 	};
-	std::sort( intersections.begin(), intersections.end(), sortLRSameRow );
+	std::sort( intersections.begin(), intersections.end(), sort_lr_same_row );
 	
 	return intersections;
 }
 
 std::vector<cv::Mat>
-CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, cv::Mat binImg )
+CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, cv::Mat bin_img )
 {
 	std::vector<cv::Mat> squares;
 	int cnt { 0 };
@@ -431,66 +443,62 @@ CVSegmentation::cutSquares( const std::vector<cv::Point>& intersections, cv::Mat
 			i++;
 			cnt = 0;
 		}
-		cv::Point p1 = intersections[ i ], p2 = intersections[ i + 11 ];
-		cv::Rect roi( p1.x, p1.y, p2.x - p1.x, p2.y - p1.y );
-		cv::Mat croppedRef( binImg, roi );
+		cv::Point p_1 = intersections[ i ], p_2 = intersections[ i + 11 ];
+		cv::Rect roi( p_1.x, p_1.y, p_2.x - p_1.x, p_2.y - p_1.y );
+		cv::Mat cropped_ref( bin_img, roi );
 		cv::Mat cropped;
 		//croppedRef.copyTo( cropped );
-		squares.push_back( croppedRef );
+		squares.push_back( cropped_ref );
 	}
 	
 	return squares;
 }
 
 std::vector<cv::Mat>
-CVSegmentation::preparedSquares( const std::vector<cv::Mat>& squares, float numberFillFactor, DetectionSize d )
+CVSegmentation::preparedSquares( const std::vector<cv::Mat>& squares, float number_fill_factor, DetectionSize d )
 {
-	assert(( numberFillFactor > 0 && numberFillFactor < 1 ) && "numberFillFactor must be between 0 and 1" );
+	assert(( number_fill_factor > 0 && number_fill_factor < 1 ) && "numberFillFactor must be between 0 and 1" );
 	assert((( d.minWidth > 0 && d.minWidth < 1 ) && ( d.maxWidth > 0 && d.maxWidth < 1 ) &&
 	        ( d.minHeight > 0 && d.minHeight < 1 ) && ( d.maxHeight > 0 && d.maxHeight < 1 )) && "DetectionSize must be between 0 and 1" );
 	
-	std::vector<cv::Mat> preparedSquares;
-	float detectMinWidth = 0.18, detectMinHeight = 0.25, detectMaxWidth = 0.75, detectMaxHeight = 0.75;
+	std::vector<cv::Mat> prepared_squares;
 	
 	int cnt { 0 };
-	for( int i = 0; i < squares.size(); i++ ) {
+	for( auto& c : squares ) {
 		std::vector<std::vector<cv::Point>> prepared;
-		cv::Mat c = squares[ i ];
-		cv::Mat candidate = cv::Mat::ones( cv::Size( m_nnWidth, m_nnHeight ), CV_8UC1);
+		cv::Mat candidate = cv::Mat::ones( cv::Size( m_nnSize.first, m_nnSize.second ), CV_8UC1);
 		
 		cv::findContours( c, prepared, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE );
 		
 		for( auto& j : prepared ) {
 			auto r = cv::boundingRect( j );
 			/* if a number matches a rect size of a number ... */
-			if( r.width > c.cols * d.minWidth && r.width < c.cols * d
-				.maxWidth &&
-			    r.height > c.rows * d.minHeight && r.height < c.cols * d
-				.maxHeight ) {
+			if( r.width > c.cols * d.minWidth && r.width < c.cols * d.maxWidth &&
+			    r.height > c.rows * d.minHeight && r.height < c.cols * d.maxHeight ) {
 				
-				cv::Mat croppedRef( c, r );
-				if( croppedRef.cols > candidate.cols || croppedRef
-					                                        .rows > candidate
-					                                        .rows ) {
+				m_usedSquares.push_back( cnt );
+				cv::Mat cropped_ref( c, r );
+				/* if the numbers bounding box is bigger than the
+				 * blank image crop is with respect to their aspect ratio */
+				if( cropped_ref.cols > candidate.cols ||
+				    cropped_ref.rows > candidate.rows ) {
 					cv::Mat resized;
 					// resize with aspect ratio
-					auto ratio = getAspectRatio( croppedRef );
-					cv::resize( croppedRef, resized, cv::Size( static_cast<int>((float) m_nnWidth * numberFillFactor), static_cast<int>((float) m_nnHeight * numberFillFactor )), ratio, ratio );
-					croppedRef = resized;
+					auto ratio = getAspectRatio( cropped_ref );
+					cv::resize( cropped_ref, resized, cv::Size( static_cast<int>((float) m_nnSize.first * number_fill_factor), static_cast<int>((float) m_nnSize.second * number_fill_factor )), ratio, ratio );
+					cropped_ref = resized;
 				}
 				
-				int x = ( m_nnWidth - croppedRef.cols ) / 2;
-				int y = ( m_nnHeight - croppedRef.rows ) / 2;
+				int x = ( static_cast<int>(m_nnSize.first) - cropped_ref.cols ) / 2;
+				int y = ( static_cast<int>(m_nnSize.second) - cropped_ref.rows ) / 2;
 				//copy the croppedRef to the candidate
-				croppedRef.copyTo( candidate( cv::Rect( x, y, croppedRef
-					.cols, croppedRef.rows )));
-				
+				cropped_ref.copyTo( candidate( cv::Rect( x, y, cropped_ref.cols, cropped_ref.rows )));
 			}
 		}
-		preparedSquares.push_back( candidate );
+		prepared_squares.push_back( candidate );
 		cnt++;
 	}
-	return preparedSquares;
+	return prepared_squares;
 }
 
 float CVSegmentation::getAspectRatio( cv::Mat img )
@@ -505,37 +513,37 @@ float CVSegmentation::toRad( float deg )
 }
 
 cv::Mat
-CVSegmentation::drawSegmentedRectImg( const std::vector<cv::Mat>& squares, int borderWidth )
+CVSegmentation::drawSegmentedRectImg( const std::vector<cv::Mat>& squares, int border_width )
 {
-	auto changeColorBorder = [ & ]( auto& m1, auto& m2, int pos ) {
+	auto change_color_border = [ & ]( auto& m_1, auto& m_2, int pos ) {
 		if( pos % 2 == 0 )
-			cv::copyMakeBorder( m1, m2, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 255, 0, 0 ));
+			cv::copyMakeBorder( m_1, m_2, border_width, border_width, border_width, border_width, cv::BORDER_CONSTANT, cv::Scalar( 255, 0, 0 ));
 		else
-			cv::copyMakeBorder( m1, m2, borderWidth, borderWidth, borderWidth, borderWidth, cv::BORDER_CONSTANT, cv::Scalar( 0, 0, 255 ));
+			cv::copyMakeBorder( m_1, m_2, border_width, border_width, border_width, border_width, cv::BORDER_CONSTANT, cv::Scalar( 0, 0, 255 ));
 	};
-	cv::Mat squaredImg;
-	std::vector<cv::Mat> squaresRows( 9 );
-	int j { 0 }, nextW { 0 };
-	for( int i = 0; i < squaresRows.size(); i++ ) {
-		cv::Mat tmpB1, tmpB2;
-		cv::Mat clrB1, clrB2;
-		cv::cvtColor( squares[ j++ ], clrB1, cv::COLOR_GRAY2BGR );
-		changeColorBorder( clrB1, tmpB1, j );
-		cv::cvtColor( squares[ j++ ], clrB2, cv::COLOR_GRAY2BGR );
-		changeColorBorder( clrB2, tmpB2, j );
-		cv::hconcat( tmpB1, tmpB2, squaresRows[ i ] );
-		nextW += 9;
-		for( ; j < nextW; ) {
-			cv::cvtColor( squares[ j++ ], clrB1, cv::COLOR_GRAY2BGR );
-			changeColorBorder( clrB1, tmpB1, j );
-			cv::hconcat( squaresRows[ i ], tmpB1, squaresRows[ i ] );
+	cv::Mat squared_img;
+	std::vector<cv::Mat> squares_rows( 9 );
+	int j { 0 }, next_w { 0 };
+	for( int i = 0; i < squares_rows.size(); i++ ) {
+		cv::Mat tmp_b_1, tmp_b_2;
+		cv::Mat clr_b_1, clr_b_2;
+		cv::cvtColor( squares[ j++ ], clr_b_1, cv::COLOR_GRAY2BGR );
+		change_color_border( clr_b_1, tmp_b_1, j );
+		cv::cvtColor( squares[ j++ ], clr_b_2, cv::COLOR_GRAY2BGR );
+		change_color_border( clr_b_2, tmp_b_2, j );
+		cv::hconcat( tmp_b_1, tmp_b_2, squares_rows[ i ] );
+		next_w += 9;
+		for( ; j < next_w; ) {
+			cv::cvtColor( squares[ j++ ], clr_b_1, cv::COLOR_GRAY2BGR );
+			change_color_border( clr_b_1, tmp_b_1, j );
+			cv::hconcat( squares_rows[ i ], tmp_b_1, squares_rows[ i ] );
 		}
 		if( i == 1 ) {
-			cv::vconcat( squaresRows[ i - 1 ], squaresRows[ i ], squaredImg );
+			cv::vconcat( squares_rows[ i - 1 ], squares_rows[ i ], squared_img );
 		}
 		if( i > 1 ) {
-			cv::vconcat( squaredImg, squaresRows[ i ], squaredImg );
+			cv::vconcat( squared_img, squares_rows[ i ], squared_img );
 		}
 	}
-	return squaredImg;
+	return squared_img;
 }

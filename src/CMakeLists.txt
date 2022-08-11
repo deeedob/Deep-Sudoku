@@ -20,6 +20,7 @@ set( sources
      cv_segmentation.cpp
      cv_img_mat.cpp
      deep_solver.cpp
+     cv_hough_finder.cpp
      )
 set( headers
      app.hpp
@@ -29,6 +30,7 @@ set( headers
      cv_segmentation.hpp
      cv_img_mat.hpp
      deep_solver.hpp
+     cv_hough_finder.hpp
      )
 set( resources
      qml/qml.qrc

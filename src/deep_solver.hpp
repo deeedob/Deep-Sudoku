@@ -6,8 +6,7 @@ class DeepSolver
 {
 public:
 	explicit DeepSolver( const std::string& path );
-	fdeep::tensors predict( cv::Mat& square );
-	int predictMulti( std::vector<cv::Mat>& squares );
+	std::vector<fdeep::tensors> predictMulti( const QImage& src );
 private:
 	fdeep::model m_model;
 };
