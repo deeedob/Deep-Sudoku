@@ -3,13 +3,15 @@ import QtQuick.Controls
 
 Button {
     id: button
-    text: "DS Button"
-    font.bold: true
 
     property color col_basic: "#F9C74F"
-    property color col_hover: "#ECA809"
+    property color col_hover: "#ffa500"
     property color col_click: "#9D7006"
+    property int   base_font: 14
 
+    text: "DS Button"
+    font.bold: true
+    font.pixelSize: (mouseArea.containsMouse) ? base_font*1.3 : base_font
     function getColor(){
         if(button.down)
             return col_click

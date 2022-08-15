@@ -4,6 +4,6 @@ Image {
     anchors.fill: parent
     fillMode: Image.Tile
     mipmap: true
-    source: "qrc:/game_background.png"
-    opacity: 0.18
+    source: "qrc:/game_background_t.png"
+    //opacity: 0.9
 }

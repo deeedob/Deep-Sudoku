@@ -1,7 +1,7 @@
 #include "cv_segmentation.hpp"
 
 CVSegmentation::CVSegmentation( const QImage& src )
-	: m_success( true ), m_processed( false )
+	: m_success( false ), m_processed( false )
 {
 	m_orig = qt_ocv::image2Mat( src, CV_8UC( 4 ), qt_ocv::MCO_BGRA );
 }
@@ -14,6 +14,9 @@ bool CVSegmentation::process()
 	m_mergedLines = mergedHoughLines( m_binCutted );
 	if( m_mergedLines.size() < 20 )
 		m_success = false;
+	else
+		m_success = true;
+	
 	if( m_success ) {
 		m_intersections = getIntersections( m_mergedLines );
 		m_preparedSquares = preparedSquares( cutSquares( m_intersections, m_binCutted ), m_numbFillFactor, m_detectionSize );
@@ -22,54 +25,67 @@ bool CVSegmentation::process()
 	return m_success;
 }
 
-const cv::Mat& CVSegmentation::getOriginal()
+const cv::Mat& CVSegmentation::getOriginal() noexcept
 {
 	return m_orig;
 }
 
-const cv::Mat& CVSegmentation::getBinarizedImg()
+cv::Mat CVSegmentation::getBinarizedImg()
 {
 	if( m_processed )
 		return m_origBin;
+	else {
+		return binarizedImg( m_orig );
+	}
 }
 
-const cv::Mat& CVSegmentation::getBinarizedCuttedImg()
+cv::Mat CVSegmentation::getBinarizedCuttedImg()
 {
 	if( m_processed )
 		return m_binCutted;
+	else {
+		auto temp = binarizedImg( m_orig );
+		return warpSelection( temp, getRectangularContour( temp ));
+	}
 }
 
 cv::Mat CVSegmentation::getMergedLinesImg()
 {
-	cv::Mat lines_img;
-	cv::cvtColor( m_binCutted, lines_img, cv::COLOR_GRAY2BGR );
-	for( auto& merged_line : m_mergedLines ) {
-		float rho = merged_line[ 0 ], theta = merged_line[ 1 ];
-		cv::Point pt_1, pt_2;
-		double a = cos( theta ), b = sin( theta );
-		double x_0 = a * rho, y_0 = b * rho;
-		pt_1.x = cvRound( x_0 + m_orig.cols * ( -b ));
-		pt_1.y = cvRound( y_0 + m_orig.rows * ( a ));
-		pt_2.x = cvRound( x_0 - m_orig.cols * ( -b ));
-		pt_2.y = cvRound( y_0 - m_orig.rows * ( a ));
-		cv::line( lines_img, pt_1, pt_2, cv::Scalar( 0, 0, 255 ), 12, cv::LINE_AA );
+	if( m_processed ) {
+		cv::Mat lines_img;
+		cv::cvtColor( m_binCutted, lines_img, cv::COLOR_GRAY2BGR );
+		for( auto& merged_line : m_mergedLines ) {
+			float rho = merged_line[ 0 ], theta = merged_line[ 1 ];
+			cv::Point pt_1, pt_2;
+			double a = cos( theta ), b = sin( theta );
+			double x_0 = a * rho, y_0 = b * rho;
+			pt_1.x = cvRound( x_0 + m_orig.cols * ( -b ));
+			pt_1.y = cvRound( y_0 + m_orig.rows * ( a ));
+			pt_2.x = cvRound( x_0 - m_orig.cols * ( -b ));
+			pt_2.y = cvRound( y_0 - m_orig.rows * ( a ));
+			cv::line( lines_img, pt_1, pt_2, cv::Scalar( 0, 0, 255 ), 12, cv::LINE_AA );
+		}
+		return lines_img;
 	}
-	return lines_img;
+	return cv::Mat::ones( m_orig.rows, m_orig.cols, CV_8UC1);
 }
 
 cv::Mat CVSegmentation::getIntersectionImg()
 {
-	cv::Mat intersection_img;
-	cv::cvtColor( m_binCutted, intersection_img, cv::COLOR_GRAY2BGR );
-	for( auto& i : m_intersections ) {
-		cv::circle( intersection_img, i, 25, cv::Scalar( 255, 0, 255 ), -1 );
+	if( m_processed ) {
+		cv::Mat intersection_img;
+		cv::cvtColor( m_binCutted, intersection_img, cv::COLOR_GRAY2BGR );
+		for( auto& i : m_intersections ) {
+			cv::circle( intersection_img, i, 25, cv::Scalar( 255, 0, 255 ), -1 );
+		}
+		return intersection_img;
 	}
-	return intersection_img;
+	return cv::Mat::ones( m_orig.rows, m_orig.cols, CV_8UC1);
 }
 
 cv::Mat CVSegmentation::getPreparedSquaresImg()
 {
-	if( m_success )
+	if( m_processed && m_success )
 		return drawSegmentedRectImg( m_preparedSquares, 3 );
 	else
 		return cv::Mat::ones( m_orig.rows, m_orig.cols, CV_8UC1);
@@ -85,7 +101,7 @@ const std::vector<cv::Mat>& CVSegmentation::getPreparedSquares() const noexcept
 	return m_preparedSquares;
 }
 
-const std::vector<int>& CVSegmentation::getUsedSquares() const noexcept
+const std::vector<int>& CVSegmentation::getUsedSquareNums() const noexcept
 {
 	return m_usedSquares;
 }
@@ -229,117 +245,6 @@ CVSegmentation::mergedHoughLines( cv::Mat bin_img )
 	cv::HoughLines( edges, lines, 5, CV_PI / 2, 480, 0, 0 ); // runs the actual detection
 	return mergedHoughLinesImpl( lines, toRad( 3 ), 50 );
 }
-//TODO: implement later
-#if 0
-/* TODO: move to seperate class! */
-std::pair<cv::Mat, cv::Mat> CVSegmentation::customGradientImage( cv::Mat binImg )
-{
-	cv::Mat_<float> sobelX( 3, 3 ), sobelY( 3, 3 );
-	cv::Mat gradX, gradY;
-	sobelX << -1 / 8, 0, 1 / 8,
-		-2 / 8, 0, 2 / 8,
-		-1 / 8, 0, 1 / 8;
-	sobelY << 1 / 8, 2 / 8, 1 / 8,
-		0, 0, 0,
-		-1 / 8, -2 / 8, -1 / 8;
-	cv::filter2D( binImg, gradX, -1, sobelX );
-	cv::filter2D( binImg, gradY, -1, sobelY );
-	return { gradX, gradY };
-}
-
-std::vector<cv::Vec2f>
-CVSegmentation::customHoughLinesImpl( cv::Mat bin_img )
-{
-	auto gradients = customGradientImage( bin_img );
-	auto get_theta_rho_magnitude = [ & ]( cv::Point coord ) {
-
-	};
-	auto make_accumulator = [ & ]() {
-		auto theta_res = M_PI / 720;
-		auto rho_res = 1;
-		auto min_magnitude = 1;
-		auto max_angle_deviation = 20 * M_PI / 180;
-		auto min_n_of_votes = 230;
-		bool normalize = true;
-		
-		auto hough_x = static_cast<int>(( M_PI * 2 / theta_res ));
-		auto hough_y = static_cast<int>(std::pow( gradients.first.cols, 2 ) + std::pow( gradients.first.rows, 2 )) + 1;
-		std::vector<std::vector<uchar>> h_accumulator( hough_y, std::vector<uchar>( hough_x, 0 ));
-		for( int x = 0; x < gradients.first.rows; x++ ) {
-			for( int y = 0; y < gradients.first.cols; y++ ) {
-				auto trm = get_theta_rho_magnitude( { x, y } );
-				auto theta = std::get<0>( trm );
-				auto rho = std::get<1>( trm );
-				auto mag = std::get<2>( trm );
-				if( mag >= min_magnitude && !std::isnan( theta ))
-					if( std::abs(( M_PI / 2 ) - theta ) <= max_angle_deviation ||
-						std::abs( theta ) <= max_angle_deviation ) {
-						auto hough_tx = static_cast<int>(theta / theta_res);
-						auto hough_ty = static_cast<int>(rho / rho_res);
-						h_accumulator[ y ][ x ]++;
-					}
-			}
-		}
-		if( min_n_of_votes != 0 ) {
-			for( auto& y : h_accumulator ) {
-				for( auto& x : y ) {
-					if( x < min_n_of_votes )
-						x = 0;
-				}
-			}
-		}
-		if( normalize ) {
-			uchar max { std::numeric_limits<uchar>::min() };
-			for( const auto& y : h_accumulator ) {
-				max = std::max( max, *std::max_element( y.begin(), y.end()));
-			}
-			for( auto& y : h_accumulator ) {
-				for( auto& x : y ) {
-					x /= ( max * 255 );
-				}
-			}
-		}
-		return cv::Mat( h_accumulator );
-	};
-	
-	cv::Mat hough_accumulator = make_accumulator();
-	
-	auto get_lines = [ & ]() {
-		auto theta_res = M_PI / 180;
-		auto rho_res = 1;
-		cv::Mat bin_accu;
-		cv::threshold( hough_accumulator, bin_accu, 1, 255, cv::THRESH_BINARY );
-		cv::Mat_<uchar> erod_kern_5, erod_kern_3;
-		erod_kern_5 << 0, 0, 1, 0, 0,
-			0, 0, 1, 0, 0,
-			0, 0, 1, 0, 0,
-			0, 0, 1, 0, 0,
-			0, 0, 1, 0, 0;
-		// TODO: ?!?!
-		cv::erode( bin_accu, bin_accu, erod_kern_5, { -1, -1 }, 6 );
-		cv::dilate( bin_accu, bin_accu, 5 );
-		cv::erode( bin_accu, bin_accu, 5 );
-		cv::dilate( bin_accu, bin_accu, 17 );
-		cv::erode( bin_accu, bin_accu, 15 );
-		
-		cv::Mat marked_accu = cv::Mat::zeros( bin_accu.rows, bin_accu.cols, CV_8UC1);
-		auto flood_fill = [ & ]( auto&& flood_fill, cv::Point p, std::vector<cv::Vec3f>& lines ) {
-			if( p.x < 0 || p.y < 0 || p.x > hough_accumulator.cols || p.y > hough_accumulator.rows )
-				return;
-			if( bin_accu.at<uchar>( p ) == 0 || marked_accu.at<uchar>( p ) > 0 )
-				return;
-			marked_accu.at<uchar>( p ) = 255;
-			lines.push_back(
-				{ static_cast<float>(p.x * rho_res),
-				  static_cast<float>(p.y * theta_res),
-				  hough_accumulator.at<float>( p )
-				} );
-			flood_fill( flood_fill, { p.x + 1, p.y }, lines );
-		};
-		
-	};
-}
-#endif
 
 std::vector<cv::Vec2f>
 CVSegmentation::mergedHoughLinesImpl( const std::vector<cv::Vec2f>& lines, float theta_max, float rho_max )

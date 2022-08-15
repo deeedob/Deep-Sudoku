@@ -3,8 +3,8 @@ import QtQuick 2.9
 
 QtObject {
     property QtObject color: QtObject {
-        property color background: "#ffa837"
-        property color backgroundDark: "#de741c"
+        property color background: "#ffd782"
+        property color backgroundDark: "#ffa500"
         property color navBar: "#b85b56"
         property color hoverIcon: "#E7C7C5"
 

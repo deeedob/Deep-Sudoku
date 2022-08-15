@@ -4,7 +4,10 @@
         <file>prevfile.svg</file>
         <file>camera.svg</file>
         <file>switch-camera.svg</file>
+        <file>game_background_t.png</file>
         <file>game_background.png</file>
         <file>save_game.svg</file>
+        <file>accept.svg</file>
+        <file>cancel.svg</file>
     </qresource>
 </RCC>

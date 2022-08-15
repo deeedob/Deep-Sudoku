@@ -11,7 +11,7 @@ std::vector<DeepSolver::ReturnVal> DeepSolver::predictMulti( const QImage& src )
 	CVSegmentation temp( src );
 	temp.process();
 	auto squares = temp.getPreparedSquares();
-	auto used_squares = temp.getUsedSquares();
+	auto used_squares = temp.getUsedSquareNums();
 	
 	auto size = CVSegmentation::getNNSize();
 	fdeep::tensor_shape shape( size.first, size.second, 1 );

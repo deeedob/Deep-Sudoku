@@ -30,8 +30,8 @@ add_executable( test_custom_hough
                 ../src/img_proc/cv_hough_finder.hpp
                 )
 
-add_executable( test_predictTensor
-                test_predictTensor.cpp
+add_executable( test_predict_tensor
+                test_predict_tensor.cpp
                 ../src/img_proc/cv_segmentation.cpp
                 ../src/img_proc/cv_segmentation.hpp
                 ../src/img_proc/cv_img_mat.cpp
@@ -53,7 +53,7 @@ target_link_libraries( test_custom_hough
                        ${OpenCV_LIBS}
                        )
 
-target_link_libraries( test_predictTensor
+target_link_libraries( test_predict_tensor
                        PRIVATE
                        Qt6::Core
                        Qt6::Multimedia

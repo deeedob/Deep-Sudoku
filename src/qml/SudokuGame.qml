@@ -10,6 +10,7 @@ Rectangle {
 
     property int currentIndex: -1
     property int elapsedTicks: 0
+    property int _inputFieldMargin: 150
 
     function setCurrentCellValue(value) {
         Logic.model.setCellValue(currentIndex, value);
@@ -132,6 +133,8 @@ Rectangle {
         anchors.bottom: nav.top
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.leftMargin: _inputFieldMargin
+        anchors.rightMargin: _inputFieldMargin
         onButtonClicked: (num) => root.setCurrentCellValue(num)
         onClearClicked: root.clearCurrentCellValue()
     }

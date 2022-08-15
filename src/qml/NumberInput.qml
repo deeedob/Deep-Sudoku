@@ -26,7 +26,8 @@ Rectangle {
         property double colMulti : (grid.width - marginVal) / grid.columns
         property double rowMulti : (grid.height - bottomMarginVal) / grid.rows
         function prefWidth(item){
-            return colMulti * item.Layout.columnSpan
+            var val = colMulti * item.Layout.columnSpan
+            return val
         }
         function prefHeight(item){
             var val = rowMulti * item.Layout.rowSpan

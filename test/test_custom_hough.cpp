@@ -15,12 +15,9 @@ int main()
 	img = img.transformed( transform.rotate( 90 ));
 	
 	CVSegmentation seg( img );
-	cv::Mat bin = seg.binarizedImg( seg.getOriginal());
-	auto contour = seg.getRectangularContour( bin );
-	auto cutted = seg.warpSelection( bin, contour );
+	auto cutted = seg.getBinarizedCuttedImg();
 	CVHoughFinder finder( cutted );
 	finder.process();
-	
 	
 	/* wait and destroy */
 	while ( true ) {
