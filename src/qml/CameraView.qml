@@ -95,6 +95,7 @@ Rectangle {
     function getSpacing() {
         return Window.width / 7
     }
+
     Rectangle {
         id: captureSettings
         height: 100
@@ -135,6 +136,7 @@ Rectangle {
                 hoverColor: Globals.color.hoverIcon
                 onClicked: {
                     imageCapture.capture()
+                    photoPreview.source = imageCapture.preview
                     setEditState()
                 }
                 source: "qrc:/camera.svg"
@@ -179,7 +181,6 @@ Rectangle {
                 hoverColor: Globals.color.hoverIcon
                 source: "qrc:/accept.svg"
                 onClicked: {
-                    photoPreview.transform.rotation = 90
                 }
             }
 
