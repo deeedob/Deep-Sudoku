@@ -40,7 +40,7 @@ public:
 	Q_INVOKABLE void clearCellValue( int index );
 	Q_INVOKABLE void setCellStatus( int index, const QString& status );
 	Q_INVOKABLE void clearSelection();
-
+	QModelIndex index( int row, int column, const QModelIndex& parent ) const override;
 private:
 	void setSelectionStatus( const QModelIndex& index );
 	mapping getQuadraticValue( int position ) const;

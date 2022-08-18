@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/custom">
         <file>DSButton.qml</file>
         <file>IconButton.qml</file>
         <file>CenterFlow.qml</file>

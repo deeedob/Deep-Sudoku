@@ -255,3 +255,8 @@ BoardModel::mapping BoardModel::mapToLinear( BoardModel::mapping index )
 	
 	return { row, column };
 }
+
+QModelIndex BoardModel::index( int row, int column, const QModelIndex& parent ) const
+{
+	return createIndex( row, column );
+}
