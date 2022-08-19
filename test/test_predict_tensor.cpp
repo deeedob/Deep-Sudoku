@@ -1,5 +1,5 @@
 #include "../src/img_proc/cv_segmentation.hpp"
-#include "../src/img_proc/deep_solver.hpp"
+#include "../src/deep_solver.hpp"
 #include <filesystem>
 #include <opencv4/opencv2/opencv.hpp>
 #include <cassert>

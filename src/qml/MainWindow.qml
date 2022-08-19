@@ -9,9 +9,10 @@ Window {
     height: 800
     visible: true
 
-
-    ReloadWindow {
-
+    StackView {
+        id: stackView
+        anchors.fill: parent
+        initialItem: StartScreen { }
     }
 
 }

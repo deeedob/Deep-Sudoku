@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import App
 import "global"
 import "custom"
 
@@ -13,15 +14,20 @@ Rectangle {
     property int _inputFieldMargin: 150
 
     function setCurrentCellValue(value) {
-        Logic.model.setCellValue(currentIndex, value);
+        App.model.setCellValue(currentIndex, value);
     }
 
     function clearCurrentCellValue() {
-        Logic.model.clearCellValue(currentIndex);
+        App.model.clearCellValue(currentIndex);
     }
 
     function clearSelection() {
-        Logic.model.clearSelection();
+        App.model.clearSelection();
+    }
+
+    function solveField() {
+        var solvedVal = App.model.getCellSolved(currentIndex)
+        setCurrentCellValue(solvedVal)
     }
 
     function getCellColor(status, conflict, index) {
@@ -100,7 +106,7 @@ Rectangle {
         //anchors.right: parent.right
         //anchors.margins: 25
         Repeater {
-            model: Logic.model
+            model: App.model
             Rectangle {
                 id: cell
                 Layout.fillHeight: true
@@ -137,6 +143,7 @@ Rectangle {
         anchors.rightMargin: _inputFieldMargin
         onButtonClicked: (num) => root.setCurrentCellValue(num)
         onClearClicked: root.clearCurrentCellValue()
+        onSolveClicked: root.solveField()
     }
 
     Rectangle {

@@ -15,15 +15,15 @@ Rectangle {
             text: "Capture"
             width: btn_width
             height: btn_height
-            onClicked: {
-                stackView.replace("CameraView.qml")
+            onPressed: {
+                stackView.replace("qrc:/CameraView.qml")
             }
         }
         DSButton {
             text: "Game"
             width: btn_width
             height: btn_height
-            onClicked: stackView.replace("SudokuGame.qml")
+            onPressed: stackView.replace("qrc:/SudokuGame.qml")
         }
         DSButton {
             text: "History"

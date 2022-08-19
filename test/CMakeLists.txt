@@ -1,10 +1,12 @@
 cmake_minimum_required( VERSION 3.2 )
 
-find_package( Qt6 COMPONENTS Core Multimedia REQUIRED )
+find_package( Qt6 COMPONENTS Core Qml Quick Multimedia Widgets REQUIRED )
 find_package( OpenCV
               HINTS ${THIRD_PARTY_INSTALL_DIR}/opencv
               NO_DEFAULT_PATH
               REQUIRED )
+
+set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
 find_package(
 		frugally-deep
 		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
@@ -36,9 +38,20 @@ add_executable( test_predict_tensor
                 ../src/img_proc/cv_segmentation.hpp
                 ../src/img_proc/cv_img_mat.cpp
                 ../src/img_proc/cv_img_mat.hpp
-                ../src/img_proc/deep_solver.cpp
-                ../src/img_proc/deep_solver.hpp
+                ../src/deep_solver.cpp
+                ../src/deep_solver.hpp
                 )
+
+add_executable( test_solver
+                test_solver.cpp
+                ../src/img_proc/cv_segmentation.cpp
+                ../src/img_proc/cv_segmentation.hpp
+                ../src/img_proc/cv_img_mat.cpp
+                ../src/img_proc/cv_img_mat.hpp
+                ../src/deep_solver.cpp
+                ../src/deep_solver.hpp
+                )
+
 target_link_libraries( test_opencv
                        PRIVATE
                        Qt6::Core
@@ -54,6 +67,14 @@ target_link_libraries( test_custom_hough
                        )
 
 target_link_libraries( test_predict_tensor
+                       PRIVATE
+                       Qt6::Core
+                       Qt6::Multimedia
+                       ${OpenCV_LIBS}
+                       frugally-deep::fdeep
+                       )
+
+target_link_libraries( test_solver
                        PRIVATE
                        Qt6::Core
                        Qt6::Multimedia

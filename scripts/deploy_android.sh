@@ -7,14 +7,14 @@ echo "====================[ DEPLOY| ${PROJECT_NAME} | ARM ]=====================
 # get binary directory
 if [ -z "$1" ]; then
     echo "No argument supplied"
-    echo "Usage: ./deploy_android.sh <SettingsDir> <androiddeployqt>"
+    echo "Usage: ./deploy_android.sh <BuildDir> <path/to/androiddeployqt>"
     exit 1
 fi
 
 # get binary directory
 if [ -z "$2" ]; then
     echo "No argument supplied"
-    echo "Usage: ./deploy_android.sh <SettingsDir> <androiddeployqt>"
+    echo "Usage: ./deploy_android.sh <BuildDir> <path/to/androiddeployqt>"
     exit 1
 fi
 

@@ -2,6 +2,7 @@ import QtQuick
 import QtMultimedia
 import QtQuick.Layouts
 import QtQuick.Dialogs
+import App
 import "global"
 import "custom"
 
@@ -22,6 +23,7 @@ Rectangle {
         captureSettings.visible = true
         editSetting.visible = false
         photoPreview.visible = false
+        photoPreview.source = imageCapture.preview
     }
 
     Rectangle {
@@ -45,7 +47,7 @@ Rectangle {
 
             videoOutput: output
 
-            Component.onCompleted: mediaHelper.session = captureSession
+            //Component.onCompleted: mediaHelper.session = captureSession
         }
 
         Rectangle {
@@ -56,26 +58,27 @@ Rectangle {
                 return 50
             }
             color: "transparent"
+            /*
             anchors.fill: parent
             anchors.leftMargin: getMargin()
             anchors.rightMargin: getMargin()
             anchors.topMargin: getMargin()
-
             VideoOutput {
                 id: output
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectCrop
                 focus: visible
                 visible: true
-            }
-
+            } */
+            /*
             Image {
                 id: photoPreview
                 anchors.fill: parent
-                fillMode: Image.PreserveAspectCrop
+                fillMode: Image.PreserveAspectFit
+                clip: true
                 source: imageCapture.preview
                 visible: false
-            }
+            } */
         }
 
     }
@@ -135,8 +138,7 @@ Rectangle {
                 hoverRadius: 25
                 hoverColor: Globals.color.hoverIcon
                 onClicked: {
-                    imageCapture.capture()
-                    photoPreview.source = imageCapture.preview
+                    //imageCapture.capture()
                     setEditState()
                 }
                 source: "qrc:/camera.svg"
@@ -181,6 +183,11 @@ Rectangle {
                 hoverColor: Globals.color.hoverIcon
                 source: "qrc:/accept.svg"
                 onClicked: {
+                    //if(App.solveGame(photoPreview))
+                    if(App.solveGame(photoPreview.source))
+                        stackView.replace("qrc:/SudokuGame.qml")
+                    else
+                        console.log("not valid");
                 }
             }
 
@@ -233,7 +240,7 @@ Rectangle {
                 id: btnReturn
                 width: parent.height
                 hoverColor: Globals.color.hoverIcon
-                onClicked: stackView.replace("StartScreen.qml")
+                onClicked: stackView.replace("qrc:/StartScreen.qml")
             }
 
             IconButton {
@@ -241,10 +248,11 @@ Rectangle {
                 width: parent.height
                 hoverColor: Globals.color.hoverIcon
                 source: "qrc:/save_game.svg"
-                onClicked: stackView.replace("StartScreen.qml")
+                onClicked: stackView.replace("qrc:/StartScreen.qml")
             }
         }
 
     }
+
 
 }

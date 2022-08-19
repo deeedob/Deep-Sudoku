@@ -3,6 +3,7 @@ cmake_minimum_required( VERSION 3.16 )
 project( QTSudoku LANGUAGES CXX )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
+set( ignore_c_warning ${CMAKE_C_COMPILER} )
 
 if( CMAKE_CXX_COMPILER_LOADED )
 	message( STATUS "Compiler path: ${CMAKE_CXX_COMPILER}" )
@@ -16,11 +17,11 @@ option( OUTPUT_COMPILER_INFO
         "Output compiler information when launching the main executable." ON )
 option( BUILD_TEST
         "Build Unit Tests"
-        ON
+        OFF
         )
 option( BUILD_APP_TEST
         "Build Standalone application Tests"
-        ON
+        OFF
         )
 
 # variables to store additional compiler flags

@@ -1,7 +1,7 @@
-#include <opencv4/opencv2/imgproc.hpp>
 #include "cv_hough_finder.hpp"
 #include <iostream>
 #include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
 CVHoughFinder::CVHoughFinder( cv::Mat& bin_img )
 	: m_binImg( bin_img )

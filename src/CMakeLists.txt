@@ -17,9 +17,9 @@ set( sources
      board_model.cpp
      cell_data.cpp
      media_capture.cpp
+     deep_solver.cpp
      img_proc/cv_segmentation.cpp
      img_proc/cv_img_mat.cpp
-     img_proc/deep_solver.cpp
      img_proc/cv_hough_finder.cpp
      )
 set( headers
@@ -27,11 +27,12 @@ set( headers
      board_model.hpp
      cell_data.hpp
      media_capture.hpp
+     deep_solver.hpp
      img_proc/cv_segmentation.hpp
      img_proc/cv_img_mat.hpp
-     img_proc/deep_solver.hpp
      img_proc/cv_hough_finder.hpp
      )
+
 set( resources
      qml/qml.qrc
      qml/custom/custom.qrc
@@ -44,6 +45,8 @@ set( THIRD_PARTY_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party" )
 
 # find and install frugally deep and its dependencies!
 include( ../cmake/frugally-deep-build.cmake )
+
+set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
 find_package(
 		frugally-deep
 		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
@@ -63,11 +66,19 @@ if( ANDROID )
 	
 	set( CMAKE_FIND_ROOT_PATH ${ANDROID_QT_ROOT} )
 	find_package( Qt6 COMPONENTS ${QTLibs} REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH )
+	qt_standard_project_setup()
 	
 	qt_add_executable( QSudoku
 	                   ${sources}
 	                   ${headers}
 	                   ${resources}
+	                   )
+	
+	qt_add_qml_module( QSudoku
+	                   URI App
+	                   VERSION 1.0
+	                   SOURCES
+	                   app.cpp app.hpp
 	                   )
 	
 	set( QT_ANDROID_EXTRA_LIBS
@@ -82,7 +93,6 @@ else()
 	# currently for the Desktop Build OpenCV need to be installed on
 	# the system to avoid huge build times
 	message( "DESKTOP BUILD" )
-	add_definitions( -DQT_QML_DEBUG )
 	
 	# build opencv on first init
 	include( ../cmake/desktop-opencv-settings.cmake )
@@ -93,6 +103,7 @@ else()
 	              NO_DEFAULT_PATH
 	              REQUIRED )
 	find_package( Qt6 COMPONENTS ${QTLibs} REQUIRED )
+	qt_standard_project_setup()
 	
 	list( APPEND sources enhanced_engine.cpp )
 	list( APPEND headers enhanced_engine.hpp )
@@ -101,7 +112,12 @@ else()
 	                   ${headers}
 	                   ${resources}
 	                   )
-	
+	qt_add_qml_module( QSudoku
+	                   URI App
+	                   VERSION 1.0
+	                   SOURCES
+	                   app.cpp app.hpp
+	                   )
 	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
@@ -111,6 +127,7 @@ foreach( Lib ${QTLibs} )
 	list( APPEND QTLinker "Qt6::${Lib}" )
 endforeach()
 MESSAGE( "LINKING TO : " ${QTLinker} )
+
 target_link_libraries( QSudoku
                        PRIVATE
                        ${QTLinker}

@@ -14,8 +14,8 @@ QtObject {
         property color selectedCell: "#67cbb6"
         property color sameRowCell: "#8dd6c9"
         property color sameColumnCell: "#b7e3dc"
-        property color editFont: "#125147"
-        property color nonEditFont: "#0d3832"
+        property color editFont: "#212322"
+        property color nonEditFont: "#363D3C"
 
     }
 }

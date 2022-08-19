@@ -5,30 +5,12 @@ BoardModel::BoardModel( u_int16_t width, u_int16_t height, QObject* parent )
 {
 }
 
-/**
- * "The number of rows in the model is the number of cells in the board."
- *
- * The `rowCount()` function is called by the view to determine how many rows it should display. In this case, the number
- * of rows is the same as the number of cells in the board
- *
- * @param parent The parent index of the item.
- *
- * @return The number of rows in the model.
- */
 int BoardModel::rowCount( const QModelIndex& parent ) const
 {
 	Q_UNUSED( parent )
 	return m_width * m_height;
 }
 
-/**
- * If the index is valid and the role is one of the roles we defined, return the appropriate value from the data array
- *
- * @param index The index of the item that we want to get data from.
- * @param role The role for which we want to retrieve data.
- *
- * @return The value, status, conflict, and editable of the cell at the given index.
- */
 QVariant BoardModel::data( const QModelIndex& index, int role ) const
 {
 	if( !index.isValid() || index.model() != this )
@@ -43,23 +25,14 @@ QVariant BoardModel::data( const QModelIndex& index, int role ) const
 		return m_data[ quad.first ][ quad.second ].getConflict();
 	else if( role == EditableRole )
 		return m_data[ quad.first ][ quad.second ].getEditable();
+	else if( role == SolvedRole )
+		return m_data[ quad.first ][ quad.second ].getSolved();
 	
 	return { };
 }
 
-/**
- * If the index is valid, set the value of the cell at the index to the value passed in, and if the value is valid, emit a
- * dataChanged signal
- *
- * @param index The index of the item that is being changed.
- * @param value The new value for the item.
- * @param role The role of the data to be set.
- *
- * @return A boolean value.
- */
 bool BoardModel::setData( const QModelIndex& index, const QVariant& value, int role )
 {
-	
 	if( index.row() < 0 || index.row() > m_width * m_height )
 		return false;
 	QVector<int> roles;
@@ -89,16 +62,14 @@ bool BoardModel::setData( const QModelIndex& index, const QVariant& value, int r
 			right = createIndex( m_width * m_height, 0 );
 		}
 		roles << StatusRole;
+	} else if( role == SolvedRole ) {
+		m_data[ quad.first ][ quad.second ].setSolved( value.toInt());
+		roles << SolvedRole;
 	}
 	emit dataChanged( left, right, roles );
 	return true;
 }
 
-/**
- * It returns a hash table that maps the integer values of the roles to the names of the roles
- *
- * @return A hash table of the roles.
- */
 QHash<int, QByteArray> BoardModel::roleNames() const
 {
 	static QHash<int, QByteArray> roles;
@@ -106,29 +77,16 @@ QHash<int, QByteArray> BoardModel::roleNames() const
 	roles[ StatusRole ] = "status";
 	roles[ ConflictRole ] = "conflict";
 	roles[ EditableRole ] = "editable";
+	roles[ SolvedRole ] = "solved";
 	return roles;
 }
 
-/**
- * The flags for the board model are that it is selectable and enabled.
- *
- * @param index The index of the item in the model.
- *
- * @return Qt::ItemIsSelectable | Qt::ItemIsEnabled
- */
 Qt::ItemFlags BoardModel::flags( const QModelIndex& index ) const
 {
 	Q_UNUSED( index );
 	return Qt::ItemIsSelectable | Qt::ItemIsEnabled;
 }
 
-/**
- * It takes a position and returns a pair of values that represent the height and width of the position
- *
- * @param position The position of the tile on the board.
- *
- * @return A pair of integers.
- */
 std::pair<u_int16_t, u_int16_t> BoardModel::getQuadraticValue( int position ) const
 {
 	int w = ( position % m_width );
@@ -136,12 +94,6 @@ std::pair<u_int16_t, u_int16_t> BoardModel::getQuadraticValue( int position ) co
 	return { h, w };
 }
 
-/**
- * It sets the status of all the cells in the board to "none" except for the cell that was clicked on, which is set to
- * "selected"
- *
- * @param index The index of the cell that was clicked.
- */
 void BoardModel::setSelectionStatus( const QModelIndex& index )
 {
 	auto quad = getQuadraticValue( index.row());
@@ -168,15 +120,17 @@ void BoardModel::setCellValue( int index, int value )
 	setData( createIndex( index, 0 ), value, ValueRole );
 }
 
+int BoardModel::getCellSolved( int index )
+{
+	return data( createIndex( index, 0 ), SolvedRole ).toInt();
+}
+
 void BoardModel::clearCellValue( int index )
 {
 	auto i = data( createIndex( index, 0 ), ValueRole );
 	setCellValue( index, -1 );
 }
 
-/**
- * It clears the selection
- */
 void BoardModel::clearSelection()
 {
 	for( int i = 0; i < m_width * m_height; i++ ) {
@@ -189,11 +143,6 @@ void BoardModel::setCellStatus( int index, const QString& status )
 	setData( createIndex( index, 0 ), status, StatusRole );
 }
 
-/**
- * For each cell, check if it's value is the same as any other cell in the same row, column, or square
- *
- * @return A boolean value.
- */
 bool BoardModel::checkConflicts()
 {
 	bool isChanged = false;
@@ -241,14 +190,7 @@ bool BoardModel::checkConflicts()
 	return isChanged;
 }
 
-/**
- * It takes a two-dimensional index and returns a one-dimensional index
- *
- * @param index The index of the cell to map.
- *
- * @return A pair of integers.
- */
-BoardModel::mapping BoardModel::mapToLinear( BoardModel::mapping index )
+BoardModel::Quadratic BoardModel::mapToLinear( BoardModel::Quadratic index )
 {
 	const int row = qFloor( index.first / 3 ) * 3 + qFloor( index.second / 3 );
 	const int column = ( index.first % 3 ) * 3 + ( index.second % 3 );
@@ -259,4 +201,29 @@ BoardModel::mapping BoardModel::mapToLinear( BoardModel::mapping index )
 QModelIndex BoardModel::index( int row, int column, const QModelIndex& parent ) const
 {
 	return createIndex( row, column );
+}
+
+void BoardModel::setBoard( const DeepSolver::Board& other ) noexcept
+{
+	for( int row = 0; row < m_data.size(); row++ ) {
+		for( int col = 0; col < m_data[ row ].size(); col++ ) {
+			if( !other[ row ][ col ].second ) {
+				m_data[ row ][ col ].setValue( other[ row ][ col ].first );
+				m_data[ row ][ col ].setEditable( other[ row ][ col ].second );
+			} else {
+				m_data[ row ][ col ].setSolved( other[ row ][ col ].first );
+			}
+		}
+	}
+	
+	QVector<int> roles;
+	roles << ValueRole;
+	roles << EditableRole;
+	roles << SolvedRole;
+	
+	if( checkConflicts()) {
+		roles << ConflictRole;
+	}
+	
+	emit dataChanged( createIndex( 0, 0 ), createIndex( m_width * m_height, 0 ), roles );
 }

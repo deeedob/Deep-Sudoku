@@ -1,6 +1,6 @@
 #pragma once
 #include <QImage>
-#include <opencv4/opencv2/imgproc.hpp>
+#include <opencv2/imgproc.hpp>
 #include "cv_img_mat.hpp"
 
 class CVSegmentation

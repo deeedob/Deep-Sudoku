@@ -24,7 +24,7 @@
 ****************************************************************************/
 
 #pragma once
-#include <opencv4/opencv2/core/core.hpp>
+#include <opencv2/core/core.hpp>
 #include <QImage>
 
 namespace qt_ocv
@@ -32,11 +32,11 @@ namespace qt_ocv
 	
 	enum MatColorOrder
 	{
-	MCO_BGR ,
-	MCO_RGB ,
-	MCO_BGRA = MCO_BGR ,
-	MCO_RGBA = MCO_RGB ,
-	MCO_ARGB
+		MCO_BGR,
+		MCO_RGB,
+		MCO_BGRA = MCO_BGR,
+		MCO_RGBA = MCO_RGB,
+		MCO_ARGB
 	};
 /* Convert QImage to/from cv::Mat
  *
@@ -53,8 +53,8 @@ namespace qt_ocv
  * - QImage
  *   - All of the formats of QImage are supported.
  */
-	cv::Mat image2Mat( const QImage& img , int requiredMatType = CV_8UC( 4 ) , MatColorOrder requiredOrder = MCO_BGR );
-	QImage mat2Image( const cv::Mat& mat , MatColorOrder order = MCO_BGR , QImage::Format formatHint = QImage::Format_Invalid );
+	cv::Mat image2Mat( const QImage& img, int requiredMatType = CV_8UC( 4 ), MatColorOrder requiredOrder = MCO_BGR );
+	QImage mat2Image( const cv::Mat& mat, MatColorOrder order = MCO_BGR, QImage::Format formatHint = QImage::Format_Invalid );
 /* Convert QImage to/from cv::Mat without data copy
  *
  * - Supported QImage formats and cv::Mat types are:
@@ -77,7 +77,7 @@ namespace qt_ocv
  * - User must make sure that the color channels order is the same as
  *   the color channels order requried by QImage.
  */
-	cv::Mat image2MatShared( const QImage& img , MatColorOrder* order = nullptr );
-	QImage mat2ImageShared( const cv::Mat& mat , QImage::Format formatHint = QImage::Format_Invalid );
+	cv::Mat image2MatShared( const QImage& img, MatColorOrder* order = nullptr );
+	QImage mat2ImageShared( const cv::Mat& mat, QImage::Format formatHint = QImage::Format_Invalid );
 	
 } //namespace QtOcv

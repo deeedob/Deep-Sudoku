@@ -27,6 +27,7 @@ build_external_project(
 		${THIRD_PARTY_DIR}/json
 		"-DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/json -DJSON_BuildTests=OFF -DBUILD_TESTING=OFF" )
 
+set( FunctionalPlus_DIR ${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus/lib/cmake/FunctionalPlus )
 find_package(
 		FunctionalPlus
 		HINTS ${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus
@@ -34,6 +35,7 @@ find_package(
 		REQUIRED
 )
 
+set( Eigen3_DIR ${THIRD_PARTY_INSTALL_DIR}/eigen/share/eigen3/cmake )
 find_package(
 		Eigen3
 		HINTS ${THIRD_PARTY_INSTALL_DIR}/eigen
@@ -41,6 +43,7 @@ find_package(
 		REQUIRED
 )
 
+set( nlohmann_json_DIR ${THIRD_PARTY_INSTALL_DIR}/json/share/cmake/nlohmann_json )
 find_package(
 		nlohmann_json
 		HINTS ${THIRD_PARTY_INSTALL_DIR}/json

@@ -26,11 +26,10 @@ int main( int argc, char* argv[] )
 		if( !obj && url == objUrl )
 			QCoreApplication::exit( -1 );
 	}, Qt::QueuedConnection );
-	//qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
 	//QQmlEngine::setObjectOwnership()
 	engine.rootContext()->setContextProperty( "$QmlEngine", &engine );
 	engine.rootContext()->setContextProperty( "mediaHelper", &mediaHelper );
-	engine.rootContext()->setContextProperty( "Logic", &App::getInstance());
+	//engine.rootContext()->setContextProperty( "Logic", &App::create( 0, nullptr, nullptr ));
 	
 	engine.load( url );
 #endif
