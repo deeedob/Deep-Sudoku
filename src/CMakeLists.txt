@@ -62,7 +62,7 @@ if( ANDROID )
 	include( ../cmake/android-opencv-settings.cmake )
 	build_external_project( OpenCV "${THIRD_PARTY_DIR}/opencv" ${opencv_CMake_args} )
 	set( OpenCV_DIR ${THIRD_PARTY_INSTALL_DIR}/opencv/sdk/native/jni/abi-${ANDROID_ABI} )
-	find_package( OpenCV REQUIRED )
+    find_package( OpenCV REQUIRED PATHS ${OpenCV_DIR} )
 	
 	set( CMAKE_FIND_ROOT_PATH ${ANDROID_QT_ROOT} )
 	find_package( Qt6 COMPONENTS ${QTLibs} REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH )

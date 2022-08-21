@@ -33,7 +33,7 @@ Rectangle {
         anchors.left: parent.left
         anchors.right: parent.right
         color: "transparent"
-
+        /*
         CaptureSession {
         id: captureSession
 
@@ -48,7 +48,7 @@ Rectangle {
             videoOutput: output
 
             //Component.onCompleted: mediaHelper.session = captureSession
-        }
+        } */
 
         Rectangle {
             id: previewContainer
@@ -58,19 +58,19 @@ Rectangle {
                 return 50
             }
             color: "transparent"
-            /*
             anchors.fill: parent
             anchors.leftMargin: getMargin()
             anchors.rightMargin: getMargin()
             anchors.topMargin: getMargin()
+            /*
             VideoOutput {
                 id: output
                 anchors.fill: parent
                 fillMode: VideoOutput.PreserveAspectCrop
                 focus: visible
                 visible: true
-            } */
-            /*
+            }
+            */
             Image {
                 id: photoPreview
                 anchors.fill: parent
@@ -78,7 +78,7 @@ Rectangle {
                 clip: true
                 source: imageCapture.preview
                 visible: false
-            } */
+            }
         }
 
     }

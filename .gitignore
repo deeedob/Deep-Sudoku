@@ -1,4 +1,5 @@
 /cmake-build-*/
+/cmake-qtbuild-*/
 /build*
 /docs/html/
 /docs/latex/
