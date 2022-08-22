@@ -10,10 +10,21 @@
 #include "enhanced_engine.hpp"
 
 #endif
-
+/* __ TEST __ */
 #include <QFileInfo>
 #include <QDir>
+#include <QStandardPaths>
 #include <string>
+
+const QString assetsPath = "assets:/";
+
+QString resolveModelFilePath(QString modelName)
+{
+    QString file = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + QDir::separator() + modelName;
+    QString def  = assetsPath + QDir::separator() + modelName;
+
+    return file;
+}
 
 int main( int argc, char* argv[] )
 {
@@ -22,24 +33,36 @@ int main( int argc, char* argv[] )
 	QGuiApplication::setApplicationName( "DeepSudoku" );
 	QGuiApplication::setApplicationVersion( "1.0" );
 	QGuiApplication::setQuitOnLastWindowClosed( true );
+
+	
 	
 	MediaCapture mediaHelper;
-	
 	QDir dir( "assets:" ); //with / and without /
 	QFileInfoList list = dir.entryInfoList();
-	qDebug() << "Readable? " << dir.isReadable();
-	qDebug() << "root path" << dir.absolutePath();
-	qDebug() << "pathhh" << dir.filesystemAbsolutePath();
 	for( int i = 0; i < list.size(); ++i ) {
 		QFileInfo fileInfo = list.at( i );
 		qDebug() << fileInfo;
 	}
-	QFile file( "assets:/fdeep_model.json" );
-	qDebug() << "Path: " << file.fileName();
-	file.open( QFile::ReadOnly );
-	qDebug() << file.readAll();
 	
-	std::ifstream in_stream( "assets:/fdeep_model.json" );
+	QString modelPath = resolveModelFilePath("fdeep_model.json");
+	qDebug() << "Model Path os: " << modelPath;
+	QString randPath = QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation);
+	qDebug() << "rand path: " << randPath;
+	QFile model("assets:/fdeep_model.json");
+	model.copy(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation));
+	QDir dirr(QStandardPaths::writableLocation(QStandardPaths::GenericDataLocation));
+	model.open(QFile::ReadOnly);
+	for (int i = 0; i < 100; i++) {
+	    qDebug() << "READ:" << model.read(100)q;
+	}
+	
+	QFileInfoList listt = dirr.entryInfoList();
+	for (int i = 0; i < listt.size(); i++) {
+	    QFileInfo fileInfo = listt.at(i);
+		qDebug() << fileInfo;
+	}
+	
+	std::ifstream in_stream( modelPath.toStdString().c_str() );
 	if( !in_stream.is_open(), std::ios_base::in ) {
 		qDebug() << "in stream no open!";
 	}

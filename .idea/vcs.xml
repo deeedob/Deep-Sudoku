@@ -5,11 +5,35 @@
     <mapping directory="$PROJECT_DIR$/3rdparty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ThirdParty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/qt-android-cmake" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/ARM_NEON_2_x86_SSE" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/FunctionalPlus" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/XNNPACK" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/abseil-cpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/cpuinfo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/eigen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/flatbuffers" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/frugally-deep" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/json" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/opencv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/ruy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/ruy/third_party/cpuinfo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/ruy/third_party/googletest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/abseil-cpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/cpuinfo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/egl_headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/eigen" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/farmhash" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/flatbuffers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/gemmlowp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/opencl_headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/opengl_headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/psimd-source" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/ruy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/ruy/third_party/cpuinfo" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/ruy/third_party/googletest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/vulkan_headers" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/tensorflow/tensorflow/lite/build/xnnpack" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/thirdparty/opencv" vcs="Git" />
   </component>
 </project>

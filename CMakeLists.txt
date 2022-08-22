@@ -57,3 +57,7 @@ if( BUILD_APP_TEST AND NOT ANDROID )
 	message( "BUILDING TESTS" )
 	add_subdirectory( test )
 endif()
+
+add_subdirectory(
+		"third-party/tensorflow/tensorflow/lite"
+		"${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite" EXCLUDE_FROM_ALL )

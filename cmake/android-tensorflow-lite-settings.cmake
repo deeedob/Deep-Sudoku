@@ -1,0 +1,7 @@
+set( tensorflow_CMake_args
+     -G "Ninja"
+     -DCMAKE_BUILD_TYPE=Release
+     -DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/tensorflow
+     -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}
+     -DANDROID_ABI=${ANDROID_ABI}
+     )

@@ -6,9 +6,34 @@ find_package( OpenCV
               NO_DEFAULT_PATH
               REQUIRED )
 
+set( FunctionalPlus_DIR ${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus/lib/cmake/FunctionalPlus )
+find_package(
+		FunctionalPlus
+		HINTS ${THIRD_PARTY_INSTALL_DIR}/FunctionalPlus
+		NO_DEFAULT_PATH
+		REQUIRED
+)
+
+set( Eigen3_DIR ${THIRD_PARTY_INSTALL_DIR}/eigen/share/eigen3/cmake )
+find_package(
+		Eigen3
+		HINTS ${THIRD_PARTY_INSTALL_DIR}/eigen
+		NO_DEFAULT_PATH
+		REQUIRED
+)
+
+set( nlohmann_json_DIR ${THIRD_PARTY_INSTALL_DIR}/json/share/cmake/nlohmann_json )
+find_package(
+		nlohmann_json
+		HINTS ${THIRD_PARTY_INSTALL_DIR}/json
+		NO_DEFAULT_PATH
+		REQUIRED
+)
+
 set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
 find_package(
 		frugally-deep
+		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
 		NO_DEFAULT_PATH
 		REQUIRED
 )
