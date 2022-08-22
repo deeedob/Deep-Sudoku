@@ -5,8 +5,14 @@
 App::App( QObject* parent )
 	: QObject( parent ), m_boardModel( new BoardModel( 9, 9 ))
 {
+	
+	#ifdef ANDROID_BUILD
+	//m_deepSolver = std::make_unique<DeepSolver>(file.fileName().toStdString());
+	#else
 	std::filesystem::path ai_path( std::filesystem::current_path().parent_path().parent_path() += "/ai_model/fdeep_model.json" );
 	m_deepSolver = std::make_unique<DeepSolver>( ai_path.string());
+	#endif
+	
 }
 
 App* App::create( QQmlEngine* engine, QJSEngine* jsEngine )

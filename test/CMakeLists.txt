@@ -9,7 +9,6 @@ find_package( OpenCV
 set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
 find_package(
 		frugally-deep
-		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
 		NO_DEFAULT_PATH
 		REQUIRED
 )

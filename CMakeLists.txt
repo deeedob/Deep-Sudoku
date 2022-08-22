@@ -21,7 +21,7 @@ option( BUILD_TEST
         )
 option( BUILD_APP_TEST
         "Build Standalone application Tests"
-        OFF
+        ON
         )
 
 # variables to store additional compiler flags

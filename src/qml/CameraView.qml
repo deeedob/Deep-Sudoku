@@ -23,17 +23,16 @@ Rectangle {
         captureSettings.visible = true
         editSetting.visible = false
         photoPreview.visible = false
-        photoPreview.source = imageCapture.preview
     }
 
     Rectangle {
         id: cameraView
         anchors.top: parent.top
-        anchors.bottom: captureSettings.top
         anchors.left: parent.left
         anchors.right: parent.right
+        anchors.bottom: captureSettings.top
         color: "transparent"
-        /*
+
         CaptureSession {
         id: captureSession
 
@@ -41,14 +40,16 @@ Rectangle {
                 id: camera
             }
 
+
             imageCapture: ImageCapture {
                 id: imageCapture
             }
 
             videoOutput: output
 
-            //Component.onCompleted: mediaHelper.session = captureSession
-        } */
+            // Get some C++ interaction
+            // Component.onCompleted: mediaHelper.session = captureSession
+        }
 
         Rectangle {
             id: previewContainer
@@ -62,7 +63,7 @@ Rectangle {
             anchors.leftMargin: getMargin()
             anchors.rightMargin: getMargin()
             anchors.topMargin: getMargin()
-            /*
+
             VideoOutput {
                 id: output
                 anchors.fill: parent
@@ -70,14 +71,14 @@ Rectangle {
                 focus: visible
                 visible: true
             }
-            */
+
             Image {
                 id: photoPreview
                 anchors.fill: parent
                 fillMode: Image.PreserveAspectFit
                 clip: true
-                source: imageCapture.preview
                 visible: false
+                source: imageCapture.preview
             }
         }
 
@@ -138,7 +139,7 @@ Rectangle {
                 hoverRadius: 25
                 hoverColor: Globals.color.hoverIcon
                 onClicked: {
-                    //imageCapture.capture()
+                    imageCapture.capture()
                     setEditState()
                 }
                 source: "qrc:/camera.svg"
@@ -183,7 +184,6 @@ Rectangle {
                 hoverColor: Globals.color.hoverIcon
                 source: "qrc:/accept.svg"
                 onClicked: {
-                    //if(App.solveGame(photoPreview))
                     if(App.solveGame(photoPreview.source))
                         stackView.replace("qrc:/SudokuGame.qml")
                     else

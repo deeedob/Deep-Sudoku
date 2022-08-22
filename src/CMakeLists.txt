@@ -62,7 +62,7 @@ if( ANDROID )
 	include( ../cmake/android-opencv-settings.cmake )
 	build_external_project( OpenCV "${THIRD_PARTY_DIR}/opencv" ${opencv_CMake_args} )
 	set( OpenCV_DIR ${THIRD_PARTY_INSTALL_DIR}/opencv/sdk/native/jni/abi-${ANDROID_ABI} )
-    find_package( OpenCV REQUIRED PATHS ${OpenCV_DIR} )
+	find_package( OpenCV REQUIRED PATHS ${OpenCV_DIR} )
 	
 	set( CMAKE_FIND_ROOT_PATH ${ANDROID_QT_ROOT} )
 	find_package( Qt6 COMPONENTS ${QTLibs} REQUIRED PATHS ${CMAKE_FIND_ROOT_PATH} NO_DEFAULT_PATH )
@@ -82,11 +82,15 @@ if( ANDROID )
 	                   )
 	
 	set( QT_ANDROID_EXTRA_LIBS
-	     ${OpenCV_LIBS} )
-	#qt_android_generate_deployment_settings(QSudoku)
+	     ${OpenCV_LIBS}
+	     frugally-deep::fdeep
+	     )
+	set( ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android" )
+	qt_android_generate_deployment_settings( QSudoku )
 	
 	set_property( TARGET QSudoku APPEND PROPERTY
 	              QT_ANDROID_PACKAGE_SOURCE_DIR ${CMAKE_SOURCE_DIR}/android )
+	qt_android_add_apk_target( QSudoku )
 
 else()
 	# :::::::::::::::::: DESKTOP BUILD ::::::::::::::::::::::
@@ -121,6 +125,8 @@ else()
 	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
+set( QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_BINARY_DIR}/App )
+
 # Linking all libraries
 set( QTLinker )
 foreach( Lib ${QTLibs} )
@@ -139,3 +145,4 @@ target_link_libraries( QSudoku
 target_compile_options( QSudoku PRIVATE ${CXX_FLAGS}
                         "$<$<CONFIG:Debug>:${CXX_FLAGS_DEBUG}>"
                         "$<$<CONFIG:Release>:${CXX_FLAGS_RELEASE}>" )
+qt_finalize_project()
