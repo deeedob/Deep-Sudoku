@@ -10,7 +10,7 @@ Item {
     StackView {
         id: stackView
         anchors.fill: parent
-        //initialItem: StartScreen { }
-        initialItem: CameraView { }
+        initialItem: StartScreen { }
+        //initialItem: CameraView { }
     }
 }

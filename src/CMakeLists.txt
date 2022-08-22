@@ -44,15 +44,14 @@ set( THIRD_PARTY_DIR "${CMAKE_SOURCE_DIR}/third-party" CACHE PATH "Third-Party d
 set( THIRD_PARTY_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party" CACHE PATH "Third-Party installation directory" )
 
 # find and install frugally deep and its dependencies!
-include( ../cmake/frugally-deep-build.cmake )
+include( ../cmake/frugally-deep-dependencies.cmake )
 
-set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
-find_package(
-		frugally-deep
-		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
-		NO_DEFAULT_PATH
-		REQUIRED
-)
+#find_package(
+#		frugally-deep
+#		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
+#		NO_DEFAULT_PATH
+#		REQUIRED
+#)
 
 if( ANDROID )
 	message( "ANDROID BUILD" )
@@ -106,13 +105,6 @@ else()
 	              HINTS ${THIRD_PARTY_INSTALL_DIR}/opencv
 	              NO_DEFAULT_PATH
 	              REQUIRED )
-	# build tensorflow on first init
-	message( "BUILDING TENSORFLOW" )
-	include( ../cmake/tensorflow-dep.cmake )
-	include( ../cmake/desktop-tensorflow-lite-settings.cmake )
-	#build_external_project( Tensorflow-Lite
-	#                        "${THIRD_PARTY_DIR}/tensorflow/tensorflow/lite"
-	#                        ${tensorflow_CMake_args} )
 	
 	find_package( Qt6 COMPONENTS ${QTLibs} REQUIRED )
 	qt_standard_project_setup()
@@ -133,6 +125,14 @@ else()
 	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
+set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
+add_subdirectory( lib/frugally-deep )
+target_include_directories( QSudoku PUBLIC
+                            "${THIRD_PARTY_INSTALL_DIR}/frugally-deep"
+                            "${CMAKE_CURRENT_SOURCE_DIR}/lib/frugally-deep"
+                            )
+configure_file( ../ai_model/fdeep_model.json ${CMAKE_CURRENT_BINARY_DIR}/model/fdeep_model.json )
+
 set( QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_BINARY_DIR}/App )
 
 # Linking all libraries
@@ -147,9 +147,9 @@ target_link_libraries( QSudoku
                        ${QTLinker}
                        ${OpenCV_LIBS}
                        PUBLIC
-                       frugally-deep::fdeep
-                       tensorflow-lite
+                       fdeep
                        )
+
 # set compile options for the main executable
 target_compile_options( QSudoku PRIVATE ${CXX_FLAGS}
                         "$<$<CONFIG:Debug>:${CXX_FLAGS_DEBUG}>"

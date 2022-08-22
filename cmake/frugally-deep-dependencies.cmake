@@ -55,8 +55,8 @@ findPrinter( FunctionalPlus )
 findPrinter( Eigen3 )
 findPrinter( nlohmann_json )
 
-set( _CMAKE_PREFIX_PATH ${FunctionalPlus_DIR} ${Eigen_Dir} ${nlohmann_json_DIR} )
-build_external_project(
-		Frugally-Deep
-		${THIRD_PARTY_DIR}/frugally-deep
-		-DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/frugally-deep -DCMAKE_PREFIX_PATH=${_CMAKE_PREFIX_PATH} -Dnlohmann_json_DIR=${nlohmann_json_DIR} -DBUILD_TESTING=OFF )
+#set( _CMAKE_PREFIX_PATH ${FunctionalPlus_DIR} ${Eigen_Dir} ${nlohmann_json_DIR} )
+#build_external_project(
+#		Frugally-Deep
+#		${THIRD_PARTY_DIR}/frugally-deep
+#		-DCMAKE_INSTALL_PREFIX=${THIRD_PARTY_INSTALL_DIR}/frugally-deep -DCMAKE_PREFIX_PATH=${_CMAKE_PREFIX_PATH} -Dnlohmann_json_DIR=${nlohmann_json_DIR} -DBUILD_TESTING=OFF )

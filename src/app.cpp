@@ -1,5 +1,4 @@
 #include "app.hpp"
-#include <filesystem>
 #include <QQuickItem>
 
 App::App( QObject* parent )
@@ -7,10 +6,10 @@ App::App( QObject* parent )
 {
 	
 	#ifdef ANDROID_BUILD
-	//m_deepSolver = std::make_unique<DeepSolver>(file.fileName().toStdString());
+	QFile f("assets:/fdeep_model.json");
+m_deepSolver = std::make_unique<DeepSolver>(f);
 	#else
-	std::filesystem::path ai_path( std::filesystem::current_path().parent_path().parent_path() += "/ai_model/fdeep_model.json" );
-	m_deepSolver = std::make_unique<DeepSolver>( ai_path.string());
+	m_deepSolver = std::make_unique<DeepSolver>( "model/fdeep_model.json" );
 	#endif
 	
 }
@@ -41,6 +40,7 @@ bool App::getQmlImage( QQuickItem* src )
 
 bool App::solveGame( const QUrl& url )
 {
+	qDebug() << url.url();
 	bool success = false;
 	auto engine = qmlEngine( this );
 	if( engine == nullptr ) {
@@ -54,7 +54,7 @@ bool App::solveGame( const QUrl& url )
 			success = m_deepSolver->solveFromImage( image );
 		}
 	} else { /* the file is on the system! */
-		QImage image( url.path());
+		QImage image( url.url());
 		success = m_deepSolver->solveFromImage( image );
 	}
 	

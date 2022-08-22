@@ -11,7 +11,6 @@ Rectangle {
 
     property int currentIndex: -1
     property int elapsedTicks: 0
-    property int _inputFieldMargin: 150
 
     function setCurrentCellValue(value) {
         App.model.setCellValue(currentIndex, value);
@@ -64,8 +63,12 @@ Rectangle {
 
     function getMaxGridSize() {
         if(Window.width > Window.height / 1.5)
-            return (Window.height / 1.5) - 50
-        return Window.width - 50
+            return (Window.height / 1.5) - 20
+        return Window.width - 20
+    }
+
+    function getNumberInputMargin() {
+        return (Window.width - getMaxGridSize()) / 2
     }
 
     Rectangle {
@@ -139,8 +142,9 @@ Rectangle {
         anchors.bottom: nav.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: _inputFieldMargin
-        anchors.rightMargin: _inputFieldMargin
+        anchors.topMargin: 60
+        anchors.leftMargin: getNumberInputMargin()
+        anchors.rightMargin: getNumberInputMargin()
         onButtonClicked: (num) => root.setCurrentCellValue(num)
         onClearClicked: root.clearCurrentCellValue()
         onSolveClicked: root.solveField()

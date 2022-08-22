@@ -21,7 +21,7 @@ option( BUILD_TEST
         )
 option( BUILD_APP_TEST
         "Build Standalone application Tests"
-        ON
+        OFF
         )
 
 # variables to store additional compiler flags
@@ -40,7 +40,7 @@ if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
 endif()
 
 if( CMAKE_CXX_COMPILER_ID MATCHES Clang )
-	list( APPEND CXX_FLAGS "-frtti" "-fno-exceptions" "-fcolor-diagnostics" "-fdeclspec" )
+	list( APPEND CXX_FLAGS "-frtti" "-fcolor-diagnostics" "-fdeclspec" )
 	list( APPEND CXX_FLAGS_DEBUG "-Wdocumentation" "-Wno-unused" )
 	list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
 endif()
@@ -57,7 +57,3 @@ if( BUILD_APP_TEST AND NOT ANDROID )
 	message( "BUILDING TESTS" )
 	add_subdirectory( test )
 endif()
-
-add_subdirectory(
-		"third-party/tensorflow/tensorflow/lite"
-		"${CMAKE_CURRENT_BINARY_DIR}/tensorflow-lite" EXCLUDE_FROM_ALL )

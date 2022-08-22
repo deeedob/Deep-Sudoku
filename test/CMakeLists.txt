@@ -95,7 +95,7 @@ target_link_libraries( test_predict_tensor
                        Qt6::Core
                        Qt6::Multimedia
                        ${OpenCV_LIBS}
-                       frugally-deep::fdeep
+                       fdeep
                        )
 
 target_link_libraries( test_solver

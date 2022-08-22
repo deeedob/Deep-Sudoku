@@ -31,8 +31,8 @@ Rectangle {
         }
         function prefHeight(item){
             var val = rowMulti * item.Layout.rowSpan
-            if( val <= 35)
-                return 35;
+            if( val <= 25)
+                return 25;
             return val
         }
 

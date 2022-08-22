@@ -97,7 +97,7 @@ Rectangle {
     }
 
     function getSpacing() {
-        return Window.width / 7
+        return Window.width / 12
     }
 
     Rectangle {
@@ -109,7 +109,7 @@ Rectangle {
         property bool spaceEvenly: false
         color: "#00000000"
         Flow {
-            spacing: getSpacing()
+            spacing: 25
             function mar() {
                 if(children.length <= 1)
                     return (parent.width / 2) - (children[0].width) / 2

@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>MainWindow.qml</file>
-        <file>main_hot_reload.qml</file>
         <file>ReloadWindow.qml</file>
         <file>Field.qml</file>
         <file>NumberInput.qml</file>

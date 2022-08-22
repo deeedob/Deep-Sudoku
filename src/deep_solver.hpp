@@ -16,6 +16,7 @@ public:
 	using Quadratic = std::pair<u_int16_t, u_int16_t>;
 	
 	explicit DeepSolver( const std::string& path );
+	explicit DeepSolver( QFile& path );
 	
 	std::vector<ReturnVal> predictMulti( const QImage& src );
 	bool solveFromImage( const QImage& src );
