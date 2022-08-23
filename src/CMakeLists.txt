@@ -9,6 +9,7 @@ set( QTLibs
      Quick
      Multimedia
      Widgets
+     Gui
      Svg )
 
 set( sources
@@ -125,6 +126,10 @@ else()
 	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
+add_subdirectory( modules )
+set( QML_IMPORT_PATH ${QML_MODULE_PATH} CACHE STRING "path for custom qml modules!" )
+message( "QML IMPORT PATH: " ${QML_MODULE_PATH} )
+
 set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
 add_subdirectory( lib/frugally-deep )
 target_include_directories( QSudoku PUBLIC
@@ -132,8 +137,6 @@ target_include_directories( QSudoku PUBLIC
                             "${CMAKE_CURRENT_SOURCE_DIR}/lib/frugally-deep"
                             )
 configure_file( ../ai_model/fdeep_model.json ${CMAKE_CURRENT_BINARY_DIR}/model/fdeep_model.json )
-
-set( QML_IMPORT_PATH ${QML_IMPORT_PATH} ${CMAKE_BINARY_DIR}/App )
 
 # Linking all libraries
 set( QTLinker )
@@ -146,6 +149,7 @@ target_link_libraries( QSudoku
                        PRIVATE
                        ${QTLinker}
                        ${OpenCV_LIBS}
+                       image_painterplugin
                        PUBLIC
                        fdeep
                        )

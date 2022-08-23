@@ -10,6 +10,9 @@
 	#include "enhanced_engine.hpp"
 
 #endif
+#include <QtQml/qqmlextensionplugin.h>
+
+Q_IMPORT_PLUGIN( ImagePainterPlugin )
 
 int main( int argc, char* argv[] )
 {
