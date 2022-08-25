@@ -1,6 +1,11 @@
 #pragma once
 #include <opencv2/core/core.hpp>
 
+/*!
+ * @ingroup PROC
+ * @brief Custom hough transformation implementation
+ * @author Dennis Oberst
+ */
 class CVHoughFinder
 {
 	using PairGrad = std::pair<cv::Mat, cv::Mat>;

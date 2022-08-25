@@ -3,6 +3,12 @@
 #include <QtQmlIntegration>
 #include <QtGui/QPainter>
 
+/*!
+ * @ingroup QT
+ * @brief Sending images from C++ to QML
+ * @author Dennis Oberst
+ * @todo fuly implement this.
+ */
 class ImagePainter : public QQuickPaintedItem
 {
 	QML_ELEMENT

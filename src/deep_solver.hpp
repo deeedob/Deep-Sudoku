@@ -3,6 +3,11 @@
 #include "img_proc/cv_segmentation.hpp"
 #include <iostream>
 
+/*!
+ * @ingroup AI
+ * @brief Solving the sudoku game using a trained neural network
+ * @author Dennis Oberst
+ */
 class DeepSolver
 {
 

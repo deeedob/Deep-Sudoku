@@ -44,7 +44,7 @@ int main( int argc, char* argv[] )
 	//QQmlEngine::setObjectOwnership()
 	engine.rootContext()->setContextProperty( "$QmlEngine", &engine );
 	engine.rootContext()->setContextProperty( "mediaHelper", &mediaHelper );
-	auto logic = App::create( &engine, qjsEngine( &engine ));
+	auto logic = dsdk::App::create( &engine, qjsEngine( &engine ));
 	
 	engine.load( url );
 #endif

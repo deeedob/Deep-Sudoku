@@ -3,6 +3,11 @@
 
 #define EMPTY_CELL -1
 
+/*!
+ * @ingroup QT
+ * @brief A single cell used by the BoardModel
+ * @author Dennis Oberst
+ */
 class CellData : public QObject
 {
 Q_OBJECT

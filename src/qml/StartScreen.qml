@@ -2,6 +2,11 @@ import QtQuick
 import "global"
 import "custom"
 
+ /**
+ * @ingroup QML
+ * @author Dennis Oberst
+ */
+
 Rectangle {
     id: root
     color: Globals.color.background

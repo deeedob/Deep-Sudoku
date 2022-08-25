@@ -3,6 +3,11 @@
 #include <opencv2/imgproc.hpp>
 #include "cv_img_mat.hpp"
 
+/*!
+ * @ingroup PROC
+ * @brief Identify and cut images from a sudoku grid.
+ * @author Dennis Oberst
+ */
 class CVSegmentation
 {
 	

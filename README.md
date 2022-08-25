@@ -20,8 +20,7 @@ Currently only tested with **arm64-v8a** on archlinux with x86-64
     usermod -a -G plugdev <user>
 ```
 
-When building in development mode on Desktop consider that these tools
-are [required](https://doc.qt.io/qt-5/linux-requirements.html) for QtMultimedia to work properly :
+When building in development mode on Desktop consider that these tools are [required](https://doc.qt.io/qt-5/linux-requirements.html) for QtMultimedia to work properly :
 
 ```shell
 # archlinux commands
@@ -33,6 +32,12 @@ Following dependencies are required for opencv:
 ```shell
   pacman -S openmp
 ```
+
+### Dependencies
+
+- [doxyqml](https://invent.kde.org/sdk/doxyqml)
+- doxygen
+-
 
 ## Building
 
@@ -76,15 +81,11 @@ The Desktop build currently only works if you have OpenCV installed on your syst
 
 ## Running
 
-I generated two CMake profiles using this configuration with [Clion](https://www.jetbrains.com/clion/), one for desktop
-with a QML engine modified to allow hot reloading of QML content whenever you press **<Ctrl + R>**. By doing so, the
-development process can be accelerated.
+I generated two CMake profiles using this configuration with [Clion](https://www.jetbrains.com/clion/), one for desktop with a QML engine modified to allow hot reloading of QML content whenever you press **<Ctrl + R>**. By doing so, the development process can be accelerated.
 
 In the other profile, the final app is generated using the **Android toolchain**. Then we launch the `deploy_android.sh`
-script, which invokes the Qt
-tool: [androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
+script, which invokes the Qt tool: [androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
 
-The **binary** directory containing **deployment-settings.json** and the path to the **androiddeployqt** tool are
-required as input parameters. Here is an example of my configuration with Clion:
+The **binary** directory containing **deployment-settings.json** and the path to the **androiddeployqt** tool are required as input parameters. Here is an example of my configuration with Clion:
 
 ![configs](images/img.png)

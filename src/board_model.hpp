@@ -4,8 +4,9 @@
 #include "cell_data.hpp"
 
 /*!
+ * @ingroup QT
+ * @brief Serves as the main model for the Sudoku Game and is used by the QMLEngine.
  * @author Dennis Oberst
- * @brief Serves as the main Model for the Sudoku Game and is used by the QMLEngine.
  */
 class BoardModel : public QAbstractListModel
 {
