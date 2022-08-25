@@ -44,16 +44,6 @@ set( resources
 set( THIRD_PARTY_DIR "${CMAKE_SOURCE_DIR}/third-party" CACHE PATH "Third-Party directory" )
 set( THIRD_PARTY_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/third-party" CACHE PATH "Third-Party installation directory" )
 
-# find and install frugally deep and its dependencies!
-include( ../cmake/frugally-deep-dependencies.cmake )
-
-#find_package(
-#		frugally-deep
-#		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
-#		NO_DEFAULT_PATH
-#		REQUIRED
-#)
-
 if( ANDROID )
 	message( "ANDROID BUILD" )
 	add_definitions( -DANDROID_BUILD )
@@ -126,12 +116,10 @@ else()
 	# :::::::::::::::::: END OF DESKTOP BUILD ::::::::::::::::::::::
 endif()
 
-add_subdirectory( modules )
+add_subdirectory( modules/ImagePainter )
 set( QML_IMPORT_PATH ${QML_MODULE_PATH} CACHE STRING "path for custom qml modules!" )
 message( "QML IMPORT PATH: " ${QML_MODULE_PATH} )
 
-set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
-add_subdirectory( lib/frugally-deep )
 target_include_directories( QSudoku PUBLIC
                             "${THIRD_PARTY_INSTALL_DIR}/frugally-deep"
                             "${CMAKE_CURRENT_SOURCE_DIR}/lib/frugally-deep"

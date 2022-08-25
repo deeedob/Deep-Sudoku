@@ -21,7 +21,7 @@ option( BUILD_TEST
         )
 option( BUILD_APP_TEST
         "Build Standalone application Tests"
-        OFF
+        ON
         )
 
 # variables to store additional compiler flags
@@ -52,6 +52,10 @@ cmake_print_variables( CXX_FLAGS_DEBUG )
 cmake_print_variables( CXX_FLAGS_RELEASE )
 
 add_subdirectory( src )
+
+# find and install frugally deep and its dependencies!
+include( cmake/frugally-deep-dependencies.cmake )
+add_subdirectory( src/lib/frugally-deep )
 
 if( BUILD_APP_TEST AND NOT ANDROID )
 	message( "BUILDING TESTS" )

@@ -7,7 +7,7 @@ App::App( QObject* parent )
 	
 	#ifdef ANDROID_BUILD
 	QFile f("assets:/fdeep_model.json");
-m_deepSolver = std::make_unique<DeepSolver>(f);
+	m_deepSolver = std::make_unique<DeepSolver>(f);
 	#else
 	m_deepSolver = std::make_unique<DeepSolver>( "model/fdeep_model.json" );
 	#endif
@@ -54,7 +54,11 @@ bool App::solveGame( const QUrl& url )
 			success = m_deepSolver->solveFromImage( image );
 		}
 	} else { /* the file is on the system! */
+		#ifdef ANDROID_BUILD
 		QImage image( url.url());
+		#else
+		QImage image( url.path());
+		#endif
 		success = m_deepSolver->solveFromImage( image );
 	}
 	

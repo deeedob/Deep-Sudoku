@@ -1,21 +1,15 @@
 #include "cv_segmentation.hpp"
-#include "qdebug.h"
 
 CVSegmentation::CVSegmentation( const QImage& src )
 	: m_success( false ), m_processed( false )
 {
-	
-	qDebug() << "constructor";
 	m_orig = qt_ocv::image2Mat( src, CV_8UC( 4 ), qt_ocv::MCO_BGRA );
 }
 
 bool CVSegmentation::process()
 {
-	qDebug() << "process";
 	m_origBin = binarizedImg( m_orig );
-	qDebug() << "m_origBin";
 	m_contour = getRectangularContour( m_origBin );
-	qDebug() << "contour";
 	m_binCutted = warpSelection( m_origBin, m_contour );
 	m_mergedLines = mergedHoughLines( m_binCutted );
 	if( m_mergedLines.size() < 20 )
@@ -141,17 +135,6 @@ CVSegmentation::getRectangularContour( cv::Mat src ) const
 	std::vector<std::vector<cv::Point>> contours;
 	std::vector<cv::Vec4i> hierarchy;
 	cv::findContours( src, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE );
-	auto check_and_add_padding = [ &src ]( cv::Point& p, int pad_x, int pad_y ) {
-		p += { pad_x, pad_y };
-		if( p.x < 0 )
-			p.x = 0;
-		if( p.x > src.rows )
-			p.x = src.rows - 1;
-		if( p.y < 0 )
-			p.y = 0;
-		if( p.y > src.cols )
-			p.y = src.cols - 1;
-	};
 	
 	struct
 	{
@@ -197,10 +180,10 @@ CVSegmentation::getRectangularContour( cv::Mat src ) const
 	auto padding = static_cast<int>(( approx[ 1 ].y - approx[ 0 ]
 		.y ) * m_contourPadding);
 	/* add some padding */
-	check_and_add_padding( approx[ 0 ], -padding, -padding );
-	check_and_add_padding( approx[ 1 ], -padding, padding );
-	check_and_add_padding( approx[ 2 ], padding, padding );
-	check_and_add_padding( approx[ 3 ], padding, -padding );
+	approx[ 0 ] += { -padding, -padding };
+	approx[ 1 ] += { -padding, padding };
+	approx[ 2 ] += { padding, padding };
+	approx[ 3 ] += { padding, -padding };
 	
 	return approx;
 }
@@ -401,7 +384,10 @@ CVSegmentation::preparedSquares( const std::vector<cv::Mat>& squares, float numb
 					cv::Mat resized;
 					// resize with aspect ratio
 					auto ratio = getAspectRatio( cropped_ref );
-					cv::resize( cropped_ref, resized, cv::Size( static_cast<int>((float) m_nnSize.first * number_fill_factor), static_cast<int>((float) m_nnSize.second * number_fill_factor )), ratio, ratio );
+					cv::resize( cropped_ref, resized, cv::Size( static_cast<int>(
+						                                            (float) m_nnSize.first * number_fill_factor),
+					                                            static_cast<int>((float) m_nnSize.second * number_fill_factor )),
+					            ratio, ratio );
 					cropped_ref = resized;
 				}
 				

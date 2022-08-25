@@ -8,8 +8,6 @@ set( opencv_CMake_args
      -DANDROID_ABI=${ANDROID_ABI}
      -DANDROID_NATIVE_API_LEVEL=${ANDROID_NATIVE_API_LEVEL}
      -DBUILD_SHARED_LIBS=OFF # build static lib
-     #-DANDROID_ARM_NEON=ON
-     #-DENABLE_NEON=ON
      -DANDROID_TOOLCHAIN=clang
      -DBUILD_ANDROID_PROJECTS=OFF
      -DBUILD_TESTS=OFF
@@ -19,6 +17,3 @@ set( opencv_CMake_args
      -DINSTALL_PYTHON_EXAMPLES=OFF
      -DINSTALL_C_EXAMPLES=OFF
      )
-if( UNIX )
-	set( opencv_CMake_args ${opencv_CMake_args} -DCMAKE_CXX_FLAGS=-fPIC )
-endif()

@@ -7,12 +7,13 @@ int main()
 {
 	/* get qimage and convert it to mat */
 	std::filesystem::path path( std::filesystem::current_path().parent_path()
-	                                                           .parent_path() += "/test/res/Training_002.jpg" );
+	                                                           .parent_path() += "/test/res/Training_001.jpg" );
 	
 	QImage img( path.c_str());
-	//QTransform transform;
-	//img = img.transformed( transform.rotate( 90 ));
+	QTransform transform;
+	img = img.transformed( transform.rotate( 90 ));
 	CVSegmentation seg( img );
+	
 	seg.process();
 	
 	/* show cutted image */

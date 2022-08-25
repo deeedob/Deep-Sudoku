@@ -61,7 +61,7 @@ private:
 	std::vector<int> m_usedSquares;
 	
 	double m_contourPadding { 0.03 };
-	float m_numbFillFactor { 0.4 };
+	float m_numbFillFactor { 0.5 };
 	DetectionSize m_detectionSize { 0.15, 0.75, 0.3, 0.75 };
 	bool m_success;
 	bool m_processed;

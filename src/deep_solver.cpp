@@ -26,27 +26,25 @@ bool DeepSolver::solveFromImage( const QImage& src )
 
 std::vector<DeepSolver::ReturnVal> DeepSolver::predictMulti( const QImage& src )
 {
-    qDebug() << "Predict multi with " << src.width() << " h: " << src.height();
-    CVSegmentation temp( src );
-    //TODO: remove next line in prod
-    temp.process();
-    //if( !temp.process())
-    //    return { };
-
-    auto squares = temp.getPreparedSquares();
-    auto used_squares = temp.getUsedSquareNums();
-
-    auto size = CVSegmentation::getNNSize();
-    fdeep::tensor_shape shape( size.first, size.second, 1 );
-
-    std::vector<fdeep::tensors> input;
-
-    for( int used_square : used_squares ) {
-        cv::Mat flat_f;
-        squares[ used_square ].convertTo( flat_f, CV_32FC1);
-        std::vector<float> vals( flat_f.begin<float>(), flat_f.end<float>());
-        fdeep::tensors t {{ shape, vals }};
-        input.push_back( t );
+	CVSegmentation temp( src );
+	if( !temp.process())
+		return { };
+	
+	auto squares = temp.getPreparedSquares();
+	auto used_squares = temp.getUsedSquareNums();
+	
+	auto size = CVSegmentation::getNNSize();
+	fdeep::tensor_shape shape( size.first, size.second, 1 );
+	
+	std::vector<fdeep::tensors> input;
+	input.reserve( used_squares.size());
+	
+	for( int used_square : used_squares ) {
+		cv::Mat flat_f;
+		squares[ used_square ].convertTo( flat_f, CV_32FC1);
+		std::vector<float> vals( flat_f.begin<float>(), flat_f.end<float>());
+		fdeep::tensors t {{ shape, vals }};
+		input.push_back( t );
 	}
 	auto predictions = m_model.predict_multi( input, true );
 	

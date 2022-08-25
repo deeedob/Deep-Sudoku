@@ -4,11 +4,13 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/3rdparty/opencv" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/ThirdParty/opencv" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/doxygen-awesome-css" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/qt-android-cmake" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/ARM_NEON_2_x86_SSE" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/FunctionalPlus" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/XNNPACK" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/abseil-cpp" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/third-party/benchmark" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/cpuinfo" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/eigen" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/third-party/flatbuffers" vcs="Git" />

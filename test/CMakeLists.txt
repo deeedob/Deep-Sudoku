@@ -30,11 +30,17 @@ find_package(
 		REQUIRED
 )
 
-set( frugally-deep_DIR ${THIRD_PARTY_INSTALL_DIR}/frugally-deep/lib/cmake/frugally-deep )
+build_external_project(
+		Benchmark
+		${THIRD_PARTY_DIR}/benchmark
+		-DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_BINARY_DIR}/benchmarks
+		-DBENCHMARK_DOWNLOAD_DEPENDENCIES=on
+		-DCMAKE_BUILD_TYPE=Release
+)
+
 find_package(
-		frugally-deep
-		HINTS ${THIRD_PARTY_INSTALL_DIR}/frugally-deep
-		NO_DEFAULT_PATH
+		benchmark
+		HINTS ${CMAKE_CURRENT_BINARY_DIR}/benchmarks
 		REQUIRED
 )
 
@@ -76,11 +82,26 @@ add_executable( test_solver
                 ../src/deep_solver.hpp
                 )
 
+add_executable( BM_opencv
+                BM_opencv.cpp
+                ../src/img_proc/cv_segmentation.hpp
+                ../src/img_proc/cv_segmentation.cpp
+                ../src/img_proc/cv_img_mat.cpp
+                ../src/img_proc/cv_img_mat.hpp
+                )
+
 target_link_libraries( test_opencv
                        PRIVATE
                        Qt6::Core
                        Qt6::Multimedia
                        ${OpenCV_LIBS}
+                       )
+target_link_libraries( BM_opencv
+                       PRIVATE
+                       Qt6::Core
+                       Qt6::Multimedia
+                       ${OpenCV_LIBS}
+                       benchmark::benchmark
                        )
 
 target_link_libraries( test_custom_hough
@@ -103,5 +124,5 @@ target_link_libraries( test_solver
                        Qt6::Core
                        Qt6::Multimedia
                        ${OpenCV_LIBS}
-                       frugally-deep::fdeep
+                       fdeep
                        )
