@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <opencv2/highgui.hpp>
 
+using namespace dsdk;
+
 DeepSolver::DeepSolver( const std::string& path )
 	: m_model { fdeep::load_model( path ) }
 {

@@ -1,5 +1,7 @@
 #include "board_model.hpp"
 
+using namespace dsdk;
+
 BoardModel::BoardModel( u_int16_t width, u_int16_t height, QObject* parent )
 	: QAbstractListModel( parent ), m_width( width ), m_height( height )
 {

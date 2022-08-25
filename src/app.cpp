@@ -1,6 +1,8 @@
 #include "app.hpp"
 #include <QQuickItem>
 
+using namespace dsdk;
+
 App::App( QObject* parent )
 	: QObject( parent ), m_boardModel( new BoardModel( 9, 9 ))
 {

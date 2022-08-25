@@ -1,26 +1,18 @@
-# QT-DeepSudoku
+# DeepSudoku
 
-K0572060321
+Deep Sudoku is a cross-platform Sudoku-App that runs on desktop and mobile devices. The focus here was the Image recognition part - taking an image from an unsolved sudoku game and let a classic approach of [DSP](https://en.wikipedia.org/wiki/DSP) algorithms using OpenCV detect the individual fields
+containing the numbers, and a pre-trained neural-network model solve the game. For
 
 ## Prerequisite
 
-Currently only tested with **arm64-v8a** on archlinux with x86-64
+Currently only tested on **Android-arm64-v8a** and Archlinux with 5.18.16-arch kernel. These dependencies are required to be installed on your system in order to build the app.
 
 - Install [Qt >= 6.3.0 for Android](https://doc-snapshots.qt.io/qt6-dev/android-building.html)
 - Install Android [SDK](https://developer.android.com/studio) and [NDK](https://developer.android.com/ndk/downloads)
 
-### Linux
+### Linux only
 
-- create a udev rule for your mobile device
-
- ```shell
-    usb-devices # get idVendor and idProduct
-    echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"<yourIDVendor>\", ATTR{idProduct}==\"<yourIDProduct>\", MODE=\"0666\", GROUP=\"plugdev\""  | sudo tee -a /etc/udev/rules.d/51.android.rules
-    # add user to plugdev group
-    usermod -a -G plugdev <user>
-```
-
-When building in development mode on Desktop consider that these tools are [required](https://doc.qt.io/qt-5/linux-requirements.html) for QtMultimedia to work properly :
+When building for desktop consider that these tools are [required](https://doc.qt.io/qt-5/linux-requirements.html) for QtMultimedia to work properly :
 
 ```shell
 # archlinux commands
@@ -33,11 +25,10 @@ Following dependencies are required for opencv:
   pacman -S openmp
 ```
 
-### Dependencies
+If there is a desire to rebuild the documentation provided in docs/html then it is required to have these tools installed:
 
-- [doxyqml](https://invent.kde.org/sdk/doxyqml)
-- doxygen
--
+- [doxygen](https://doxygen.nl) -- code generation tool
+- [doxyqml](https://invent.kde.org/sdk/doxyqml) -- Integrate QML code generation into doxygen
 
 ## Building
 
@@ -47,15 +38,16 @@ Clone this repository :
     git clone --recursive https://github.com/DeepSudoku/QtSudoku.git
 ```
 
+The build process can take some time as we are building opencv from source in both builds. As we are using a superbuild approach there will be no console output during the compilation. So no stress and let CMake Build OpenCV!
+
 **ANDROID BUILD**
 
 ```shell
-    cd QtSudoku
+    cd Deep-Sudoku
     #shadow build
-    mkdir build;cd build
+    mkdir android-build-<YOURABI>; cd android-build-<YOURABI>
 
-    cmake \
-        -G <yourGenerator> \
+    cmake -G <yourGenerator> \
         -DCMAKE_TOOLCHAIN_FILE=/path-to/android-sdk/ndk/<version>/build/cmake/android.toolchain.cmake \
         -DANDROID_SDK_ROOT=/path-to/android-sdk \
         -DANDROID_NDK=/path-to/ndk/<version> \
@@ -65,27 +57,48 @@ Clone this repository :
         -DCMAKE_BUILD_TYPE=Release ..
 ```
 
-**DESKTOP BUILD**
-
-The Desktop build currently only works if you have OpenCV installed on your system!
+For my build it looks as followed:
 
 ```shell
-    cd QtSudoku
-    #shadow build
-    mkdir build;cd build
-
-    cmake \
-        -G <yourGenerator> \
-        -DCMAKE_BUILD_TYPE=Debug ..
+  #inside Deep-Sudoku
+  mkdir android-build-aarch64; cd android-build-aarch64;
+  cmake -G Ninja \
+    -DCMAKE_TOOLCHAIN_FILE=/home/dennis/Android/android-sdk/ndk/23.1.7779620/build/cmake/android.toolchain.cmake \
+    -DANDROID_SDK_ROOT=/home/dennis/Android/android-sdk \
+    -DANDROID_NDK=/home/dennis/Android/android-sdk/ndk/23.1.7779620 \
+    -DANDROID_QT_ROOT=/home/dennis/Qt6.3/6.3.1/android_arm64_v8a \
+    -DQT_HOST_PATH=/home/dennis/Qt6.3/6.3.1/gcc_64 \
+    -DANDROID_ABI=arm64-v8a \
+    -DCMAKE_BUILD_TYPE=Release ..
 ```
 
-## Running
+After successfully building the app you can find a folder named “android-build" inside your build directory. To deploy the application to the mobile device you need to invoke the tool:
 
-I generated two CMake profiles using this configuration with [Clion](https://www.jetbrains.com/clion/), one for desktop with a QML engine modified to allow hot reloading of QML content whenever you press **<Ctrl + R>**. By doing so, the development process can be accelerated.
+> [androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
 
-In the other profile, the final app is generated using the **Android toolchain**. Then we launch the `deploy_android.sh`
-script, which invokes the Qt tool: [androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
+Which bundles all of the content to an APK file required for an android application and sends it to the device. I wrote a little script for UNIX like operating system to invoke this tool and have a executable file.
+[deploy_android.sh](scripts/deploy_android.sh) The **build** directory containing **deployment-settings.json** and the path to the **androiddeployqt** tool are required as input parameters.
 
-The **binary** directory containing **deployment-settings.json** and the path to the **androiddeployqt** tool are required as input parameters. Here is an example of my configuration with Clion:
+**DESKTOP BUILD**
 
-![configs](images/img.png)
+```shell
+    cd Deep-Sudoku
+    #shadow build
+    mkdir desktop-build;cd desktop-build
+
+    cmake -G <yourGenerator> \
+        -DCMAKE_BUILD_TYPE=Debug .. #or release
+```
+
+## Possible Problems
+
+### Linux
+
+- create a udev rule for your mobile device
+
+ ```shell
+    usb-devices # get idVendor and idProduct
+    echo "SUBSYSTEM==\"usb\", ATTR{idVendor}==\"<yourIDVendor>\", ATTR{idProduct}==\"<yourIDProduct>\", MODE=\"0666\", GROUP=\"plugdev\""  | sudo tee -a /etc/udev/rules.d/51.android.rules
+    # add user to plugdev group
+    usermod -a -G plugdev <user>
+```

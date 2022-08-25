@@ -23,13 +23,16 @@
  * */
 
 /*!
- * @ingroup QT
- * @brief Managing the runtime of Deep-Sudoku
- * @note This Class is implemented as singleton and added as [qml_add_qml_module()](https://doc-snapshots.qt.io/qt6-dev/qt-add-qml-module.html)
- * @author Dennis Oberst
+ * @brief this namespace contains the whole c++ side.
  */
 namespace dsdk
 {
+	/*!
+	 * @ingroup QT
+	 * @brief Managing the runtime of Deep-Sudoku
+	 * @note This Class is implemented as singleton and added as [qml_add_qml_module()](https://doc-snapshots.qt.io/qt6-dev/qt-add-qml-module.html)
+	 * @author Dennis Oberst
+	 */
 	class App : public QObject
 	{
 	Q_OBJECT

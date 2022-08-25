@@ -3,6 +3,8 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
+using namespace dsdk;
+
 CVHoughFinder::CVHoughFinder( cv::Mat& bin_img )
 	: m_binImg( bin_img )
 { }

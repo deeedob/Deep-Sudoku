@@ -1,5 +1,7 @@
 #include "cv_segmentation.hpp"
 
+using namespace dsdk;
+
 CVSegmentation::CVSegmentation( const QImage& src )
 	: m_success( false ), m_processed( false )
 {

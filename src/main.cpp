@@ -21,7 +21,7 @@ int main( int argc, char* argv[] )
 	QGuiApplication::setApplicationName( "DeepSudoku" );
 	QGuiApplication::setApplicationVersion( "1.0" );
 	QGuiApplication::setQuitOnLastWindowClosed( true );
-	MediaCapture mediaHelper;
+	dsdk::MediaCapture mediaHelper;
 #ifdef ANDROID_BUILD
 	QQmlApplicationEngine engine;
 	QUrl url( "qrc:/MainWindow.qml" );
@@ -34,7 +34,7 @@ int main( int argc, char* argv[] )
 	engine.rootContext()->setContextProperty( "mediaHelper", &mediaHelper );
 	engine.load( QUrl( "qrc:/MainWindow.qml" ));
 #else
-	EnhancedEngine engine;
+	dsdk::EnhancedEngine engine;
 	std::filesystem::path path = std::filesystem::current_path().parent_path().parent_path() += "/src/qml/main_hot_reload.qml";
 	QUrl url( path.string().c_str());
 	QObject::connect( &engine, &QQmlApplicationEngine::objectCreated, &app, [ url ]( QObject* obj, const QUrl& objUrl ) {

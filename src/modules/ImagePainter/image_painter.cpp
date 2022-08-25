@@ -1,5 +1,7 @@
 #include "image_painter.hpp"
 
+using namespace dsdk;
+
 ImagePainter::ImagePainter( QQuickItem* parent )
 	: QQuickPaintedItem( parent )
 {
