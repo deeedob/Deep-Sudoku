@@ -3,6 +3,8 @@
 Deep Sudoku is a cross-platform Sudoku-App that runs on desktop and mobile devices. The focus here was the Image recognition part - taking an image from an unsolved sudoku game and let a classic approach of [DSP](https://en.wikipedia.org/wiki/DSP) algorithms using OpenCV detect the individual fields
 containing the numbers, and a pre-trained neural-network model solve the game. For
 
+![preview](images/previewGame.png)
+
 ## Prerequisite
 
 Currently only tested on **Android-arm64-v8a** and Archlinux with 5.18.16-arch kernel. These dependencies are required to be installed on your system in order to build the app.
