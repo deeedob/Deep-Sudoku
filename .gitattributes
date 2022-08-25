@@ -2,3 +2,4 @@ third-party/* linguist-vendored
 src/lib/frugally-deep/* linguist-vendored
 android/* linguist-vendored
 docs/* linguist-vendored
+docs/html/* linguist-vendored
