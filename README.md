@@ -77,8 +77,7 @@ For my build it looks as followed:
 ```
 
 After successfully building the app you can find a folder named “android-build" inside your build directory. To deploy the application to the mobile device you need to invoke the tool:
-
-> [androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
+[androiddeployqt](https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp).
 
 Which bundles all of the content to an APK file required for an android application and sends it to the device. I wrote a little script for UNIX like operating system to invoke this tool and have a executable file.
 [deploy_android.sh](scripts/deploy_android.sh) The **build** directory containing **deployment-settings.json** and the path to the **androiddeployqt** tool are required as input parameters.
