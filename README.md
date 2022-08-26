@@ -1,7 +1,9 @@
 # DeepSudoku
 
+![](images/app/Logo2@48.png)
+
 Deep Sudoku is a cross-platform Sudoku-App that runs on desktop and mobile devices. The focus here was the Image recognition part - taking an image from an unsolved sudoku game and let a classic approach of [DSP](https://en.wikipedia.org/wiki/DSP) algorithms using OpenCV detect the individual fields
-containing the numbers, and a pre-trained neural-network model solve the game. For
+containing the numbers, and a pre-trained neural-network model solve the game.
 
 ![](images/previewGame.png)
 
