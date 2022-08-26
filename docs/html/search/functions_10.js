@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['setboard_0',['setBoard',['../d3/daf/classdsdk_1_1BoardModel.html#afd9be890e9676e11762961992cd38067',1,'dsdk::BoardModel']]],
+  ['setcellstatus_1',['setCellStatus',['../d3/daf/classdsdk_1_1BoardModel.html#afc860bb1afd449ab747f2df4e9a30f49',1,'dsdk::BoardModel']]],
+  ['setcellvalue_2',['setCellValue',['../d3/daf/classdsdk_1_1BoardModel.html#a96d20242bee7653b1cddc43a9d060bab',1,'dsdk::BoardModel']]],
+  ['setconflict_3',['setConflict',['../dd/d11/classdsdk_1_1CellData.html#aa6fedaa44cf30ca9a9d7c5839661f941',1,'dsdk::CellData']]],
+  ['setcurrentcellvalue_4',['setCurrentCellValue',['../de/d23/classBoard.html#acff1ab11109416f23cd8eb02d97fabd7',1,'Board::setCurrentCellValue()'],['../d2/d72/classSudokuGame.html#a00991fcf9ad4d3f8e90fdb3bf77e1c23',1,'SudokuGame::setCurrentCellValue()']]],
+  ['setdata_5',['setData',['../d3/daf/classdsdk_1_1BoardModel.html#a81ae56a5a2656bef4d83cde7aebf6aff',1,'dsdk::BoardModel']]],
+  ['seteditable_6',['setEditable',['../dd/d11/classdsdk_1_1CellData.html#a546b1fc9ed743fd70602d59926ef6fd1',1,'dsdk::CellData']]],
+  ['seteditstate_7',['setEditState',['../d3/dc8/classCameraView.html#a74fae8d447011a54360815ab32d955b1',1,'CameraView']]],
+  ['setimage_8',['setImage',['../d5/d92/classdsdk_1_1CVSegmentation.html#a94dcd826d7898201d2c85ca28db7298a',1,'dsdk::CVSegmentation::setImage()'],['../d3/d26/classdsdk_1_1ImagePainter.html#a2dec97e9fab060945690b2af1ce61f5e',1,'dsdk::ImagePainter::setImage()']]],
+  ['setselectionstatus_9',['setSelectionStatus',['../d3/daf/classdsdk_1_1BoardModel.html#a3575f29938d28dc361ae3926319b1ad6',1,'dsdk::BoardModel']]],
+  ['setsession_10',['setSession',['../d9/d57/classdsdk_1_1MediaCapture.html#a239d05ad96edbac1437a327c399792b4',1,'dsdk::MediaCapture']]],
+  ['setsolved_11',['setSolved',['../dd/d11/classdsdk_1_1CellData.html#ad1aa8a85341f67605616fec02a582508',1,'dsdk::CellData']]],
+  ['setstatus_12',['setStatus',['../dd/d11/classdsdk_1_1CellData.html#abdcd2541dba124c050beb999da11a0ca',1,'dsdk::CellData']]],
+  ['setvalue_13',['setValue',['../dd/d11/classdsdk_1_1CellData.html#ad5b32f5072d0ff1624b59fbbfdec978f',1,'dsdk::CellData']]],
+  ['solve_5fsudoku_14',['solve_sudoku',['../db/ded/classdsdk_1_1DeepSolver.html#a3f5e7ea8da552f48e37b860b7c5499f5',1,'dsdk::DeepSolver']]],
+  ['solveclicked_15',['solveClicked',['../d2/d26/classNumberInput.html#ae42e7a05c52cae1ad5e669d9a2bb19eb',1,'NumberInput']]],
+  ['solvedchanged_16',['solvedChanged',['../dd/d11/classdsdk_1_1CellData.html#a8652b03a89818256e273c8756dd9aac8',1,'dsdk::CellData']]],
+  ['solvefield_17',['solveField',['../d2/d72/classSudokuGame.html#aba0e9a783c70c169a5a5c9aa472699e9',1,'SudokuGame']]],
+  ['solvefromimage_18',['solveFromImage',['../db/ded/classdsdk_1_1DeepSolver.html#a9ce06d24c4acb43837d15dcc0b846594',1,'dsdk::DeepSolver']]],
+  ['solvegame_19',['solveGame',['../d3/dec/classdsdk_1_1App.html#ade58fd96882274315e796c3731eb1f18',1,'dsdk::App']]],
+  ['statuschanged_20',['statusChanged',['../dd/d11/classdsdk_1_1CellData.html#a8b7164e76649976de7af0ac56027f175',1,'dsdk::CellData']]]
+];

@@ -1,0 +1,26 @@
+<map id="dsdk::DeepSolver::solveFromImage" name="dsdk::DeepSolver::solveFromImage">
+<area shape="rect" id="node1" title=" " alt="" coords="5,169,200,211"/>
+<area shape="rect" id="node2" href="$db/ded/classdsdk_1_1DeepSolver.html#ada3bae80d109b6ffd16b95177b08aef8" title=" " alt="" coords="248,104,431,145"/>
+<area shape="rect" id="node3" href="$db/ded/classdsdk_1_1DeepSolver.html#a199172669c384fb9a994c11dd0798a29" title=" " alt="" coords="253,169,426,211"/>
+<area shape="rect" id="node19" href="$db/ded/classdsdk_1_1DeepSolver.html#a3f5e7ea8da552f48e37b860b7c5499f5" title=" " alt="" coords="257,364,422,405"/>
+<area shape="rect" id="node4" href="$db/ded/classdsdk_1_1DeepSolver.html#a8190b06a2f64ad986149595488564880" title=" " alt="" coords="481,5,633,47"/>
+<area shape="rect" id="node5" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a4fc86903fe31dae48a93b970be3d81b6" title=" " alt="" coords="479,71,636,112"/>
+<area shape="rect" id="node6" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a0a4319cea8f2cd57c13060d335db8d38" title="Contains only the fields of the grid that contained a identified number." alt="" coords="479,136,636,177"/>
+<area shape="rect" id="node7" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a685b257f9358bd8614c4fc9bfaa1410f" title="a vector of ints that has the same size as the images returned from getPreparedSquares()" alt="" coords="479,201,636,243"/>
+<area shape="rect" id="node8" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a35ec749f80c0c2de1dcb1e259bd50d9b" title="Main processing function that handles the whole call stack." alt="" coords="479,267,636,308"/>
+<area shape="rect" id="node9" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a3fe44e340c7171715821ded5add289a4" title=" " alt="" coords="687,37,845,79"/>
+<area shape="rect" id="node10" href="$d5/d92/classdsdk_1_1CVSegmentation.html#ab21e3bff4bb0f7727edabdfdb49582df" title=" " alt="" coords="687,103,845,144"/>
+<area shape="rect" id="node11" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a34e2581f5dc7941a66e9f573002484cc" title=" " alt="" coords="687,168,845,209"/>
+<area shape="rect" id="node12" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a568d2795b82b56a414217948ce72c784" title=" " alt="" coords="684,233,848,275"/>
+<area shape="rect" id="node13" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a60ce4307b4db51d25041506d29151904" title=" " alt="" coords="687,299,845,340"/>
+<area shape="rect" id="node16" href="$d5/d92/classdsdk_1_1CVSegmentation.html#af7b4bf983ff38e9a66ec34d8a073968c" title=" " alt="" coords="687,364,845,405"/>
+<area shape="rect" id="node18" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a76b875c77f4dc106a7e40fbdb7c3c7fa" title=" " alt="" coords="687,429,845,471"/>
+<area shape="rect" id="node14" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a3eca3b57aacb25ec31266f5f557d5124" title=" " alt="" coords="896,233,1063,275"/>
+<area shape="rect" id="node15" href="$d5/d92/classdsdk_1_1CVSegmentation.html#aefd71247b32d0334d6ad58056f93f82d" title=" " alt="" coords="901,299,1058,340"/>
+<area shape="rect" id="node17" href="$d5/d92/classdsdk_1_1CVSegmentation.html#a8c7233bac98f971341c4cf4f6b504e93" title=" " alt="" coords="901,364,1058,405"/>
+<area shape="rect" id="node20" href="$db/ded/classdsdk_1_1DeepSolver.html#a8ebbf34369c96a9b6f4c7108920a6938" title=" " alt="" coords="480,364,635,405"/>
+<area shape="rect" id="node21" href="$db/ded/classdsdk_1_1DeepSolver.html#a8ecf1581b4801ced3b2915c8884695e9" title=" " alt="" coords="485,527,629,568"/>
+<area shape="rect" id="node22" href="$db/ded/classdsdk_1_1DeepSolver.html#a40c9355b8010737b83e33f3417811902" title=" " alt="" coords="694,495,838,536"/>
+<area shape="rect" id="node23" href="$db/ded/classdsdk_1_1DeepSolver.html#a51ff4ae27a318e89b83c6590393d93c0" title=" " alt="" coords="694,560,838,601"/>
+<area shape="rect" id="node24" href="$db/ded/classdsdk_1_1DeepSolver.html#aa142a871c3d85721e3cce577818fd126" title=" " alt="" coords="694,625,838,667"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="dsdk::CVSegmentation" name="dsdk::CVSegmentation">
+<area shape="rect" id="node1" title="Identify and cut images from a sudoku grid." alt="" coords="5,204,241,1440"/>
+<area shape="rect" id="node2" href="$d8/d32/structdsdk_1_1CVSegmentation_1_1DetectionSize.html" title="Parameters used to detect numbers in a cutted square." alt="" coords="45,5,202,141"/>
+</map>

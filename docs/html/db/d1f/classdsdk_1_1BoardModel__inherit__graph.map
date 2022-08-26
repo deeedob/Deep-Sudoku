@@ -1,0 +1,4 @@
+<map id="dsdk::BoardModel" name="dsdk::BoardModel">
+<area shape="rect" id="node1" title="Serves as the main model for the Sudoku Game and is used by the QMLEngine." alt="" coords="5,131,255,853"/>
+<area shape="rect" id="node2" title=" " alt="" coords="61,5,199,83"/>
+</map>

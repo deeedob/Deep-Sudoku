@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['background_0',['background',['../d0/d53/classDSButton.html#aadc2d5303014a42e6d8751f1863f4e7c',1,'DSButton']]],
+  ['background_1',['Background',['../d1/dc7/classBackground.html',1,'']]],
+  ['background_2eqml_2',['Background.qml',['../d4/dcf/Background_8qml.html',1,'']]],
+  ['base_5ffont_3',['base_font',['../d0/d53/classDSButton.html#a9829fe91bd48a1928fd60f0ea033618b',1,'DSButton']]],
+  ['basegrid_4',['baseGrid',['../de/d23/classBoard.html#ac593b510275ff7e6fe9d9190b79b2575',1,'Board']]],
+  ['binarizedimg_5',['binarizedImg',['../d5/d92/classdsdk_1_1CVSegmentation.html#a3fe44e340c7171715821ded5add289a4',1,'dsdk::CVSegmentation']]],
+  ['board_6',['Board',['../de/d23/classBoard.html',1,'Board'],['../d3/daf/classdsdk_1_1BoardModel.html#a18d2751920173517660d614c510ec2a9',1,'dsdk::BoardModel::Board()'],['../db/ded/classdsdk_1_1DeepSolver.html#a2a21e77b00afa980c562909931e7568b',1,'dsdk::DeepSolver::Board()']]],
+  ['board_2eqml_7',['Board.qml',['../d1/d1c/Board_8qml.html',1,'']]],
+  ['board_5fmodel_2ecpp_8',['board_model.cpp',['../d8/d3e/board__model_8cpp.html',1,'']]],
+  ['board_5fmodel_2ehpp_9',['board_model.hpp',['../dc/d85/board__model_8hpp.html',1,'']]],
+  ['boardmodel_10',['BoardModel',['../d3/daf/classdsdk_1_1BoardModel.html#ac34d1f03e74bf0337908101a82e2a17e',1,'dsdk::BoardModel::BoardModel()'],['../d3/daf/classdsdk_1_1BoardModel.html',1,'dsdk::BoardModel']]],
+  ['bold_11',['bold',['../d0/d53/classDSButton.html#af764e057f077f1297cd483cb8a217ec3',1,'DSButton']]],
+  ['bottommargin_12',['bottomMargin',['../d2/d26/classNumberInput.html#a0e64bcefd7077950a0ef7c6bcf3fcdd0',1,'NumberInput']]],
+  ['bottommarginval_13',['bottomMarginVal',['../d2/d26/classNumberInput.html#ae1c2e7c1cd1feea77959f7b09a4a67ac',1,'NumberInput']]],
+  ['btn_5fheight_14',['btn_height',['../d3/dc2/classStartScreen.html#aa35c5c69ad82d6ab1b5a9c5d462df960',1,'StartScreen']]],
+  ['btn_5fwidth_15',['btn_width',['../d3/dc2/classStartScreen.html#abfa3a36ce3429d3e1f59d23acb397ef9',1,'StartScreen']]],
+  ['btnacceptimage_16',['btnAcceptImage',['../d3/dc8/classCameraView.html#ac4e5ee0d5232702ff6d2aa974601361a',1,'CameraView']]],
+  ['btncancelimage_17',['btnCancelImage',['../d3/dc8/classCameraView.html#a3f68170c3b47c39e8ecaa74460fc2608',1,'CameraView']]],
+  ['btnflipcamera_18',['btnFlipCamera',['../d3/dc8/classCameraView.html#a058ac03180f529efa77aee3688ba1f3e',1,'CameraView']]],
+  ['btnloadimg_19',['btnLoadImg',['../d3/dc8/classCameraView.html#ae34e06f002c8b0eb2747766afec97746',1,'CameraView']]],
+  ['btnreturn_20',['btnReturn',['../d3/dc8/classCameraView.html#adf1c1289df842ea48a8caab4dc9a2a87',1,'CameraView::btnReturn()'],['../d2/d72/classSudokuGame.html#aab064c62b3d28f0eb4272998b26e7002',1,'SudokuGame::btnReturn()']]],
+  ['btnrotateimage_21',['btnRotateImage',['../d3/dc8/classCameraView.html#af10f5b6f56e636b1efa69b8c97482e2f',1,'CameraView']]],
+  ['btnsave_22',['btnSave',['../d3/dc8/classCameraView.html#ade0744656b37768d2630612622e1aaa5',1,'CameraView::btnSave()'],['../d2/d72/classSudokuGame.html#abfb512b070966ecf33a011ba77e3d268',1,'SudokuGame::btnSave()']]],
+  ['btntakepicture_23',['btnTakePicture',['../d3/dc8/classCameraView.html#af114013ce15cb665080ec812a6aa0ed8',1,'CameraView']]],
+  ['buttonclicked_24',['buttonClicked',['../d2/d26/classNumberInput.html#a62627444916b2f653e03870143db1be9',1,'NumberInput']]]
+];

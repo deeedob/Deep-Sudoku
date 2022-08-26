@@ -1,0 +1,4 @@
+<map id="dsdk::CellData" name="dsdk::CellData">
+<area shape="rect" id="node1" title="A single cell used by the BoardModel." alt="" coords="5,131,192,633"/>
+<area shape="rect" id="node2" title=" " alt="" coords="63,5,134,83"/>
+</map>
