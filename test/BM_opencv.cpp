@@ -3,6 +3,8 @@
 #include <opencv4/opencv2/opencv.hpp>
 #include <benchmark/benchmark.h>
 
+using namespace dsdk;
+
 std::filesystem::path path( std::filesystem::current_path()
 	                            .parent_path().parent_path() += "/test/res/Training_002.jpg" );
 

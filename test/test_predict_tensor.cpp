@@ -4,6 +4,8 @@
 #include <opencv4/opencv2/opencv.hpp>
 #include <cassert>
 
+using namespace dsdk;
+
 int main()
 {
 	/* get qimage and convert it to mat */

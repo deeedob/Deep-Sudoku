@@ -13,9 +13,6 @@
 [submodule "third-party/frugally-deep"]
 	path = third-party/frugally-deep
 	url = https://github.com/Dobiasd/frugally-deep
-[submodule "third-party/tensorflow"]
-	path = third-party/tensorflow
-	url = https://github.com/tensorflow/tensorflow
 [submodule "third-party/benchmark"]
 	path = third-party/benchmark
 	url = https://github.com/google/benchmark
