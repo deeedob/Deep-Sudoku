@@ -205,6 +205,7 @@ QModelIndex BoardModel::index( int row, int column, const QModelIndex& parent ) 
 	return createIndex( row, column );
 }
 
+//TODO clear board before setting te solved values
 void BoardModel::setBoard( const DeepSolver::Board& other ) noexcept
 {
 	for( int row = 0; row < m_data.size(); row++ ) {

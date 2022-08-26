@@ -1,5 +1,7 @@
 #include "cell_data.hpp"
 
+using namespace dsdk;
+
 CellData::CellData( QObject* parent )
 	: CellData( EMPTY_CELL, parent )
 { }
