@@ -2516,7 +2516,7 @@ GRAPHICAL_HIERARCHY    = YES
 # The default value is: YES.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DIRECTORY_GRAPH        = YES
+DIRECTORY_GRAPH        = NO
 
 # The DIR_GRAPH_MAX_DEPTH tag can be used to limit the maximum number of levels
 # of child directories generated in directory dependency graphs by dot.

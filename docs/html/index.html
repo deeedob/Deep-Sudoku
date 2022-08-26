@@ -115,6 +115,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p ><a class="anchor" id="md__home_dennis_Nextcloud_Coding_University_06_DeepSudoku_QtSudoku_README"></a> Deep Sudoku is a cross-platform Sudoku-App that runs on desktop and mobile devices. The focus here was the Image recognition part - taking an image from an unsolved sudoku game and let a classic approach of <a href="https://en.wikipedia.org/wiki/DSP" target="_blank">DSP</a> algorithms using OpenCV detect the individual fields containing the numbers, and a pre-trained neural-network model solve the game.</p>
+<p >Read the <a href="https://deeedob.github.io/Deep-Sudoku/html/index.html" target="_blank"><b>documentation</b></a></p>
 <p ><img src="images/previewGame.png" alt="" class="inline"/></p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Prerequisite</h1>
@@ -165,9 +166,8 @@ Building</h1>
 <div class="line">  -DANDROID_ABI=arm64-v8a \</div>
 <div class="line">  -DCMAKE_BUILD_TYPE=Release ..</div>
 </div><!-- fragment --><p >After successfully building the app you can find a folder named “android-build" inside your build directory. To deploy the application to the mobile device you need to invoke the tool:
+&lt;a href="<a href="https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp">https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp</a>" target="_blank" &gt;androiddeployqt&lt;/a&gt;.
 
-&lt;blockquote&gt;&amp;zwj;&lt;a href="<a href="https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp">https://code.qt.io/cgit/qt/qtbase.git/tree/src/tools/androiddeployqt/main.cpp</a>" target="_blank" &gt;androiddeployqt&lt;/a&gt;.
-&lt;/blockquote&gt;
 Which bundles all of the content to an APK file required for an android application and sends it to the device. I wrote a little script for UNIX like operating system to invoke this tool and have a executable file.
 &lt;a href="scripts/deploy_android.sh" target="_blank" &gt;deploy_android.sh&lt;/a&gt; The &lt;strong&gt;build&lt;/strong&gt; directory containing &lt;strong&gt;deployment-settings.json&lt;/strong&gt; and the path to the &lt;strong&gt;androiddeployqt&lt;/strong&gt; tool are required as input parameters.
 
