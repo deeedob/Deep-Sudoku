@@ -1,5 +1,5 @@
-third-party/* linguist-vendored = true
-src/lib/frugally-deep/* linguist-vendored = true
-android/* linguist-vendored = true
-docs/* linguist-vendored = true
-docs/html/* linguist-vendored = true
+third-party/* linguist-vendored
+src/lib/frugally-deep/* linguist-vendored
+android/* linguist-vendored
+docs/* linguist-vendored
+docs/html/* linguist-vendored
