@@ -14,15 +14,15 @@ endif()
 
 # option for outputting compiler information at runtime
 option( OUTPUT_COMPILER_INFO
-        "Output compiler information when launching the main executable." ON )
+		"Output compiler information when launching the main executable." ON )
 option( BUILD_TEST
-        "Build Unit Tests"
-        OFF
-        )
+		"Build Unit Tests"
+		OFF
+		)
 option( BUILD_APP_TEST
-        "Build Standalone application Tests"
-        ON
-        )
+		"Build Standalone application Tests"
+		ON
+		)
 
 # variables to store additional compiler flags
 set( CXX_FLAGS )
@@ -34,7 +34,7 @@ list( APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" )
 
 # append compile flags depending on the selected compiler and build type
 if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
-	list( APPEND CXX_FLAGS "-fno-rtti" "-fno-exceptions" )
+	list( APPEND CXX_FLAGS "-fno-rtti" "-fno" )
 	list( APPEND CXX_FLAGS_DEBUG "-Wsuggest-final-types" "-Wsuggest-final-methods" "-Wsuggest-override" )
 	list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
 endif()
