@@ -1,18 +1,20 @@
 [submodule "third-party/opencv"]
     path = third-party/opencv
     url = https://github.com/opencv/opencv
+    branch = 5.x
 [submodule "third-party/FunctionalPlus"]
 	path = third-party/FunctionalPlus
 	url = https://github.com/Dobiasd/FunctionalPlus
+	branch = master
 [submodule "third-party/eigen"]
 	path = third-party/eigen
 	url = https://gitlab.com/libeigen/eigen.git
+	branch = master
 [submodule "third-party/json"]
 	path = third-party/json
 	url = https://github.com/nlohmann/json
-[submodule "third-party/frugally-deep"]
-	path = third-party/frugally-deep
-	url = https://github.com/Dobiasd/frugally-deep
+	branch = develop
 [submodule "third-party/benchmark"]
 	path = third-party/benchmark
 	url = https://github.com/google/benchmark
+	branch = main
