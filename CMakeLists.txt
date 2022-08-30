@@ -34,7 +34,7 @@ list( APPEND CXX_FLAGS "-fPIC" "-Wall" "-Wextra" "-pedantic" )
 
 # append compile flags depending on the selected compiler and build type
 if( CMAKE_CXX_COMPILER_ID MATCHES GNU )
-	list( APPEND CXX_FLAGS "-fno-rtti" "-fno" )
+	list( APPEND CXX_FLAGS "-fno-rtti" )
 	list( APPEND CXX_FLAGS_DEBUG "-Wsuggest-final-types" "-Wsuggest-final-methods" "-Wsuggest-override" )
 	list( APPEND CXX_FLAGS_RELEASE "-O3" "-Wno-unused" )
 endif()
